@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.I.z === region.N.z)
+	if (region.J.A === region.P.A)
 	{
-		return 'on line ' + region.I.z;
+		return 'on line ' + region.J.A;
 	}
-	return 'on lines ' + region.I.z + ' through ' + region.N.z;
+	return 'on lines ' + region.J.A + ' through ' + region.P.A;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.au,
-		impl.aC,
-		impl.aA,
+		impl.ax,
+		impl.aF,
+		impl.aD,
 		function() { return function() {} }
 	);
 });
@@ -2720,8 +2720,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		o: func(record.o),
-		J: record.J,
-		G: record.G
+		K: record.K,
+		H: record.H
 	}
 });
 
@@ -2990,10 +2990,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.o;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.J;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.K;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.G) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.H) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.au,
-		impl.aC,
-		impl.aA,
+		impl.ax,
+		impl.aF,
+		impl.aD,
 		function(sendToApp, initialModel) {
-			var view = impl.aD;
+			var view = impl.aG;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.au,
-		impl.aC,
-		impl.aA,
+		impl.ax,
+		impl.aF,
+		impl.aD,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.H && impl.H(sendToApp)
-			var view = impl.aD;
+			var divertHrefToApp = impl.I && impl.I(sendToApp)
+			var view = impl.aG;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.am);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aq);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aB) && (_VirtualDom_doc.title = title = doc.aB);
+				(title !== doc.aE) && (_VirtualDom_doc.title = title = doc.aE);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aw;
-	var onUrlRequest = impl.ax;
+	var onUrlChange = impl.az;
+	var onUrlRequest = impl.aA;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		H: function(sendToApp)
+		I: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr._ === next._
-							&& curr.R === next.R
-							&& curr.X.a === next.X.a
+							&& curr.ad === next.ad
+							&& curr.T === next.T
+							&& curr.aa.a === next.aa.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		au: function(flags)
+		ax: function(flags)
 		{
-			return A3(impl.au, flags, _Browser_getUrl(), key);
+			return A3(impl.ax, flags, _Browser_getUrl(), key);
 		},
-		aD: impl.aD,
-		aC: impl.aC,
-		aA: impl.aA
+		aG: impl.aG,
+		aF: impl.aF,
+		aD: impl.aD
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { as: 'hidden', an: 'visibilitychange' }
+		? { av: 'hidden', ar: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { as: 'mozHidden', an: 'mozvisibilitychange' }
+		? { av: 'mozHidden', ar: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { as: 'msHidden', an: 'msvisibilitychange' }
+		? { av: 'msHidden', ar: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { as: 'webkitHidden', an: 'webkitvisibilitychange' }
-		: { as: 'hidden', an: 'visibilitychange' };
+		? { av: 'webkitHidden', ar: 'webkitvisibilitychange' }
+		: { av: 'hidden', ar: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ad: _Browser_getScene(),
-		ag: {
-			ai: _Browser_window.pageXOffset,
-			aj: _Browser_window.pageYOffset,
-			ah: _Browser_doc.documentElement.clientWidth,
-			Q: _Browser_doc.documentElement.clientHeight
+		ah: _Browser_getScene(),
+		ak: {
+			am: _Browser_window.pageXOffset,
+			an: _Browser_window.pageYOffset,
+			al: _Browser_doc.documentElement.clientWidth,
+			S: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		ah: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		Q: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		al: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		S: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ad: {
-				ah: node.scrollWidth,
-				Q: node.scrollHeight
+			ah: {
+				al: node.scrollWidth,
+				S: node.scrollHeight
 			},
-			ag: {
-				ai: node.scrollLeft,
-				aj: node.scrollTop,
-				ah: node.clientWidth,
-				Q: node.clientHeight
+			ak: {
+				am: node.scrollLeft,
+				an: node.scrollTop,
+				al: node.clientWidth,
+				S: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ad: _Browser_getScene(),
-			ag: {
-				ai: x,
-				aj: y,
-				ah: _Browser_doc.documentElement.clientWidth,
-				Q: _Browser_doc.documentElement.clientHeight
+			ah: _Browser_getScene(),
+			ak: {
+				am: x,
+				an: y,
+				al: _Browser_doc.documentElement.clientWidth,
+				S: _Browser_doc.documentElement.clientHeight
 			},
-			ap: {
-				ai: x + rect.left,
-				aj: y + rect.top,
-				ah: rect.width,
-				Q: rect.height
+			at: {
+				am: x + rect.left,
+				an: y + rect.top,
+				al: rect.width,
+				S: rect.height
 			}
 		};
 	});
@@ -4370,10 +4370,23 @@ function _Browser_load(url)
 		}
 	}));
 }
-var $author$project$Main$Model = function (foo) {
-	return {ar: foo};
-};
-var $author$project$Main$init = $author$project$Main$Model('');
+var $author$project$Main$GreetingCommon = {$: 2};
+var $author$project$Main$LegalDefaultInterest = {$: 0};
+var $author$project$Main$Male = 0;
+var $author$project$Main$Model = F4(
+	function (client, opponentGreeting, legalReason, defaultInterest) {
+		return {z: client, O: defaultInterest, V: legalReason, Y: opponentGreeting};
+	});
+var $author$project$Main$NaturalPerson = F3(
+	function (a, b, c) {
+		return {$: 0, a: a, b: b, c: c};
+	});
+var $author$project$Main$init = A4(
+	$author$project$Main$Model,
+	A3($author$project$Main$NaturalPerson, 0, 'Max Mustermann', 'Musterstraße 1, 12345 Musterstadt'),
+	$author$project$Main$GreetingCommon,
+	'aus dem mit Ihnen geschlossenen Liefervertrag vom ... gemäß Rechnung Nr. ... vom ...',
+	$author$project$Main$LegalDefaultInterest);
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
 var $elm$core$Basics$LT = 0;
@@ -4878,7 +4891,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {P: fragment, R: host, V: path, X: port_, _: protocol, aa: query};
+		return {R: fragment, T: host, Z: path, aa: port_, ad: protocol, ae: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5163,30 +5176,373 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $elm$browser$Browser$sandbox = function (impl) {
 	return _Browser_element(
 		{
-			au: function (_v0) {
-				return _Utils_Tuple2(impl.au, $elm$core$Platform$Cmd$none);
+			ax: function (_v0) {
+				return _Utils_Tuple2(impl.ax, $elm$core$Platform$Cmd$none);
 			},
-			aA: function (_v1) {
+			aD: function (_v1) {
 				return $elm$core$Platform$Sub$none;
 			},
-			aC: F2(
+			aF: F2(
 				function (msg, model) {
 					return _Utils_Tuple2(
-						A2(impl.aC, msg, model),
+						A2(impl.aF, msg, model),
 						$elm$core$Platform$Cmd$none);
 				}),
-			aD: impl.aD
+			aG: impl.aG
 		});
 };
 var $author$project$Main$update = F2(
 	function (_v0, model) {
 		return model;
 	});
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $elm$html$Html$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
+var $elm$html$Html$Attributes$classList = function (classes) {
+	return $elm$html$Html$Attributes$class(
+		A2(
+			$elm$core$String$join,
+			' ',
+			A2(
+				$elm$core$List$map,
+				$elm$core$Tuple$first,
+				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
+};
+var $author$project$Main$classes = function (s) {
+	var cl = A2(
+		$elm$core$List$map,
+		function (c) {
+			return _Utils_Tuple2(c, true);
+		},
+		A2($elm$core$String$split, ' ', s));
+	return $elm$html$Html$Attributes$classList(cl);
+};
 var $elm$html$Html$div = _VirtualDom_node('div');
-var $author$project$Main$view = function (_v0) {
-	return A2($elm$html$Html$div, _List_Nil, _List_Nil);
+var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$html$Html$h2 = _VirtualDom_node('h2');
+var $elm$html$Html$main_ = _VirtualDom_node('main');
+var $author$project$Main$clientDative = function (client) {
+	if (!client.$) {
+		var g = client.a;
+		switch (g) {
+			case 0:
+				return 'meinem Mandanten';
+			case 1:
+				return 'meiner Mandantin';
+			default:
+				return 'meiner Mandantschaft';
+		}
+	} else {
+		var g = client.a;
+		if (!g) {
+			return 'meinem Mandanten';
+		} else {
+			return 'meiner Mandantin';
+		}
+	}
+};
+var $author$project$Main$claim = function (model) {
+	return 'Sie schulden ' + ($author$project$Main$clientDative(model.z) + (' ' + (model.V + ' noch einen Betrag in Höhe von EUR ...')));
+};
+var $author$project$Main$clientGenitive = function (client) {
+	if (!client.$) {
+		var g = client.a;
+		switch (g) {
+			case 0:
+				return 'meines Mandanten';
+			case 1:
+				return 'meiner Mandantin';
+			default:
+				return 'meiner Mandantschaft';
+		}
+	} else {
+		var g = client.a;
+		if (!g) {
+			return 'meines Mandanten';
+		} else {
+			return 'meiner Mandantin';
+		}
+	}
+};
+var $author$project$Main$default = function (model) {
+	return 'Vertraglich war vereinbart, dass Sie die Forderung ' + ($author$project$Main$clientGenitive(model.z) + ' binnen ... Tagen nach Rechnungslegung begleichen. Sie sind daher seit ... im Verzug.');
+};
+var $author$project$Main$defaultInterest = function (defaultInterestValue) {
+	if (!defaultInterestValue.$) {
+		return 'Sie schulden daher zusätzlich Verzugszinsen in gesetzlicher Höhe. Die Zinsberechnung entnehmen Sie bitte der beiliegenden Forderungsaufstellung.';
+	} else {
+		var t = defaultInterestValue.a;
+		return 'Sie schulden daher zusätzlich Verzugszinsen. Der Zinssatz liegt über dem gesetzlichen Verzugszins, weil ' + (t + '.');
+	}
+};
+var $author$project$Main$greeting = function (opponentGreeting) {
+	switch (opponentGreeting.$) {
+		case 0:
+			var n = opponentGreeting.a;
+			return 'Sehr geehrter Herr ' + (n + ',');
+		case 1:
+			var n = opponentGreeting.a;
+			return 'Sehr geehrte Frau ' + (n + ',');
+		default:
+			return 'Sehr geehrte Damen und Herren,';
+	}
+};
+var $elm$html$Html$p = _VirtualDom_node('p');
+var $author$project$Main$representation = function (client) {
+	var mdt = function () {
+		if (!client.$) {
+			var g = client.a;
+			var n = client.b;
+			var a = client.c;
+			return function () {
+				switch (g) {
+					case 0:
+						return 'mein Mandant, Herr ';
+					case 1:
+						return 'meine Mandantin, Frau ';
+					default:
+						return 'meine Mandantschaft, ';
+				}
+			}() + (n + (', ' + (a + ',')));
+		} else {
+			var g = client.a;
+			var n = client.b;
+			var a = client.c;
+			return function () {
+				if (!g) {
+					return 'mein Mandant, der ';
+				} else {
+					return 'meine Mandantin, die ';
+				}
+			}() + (n + (', ' + (a + ',')));
+		}
+	}();
+	return 'in der oben genannten Angelegenheit hat uns ' + (mdt + ' beauftragt und bevollmächtigt.');
+};
+var $elm$html$Html$br = _VirtualDom_node('br');
+var $elm$html$Html$strong = _VirtualDom_node('strong');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$rubrum = function (client) {
+	var name = function () {
+		if (!client.$) {
+			var n = client.b;
+			return n;
+		} else {
+			var n = client.b;
+			return n;
+		}
+	}();
+	return _List_fromArray(
+		[
+			A2(
+			$elm$html$Html$strong,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(name + ' ./. ...')
+				])),
+			A2($elm$html$Html$br, _List_Nil, _List_Nil),
+			A2(
+			$elm$html$Html$strong,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text('wegen ...')
+				]))
+		]);
+};
+var $author$project$Main$result = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('col-8')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$p,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('pt-3')
+					]),
+				$author$project$Main$rubrum(model.z)),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$Main$greeting(model.Y))
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$Main$representation(model.z))
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$Main$claim(model))
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$Main$default(model))
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$Main$defaultInterest(model.O))
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Namens m. M. fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag in Höhe von EUR ... binnen 10 Tagen auf das Konto m. M. mit der IBAN ... zu überweisen.')
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Da Sie sich im Verzug befinden, schulden Sie auch ...')
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('RVG Tabelle')
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('M. M. ist zum Vorsteuerabzug nicht berechtigt.')
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Sie können die Freistellung ...')
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Weitere Inkassokosten werden derzeit nicht geltend gemacht.')
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Die für uns zuständige Rechtsanwaltskammer ist die Rechtsanwaltskammer Sachsen, Glacisstraße 6, 01099 Dresden. Die E-Mail-Adresse der Rechtsanwaltskammer Sachsen lautet info@rak-sachsen.de.')
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Mit freundlichen Grüßen')
+					]))
+			]));
+};
+var $author$project$Main$view = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$author$project$Main$classes('container p-3 pb-5')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$main_,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$h1,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('TextBauStein Mahnschreiben')
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('mb-5')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$h2,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Eingaben')
+									])),
+								A2($elm$html$Html$div, _List_Nil, _List_Nil)
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$h2,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Ergebnis')
+									])),
+								$author$project$Main$result(model)
+							]))
+					]))
+			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$sandbox(
-	{au: $author$project$Main$init, aC: $author$project$Main$update, aD: $author$project$Main$view});
+	{ax: $author$project$Main$init, aF: $author$project$Main$update, aG: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
