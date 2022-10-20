@@ -2,8 +2,8 @@ module Main exposing (main)
 
 import Browser
 import Html exposing (..)
-import Html.Attributes exposing (attribute, class, classList, default, placeholder, rows, selected, type_, value)
-import Html.Events exposing (onInput)
+import Html.Attributes exposing (attribute, checked, class, classList, default, placeholder, rows, selected, type_, value)
+import Html.Events exposing (onCheck, onInput)
 
 
 main : Program () Model Msg
@@ -18,8 +18,10 @@ main =
 type alias Model =
     { client : Client
     , opponentGreeting : OpponentGreeting
-    , legalReason : String
+    , legalReason : LegalReason
+    , timeOfDelay : TimeOfDelay
     , defaultInterest : DefaultInterest
+    , rightToDeductInputTax : RightToDeductInputTax
     }
 
 
@@ -28,8 +30,10 @@ init =
     Model
         (initClient SwitchClientFormNaturalPerson)
         GreetingCommon
-        "aus dem mit Ihnen geschlossenen Liefervertrag vom ... gemäß Rechnung Nr. ... vom ..."
+        "aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ..."
+        "TT.MM.JJJJ"
         LegalDefaultInterest
+        False
 
 
 initClient : SwitchClientForm -> Client
@@ -72,9 +76,21 @@ type OpponentGreeting
     | GreetingCommon
 
 
+type alias LegalReason =
+    String
+
+
+type alias TimeOfDelay =
+    String
+
+
 type DefaultInterest
     = LegalDefaultInterest
     | HigherDefaultInterest String
+
+
+type alias RightToDeductInputTax =
+    Bool
 
 
 
@@ -84,8 +100,10 @@ type DefaultInterest
 type Msg
     = ClientForm ClientForm
     | OpponentGreetingForm OpponentGreetingForm
-    | LegalReasonForm String
+    | LegalReasonForm LegalReason
+    | TimeOfDelayForm TimeOfDelay
     | DefaultInterestForm DefaultInterestForm
+    | RightToDeductInputTaxForm RightToDeductInputTax
 
 
 type ClientForm
@@ -173,6 +191,9 @@ update msg model =
                 OpponentGreetingFormGreetingCommon ->
                     { model | opponentGreeting = GreetingCommon }
 
+        TimeOfDelayForm todf ->
+            { model | timeOfDelay = todf }
+
         LegalReasonForm lrf ->
             { model | legalReason = lrf }
 
@@ -183,6 +204,9 @@ update msg model =
 
                 DefaultInterestFormHigherDefaultInterest s ->
                     { model | defaultInterest = HigherDefaultInterest s }
+
+        RightToDeductInputTaxForm rdit ->
+            { model | rightToDeductInputTax = rdit }
 
 
 
@@ -195,11 +219,11 @@ view model =
         [ main_ []
             [ h1 [] [ text "TextBauStein Mahnschreiben" ]
             , div [ class "mb-5" ]
-                [ h2 [] [ text "Eingaben" ]
+                [ h2 [ class "mb-3" ] [ text "Eingaben" ]
                 , modelInput model
                 ]
             , div []
-                [ h2 [] [ text "Ergebnis" ]
+                [ h2 [ class "mb-3" ] [ text "Ergebnis" ]
                 , result model
                 ]
             ]
@@ -216,7 +240,9 @@ modelInput model =
         [ clientForm model.client |> map ClientForm
         , opponenGreetingForm model.opponentGreeting |> map OpponentGreetingForm
         , legalReasonForm model.legalReason
+        , timeOfDelayForm model.timeOfDelay
         , defaultInterestForm model.defaultInterest |> map DefaultInterestForm
+        , rightToDeductInputTaxForm model.rightToDeductInputTax
         ]
 
 
@@ -315,10 +341,10 @@ clientForm client =
         [ form [ class "mb-3" ]
             [ div [ classes "row g-3" ]
                 [ div [ class "col-md-3" ]
-                    [ label [ class "form-label" ] [ text "Rechtsform der Mandantschaft" ]
+                    [ label [ class "form-label" ] [ text "Rechtsform unserer Mandantschaft" ]
                     , select
                         [ class "form-select"
-                        , attribute "aria-label" "Rechtsform"
+                        , attribute "aria-label" "Rechtsform unserer Mandantschaft"
                         , onInput (strToSwitchClientForm >> SwitchClientForm)
                         ]
                         [ option [ value "NaturalPerson" ] [ text "Natürliche Person" ]
@@ -437,7 +463,7 @@ switchOpponentGreetingForm s =
         OpponentGreetingFormGreetingCommon
 
 
-legalReasonForm : String -> Html Msg
+legalReasonForm : LegalReason -> Html Msg
 legalReasonForm legalReason =
     form [ class "mb-3" ]
         [ div [ classes "row g-3" ]
@@ -450,6 +476,26 @@ legalReasonForm legalReason =
                     , attribute "aria-label" "Rechtsgrund der Forderung"
                     , onInput LegalReasonForm
                     , value legalReason
+                    ]
+                    []
+                ]
+            ]
+        ]
+
+
+timeOfDelayForm : TimeOfDelay -> Html Msg
+timeOfDelayForm timeOfDelay =
+    form [ class "mb-3" ]
+        [ div [ classes "row g-3" ]
+            [ div [ class "col-md-6" ]
+                [ label [ class "form-label" ] [ text "Beginn des Verzugs" ]
+                , input
+                    [ class "form-control"
+                    , type_ "text"
+                    , placeholder "Beginn des Verzugs"
+                    , attribute "aria-label" "Beginn des Verzugs"
+                    , onInput TimeOfDelayForm
+                    , value timeOfDelay
                     ]
                     []
                 ]
@@ -502,6 +548,18 @@ switchDefaultInterestForm s =
         DefaultInterestFormHigherDefaultInterest "..."
 
 
+rightToDeductInputTaxForm : RightToDeductInputTax -> Html Msg
+rightToDeductInputTaxForm rightToDeductInputTax =
+    form [ class "mb-3" ]
+        [ div [ class "form-check" ]
+            [ input [ class "form-check-input", type_ "checkbox", value "", checked rightToDeductInputTax, onCheck RightToDeductInputTaxForm ]
+                []
+            , label [ class "form-check-label" ]
+                [ text "Vorsteuerabzugsberechtigung unserer Mandantschaft" ]
+            ]
+        ]
+
+
 
 -- RESULT
 
@@ -512,13 +570,13 @@ result model =
         [ p [ class "pt-3" ] (rubrum model.client)
         , p [] [ text <| greeting model.opponentGreeting ]
         , p [] [ text <| representation model.client ]
-        , p [] [ text <| claim model ]
-        , p [] [ text <| default model ]
+        , p [] [ text <| claim model.client model.legalReason ]
+        , p [] [ text <| default model.client model.timeOfDelay ]
         , p [] [ text <| defaultInterestText model.defaultInterest ]
-        , p [] [ text "Namens m. M. fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag in Höhe von EUR ... binnen 10 Tagen auf das Konto m. M. mit der IBAN ... zu überweisen." ]
+        , p [] [ text <| requestForPayment model.client ]
         , p [] [ text "Da Sie sich im Verzug befinden, schulden Sie auch ..." ]
         , p [] [ text "RVG Tabelle" ]
-        , p [] [ text "M. M. ist zum Vorsteuerabzug nicht berechtigt." ]
+        , p [] [ text <| rightToDeductInputTaxText model.client model.rightToDeductInputTax ]
         , p [] [ text "Sie können die Freistellung durch Erklärung oder dadurch bewirken, dass Sie den Betrag unter Angabe des Aktenzeichens auf unser auf Seite es dieses Schreibens unten angegebenes Geschäftskonto überweisen." ]
         , p [] [ text "Weitere Inkassokosten werden derzeit nicht geltend gemacht." ]
         , p [] [ text "Die für uns zuständige Rechtsanwaltskammer ist die Rechtsanwaltskammer Sachsen, Glacisstraße 6, 01099 Dresden. Die E-Mail-Adresse der Rechtsanwaltskammer Sachsen lautet info@rak-sachsen.de." ]
@@ -593,30 +651,82 @@ representation client =
         ++ " beauftragt und bevollmächtigt."
 
 
-claim : Model -> String
-claim model =
-    "Sie schulden " ++ clientDative model.client ++ " " ++ model.legalReason ++ " noch einen Betrag in Höhe von EUR ..."
+claim : Client -> String -> String
+claim client legalReason =
+    "Sie schulden " ++ clientDative client ++ " " ++ legalReason ++ " noch einen Betrag in Höhe von EUR ..."
 
 
-default : Model -> String
-default model =
+default : Client -> TimeOfDelay -> String
+default client timeOfDelay =
     "Vertraglich war vereinbart, dass Sie die Forderung "
-        ++ clientGenitive model.client
-        ++ " binnen ... Tagen nach Rechnungslegung begleichen. Sie sind daher seit ... im Verzug."
+        ++ clientGenitive client
+        ++ " binnen ... Tagen nach Rechnungslegung begleichen. Sie sind deshalb seit dem "
+        ++ timeOfDelay
+        ++ " im Verzug."
 
 
 defaultInterestText : DefaultInterest -> String
 defaultInterestText defaultInterestValue =
-    case defaultInterestValue of
-        LegalDefaultInterest ->
-            "Sie schulden daher zusätzlich Verzugszinsen in gesetzlicher Höhe. Die Zinsberechnung entnehmen Sie bitte der beiliegenden Forderungsaufstellung."
+    "Weil Sie im Verzug sind, schulden Sie zusätzlich Verzugszinsen"
+        ++ (case defaultInterestValue of
+                LegalDefaultInterest ->
+                    " in gesetzlicher Höhe."
 
-        HigherDefaultInterest t ->
-            "Sie schulden daher zusätzlich Verzugszinsen. Der Zinssatz liegt über dem gesetzlichen Verzugszins, weil " ++ t ++ "."
+                HigherDefaultInterest t ->
+                    ". Der Zinssatz liegt über dem gesetzlichen Verzugszins, weil " ++ t ++ "."
+           )
+        ++ " Die Zinsberechnung entnehmen Sie bitte der beiliegenden Forderungsaufstellung."
+
+
+requestForPayment : Client -> String
+requestForPayment client =
+    "Namens "
+        ++ clientGenitive client
+        ++ " fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag "
+        ++ "in Höhe von EUR ... binnen 10 Tagen auf das Konto "
+        ++ clientGenitive client
+        ++ " mit der IBAN ... zu überweisen."
+
+
+rightToDeductInputTaxText : Client -> RightToDeductInputTax -> String
+rightToDeductInputTaxText client rightToDeductInputTax =
+    if not rightToDeductInputTax then
+        (clientNominative client
+            |> String.left 1
+            |> String.toUpper
+        )
+            ++ (clientNominative client |> String.dropLeft 1)
+            ++ " ist zum Vorsteuerabzug nicht berechtigt."
+
+    else
+        ""
 
 
 
 -- HELPERS
+
+
+clientNominative : Client -> String
+clientNominative client =
+    case client of
+        NaturalPerson g _ _ ->
+            case g of
+                Male ->
+                    "mein Mandant"
+
+                Female ->
+                    "meine Mandantin"
+
+                Undefined ->
+                    "meine Mandantschaft"
+
+        LegalEntity g _ _ ->
+            case g of
+                Der ->
+                    "mein Mandant"
+
+                Die ->
+                    "meine Mandantin"
 
 
 clientGenitive : Client -> String

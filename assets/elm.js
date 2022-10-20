@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.M.C === region.R.C)
+	if (region.O.C === region.T.C)
 	{
-		return 'on line ' + region.M.C;
+		return 'on line ' + region.O.C;
 	}
-	return 'on lines ' + region.M.C + ' through ' + region.R.C;
+	return 'on lines ' + region.O.C + ' through ' + region.T.C;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ax,
+		impl.az,
+		impl.aH,
 		impl.aF,
-		impl.aD,
 		function() { return function() {} }
 	);
 });
@@ -2720,8 +2720,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		p: func(record.p),
-		N: record.N,
-		K: record.K
+		P: record.P,
+		M: record.M
 	}
 });
 
@@ -2990,10 +2990,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.p;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.N;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.P;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.K) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.M) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ax,
+		impl.az,
+		impl.aH,
 		impl.aF,
-		impl.aD,
 		function(sendToApp, initialModel) {
-			var view = impl.aG;
+			var view = impl.aI;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ax,
+		impl.az,
+		impl.aH,
 		impl.aF,
-		impl.aD,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.L && impl.L(sendToApp)
-			var view = impl.aG;
+			var divertHrefToApp = impl.N && impl.N(sendToApp)
+			var view = impl.aI;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aq);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.as);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aE) && (_VirtualDom_doc.title = title = doc.aE);
+				(title !== doc.aG) && (_VirtualDom_doc.title = title = doc.aG);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.az;
-	var onUrlRequest = impl.aA;
+	var onUrlChange = impl.aB;
+	var onUrlRequest = impl.aC;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		L: function(sendToApp)
+		N: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ad === next.ad
-							&& curr.V === next.V
-							&& curr.aa.a === next.aa.a
+							&& curr.af === next.af
+							&& curr.X === next.X
+							&& curr.ac.a === next.ac.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		ax: function(flags)
+		az: function(flags)
 		{
-			return A3(impl.ax, flags, _Browser_getUrl(), key);
+			return A3(impl.az, flags, _Browser_getUrl(), key);
 		},
-		aG: impl.aG,
-		aF: impl.aF,
-		aD: impl.aD
+		aI: impl.aI,
+		aH: impl.aH,
+		aF: impl.aF
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { av: 'hidden', ar: 'visibilitychange' }
+		? { ax: 'hidden', at: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { av: 'mozHidden', ar: 'mozvisibilitychange' }
+		? { ax: 'mozHidden', at: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { av: 'msHidden', ar: 'msvisibilitychange' }
+		? { ax: 'msHidden', at: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { av: 'webkitHidden', ar: 'webkitvisibilitychange' }
-		: { av: 'hidden', ar: 'visibilitychange' };
+		? { ax: 'webkitHidden', at: 'webkitvisibilitychange' }
+		: { ax: 'hidden', at: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ah: _Browser_getScene(),
-		ak: {
-			am: _Browser_window.pageXOffset,
-			an: _Browser_window.pageYOffset,
-			al: _Browser_doc.documentElement.clientWidth,
-			U: _Browser_doc.documentElement.clientHeight
+		aj: _Browser_getScene(),
+		am: {
+			ao: _Browser_window.pageXOffset,
+			ap: _Browser_window.pageYOffset,
+			an: _Browser_doc.documentElement.clientWidth,
+			W: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		al: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		U: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		an: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		W: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ah: {
-				al: node.scrollWidth,
-				U: node.scrollHeight
+			aj: {
+				an: node.scrollWidth,
+				W: node.scrollHeight
 			},
-			ak: {
-				am: node.scrollLeft,
-				an: node.scrollTop,
-				al: node.clientWidth,
-				U: node.clientHeight
+			am: {
+				ao: node.scrollLeft,
+				ap: node.scrollTop,
+				an: node.clientWidth,
+				W: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ah: _Browser_getScene(),
-			ak: {
-				am: x,
-				an: y,
-				al: _Browser_doc.documentElement.clientWidth,
-				U: _Browser_doc.documentElement.clientHeight
+			aj: _Browser_getScene(),
+			am: {
+				ao: x,
+				ap: y,
+				an: _Browser_doc.documentElement.clientWidth,
+				W: _Browser_doc.documentElement.clientHeight
 			},
-			at: {
-				am: x + rect.left,
-				an: y + rect.top,
-				al: rect.width,
-				U: rect.height
+			av: {
+				ao: x + rect.left,
+				ap: y + rect.top,
+				an: rect.width,
+				W: rect.height
 			}
 		};
 	});
@@ -4370,11 +4370,12 @@ function _Browser_load(url)
 		}
 	}));
 }
+var $elm$core$Basics$False = 1;
 var $author$project$Main$GreetingCommon = {$: 2};
 var $author$project$Main$LegalDefaultInterest = {$: 0};
-var $author$project$Main$Model = F4(
-	function (client, opponentGreeting, legalReason, defaultInterest) {
-		return {e: client, B: defaultInterest, H: legalReason, x: opponentGreeting};
+var $author$project$Main$Model = F6(
+	function (client, opponentGreeting, legalReason, timeOfDelay, defaultInterest, rightToDeductInputTax) {
+		return {d: client, B: defaultInterest, H: legalReason, x: opponentGreeting, I: rightToDeductInputTax, J: timeOfDelay};
 	});
 var $author$project$Main$SwitchClientFormNaturalPerson = 0;
 var $author$project$Main$Die = 1;
@@ -4394,12 +4395,14 @@ var $author$project$Main$initClient = function (scf) {
 		return A3($author$project$Main$LegalEntity, 1, 'Muster GmbH', 'Musterstraße 1, 12345 Musterstadt');
 	}
 };
-var $author$project$Main$init = A4(
+var $author$project$Main$init = A6(
 	$author$project$Main$Model,
 	$author$project$Main$initClient(0),
 	$author$project$Main$GreetingCommon,
-	'aus dem mit Ihnen geschlossenen Liefervertrag vom ... gemäß Rechnung Nr. ... vom ...',
-	$author$project$Main$LegalDefaultInterest);
+	'aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ...',
+	'TT.MM.JJJJ',
+	$author$project$Main$LegalDefaultInterest,
+	false);
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
 var $elm$core$Basics$LT = 0;
@@ -4501,7 +4504,6 @@ var $elm$core$Result$Ok = function (a) {
 var $elm$json$Json$Decode$OneOf = function (a) {
 	return {$: 2, a: a};
 };
-var $elm$core$Basics$False = 1;
 var $elm$core$Basics$add = _Basics_add;
 var $elm$core$Maybe$Just = function (a) {
 	return {$: 0, a: a};
@@ -4817,7 +4819,7 @@ var $elm$core$Array$builderToArray = F2(
 			var treeLen = builder.a * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.d) : builder.d;
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.e) : builder.e;
 			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.a);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
@@ -4837,7 +4839,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{d: nodeList, a: (len / $elm$core$Array$branchFactor) | 0, c: tail});
+					{e: nodeList, a: (len / $elm$core$Array$branchFactor) | 0, c: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -4904,7 +4906,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {T: fragment, V: host, Z: path, aa: port_, ad: protocol, ae: query};
+		return {V: fragment, X: host, aa: path, ac: port_, af: protocol, ag: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5189,19 +5191,19 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $elm$browser$Browser$sandbox = function (impl) {
 	return _Browser_element(
 		{
-			ax: function (_v0) {
-				return _Utils_Tuple2(impl.ax, $elm$core$Platform$Cmd$none);
+			az: function (_v0) {
+				return _Utils_Tuple2(impl.az, $elm$core$Platform$Cmd$none);
 			},
-			aD: function (_v1) {
+			aF: function (_v1) {
 				return $elm$core$Platform$Sub$none;
 			},
-			aF: F2(
+			aH: F2(
 				function (msg, model) {
 					return _Utils_Tuple2(
-						A2(impl.aF, msg, model),
+						A2(impl.aH, msg, model),
 						$elm$core$Platform$Cmd$none);
 				}),
-			aG: impl.aG
+			aI: impl.aI
 		});
 };
 var $author$project$Main$GreetingMadame = function (a) {
@@ -5221,7 +5223,7 @@ var $author$project$Main$update = F2(
 				switch (cf.$) {
 					case 1:
 						var npf = cf.a;
-						var _v2 = model.e;
+						var _v2 = model.d;
 						if (!_v2.$) {
 							var g = _v2.a;
 							var n = _v2.b;
@@ -5232,21 +5234,21 @@ var $author$project$Main$update = F2(
 									return _Utils_update(
 										model,
 										{
-											e: A3($author$project$Main$NaturalPerson, newGender, n, a)
+											d: A3($author$project$Main$NaturalPerson, newGender, n, a)
 										});
 								case 1:
 									var newName = npf.a;
 									return _Utils_update(
 										model,
 										{
-											e: A3($author$project$Main$NaturalPerson, g, newName, a)
+											d: A3($author$project$Main$NaturalPerson, g, newName, a)
 										});
 								default:
 									var newAddress = npf.a;
 									return _Utils_update(
 										model,
 										{
-											e: A3($author$project$Main$NaturalPerson, g, n, newAddress)
+											d: A3($author$project$Main$NaturalPerson, g, n, newAddress)
 										});
 							}
 						} else {
@@ -5254,7 +5256,7 @@ var $author$project$Main$update = F2(
 						}
 					case 2:
 						var lef = cf.a;
-						var _v4 = model.e;
+						var _v4 = model.d;
 						if (!_v4.$) {
 							return model;
 						} else {
@@ -5267,21 +5269,21 @@ var $author$project$Main$update = F2(
 									return _Utils_update(
 										model,
 										{
-											e: A3($author$project$Main$LegalEntity, newGrammar, n, a)
+											d: A3($author$project$Main$LegalEntity, newGrammar, n, a)
 										});
 								case 1:
 									var newName = lef.a;
 									return _Utils_update(
 										model,
 										{
-											e: A3($author$project$Main$LegalEntity, g, newName, a)
+											d: A3($author$project$Main$LegalEntity, g, newName, a)
 										});
 								default:
 									var newAddress = lef.a;
 									return _Utils_update(
 										model,
 										{
-											e: A3($author$project$Main$LegalEntity, g, n, newAddress)
+											d: A3($author$project$Main$LegalEntity, g, n, newAddress)
 										});
 							}
 						}
@@ -5290,7 +5292,7 @@ var $author$project$Main$update = F2(
 						return _Utils_update(
 							model,
 							{
-								e: $author$project$Main$initClient(scf)
+								d: $author$project$Main$initClient(scf)
 							});
 				}
 			case 1:
@@ -5315,12 +5317,17 @@ var $author$project$Main$update = F2(
 							model,
 							{x: $author$project$Main$GreetingCommon});
 				}
+			case 3:
+				var todf = msg.a;
+				return _Utils_update(
+					model,
+					{J: todf});
 			case 2:
 				var lrf = msg.a;
 				return _Utils_update(
 					model,
 					{H: lrf});
-			default:
+			case 4:
 				var dif = msg.a;
 				if (!dif.$) {
 					return _Utils_update(
@@ -5334,6 +5341,11 @@ var $author$project$Main$update = F2(
 							B: $author$project$Main$HigherDefaultInterest(s)
 						});
 				}
+			default:
+				var rdit = msg.a;
+				return _Utils_update(
+					model,
+					{I: rdit});
 		}
 	});
 var $elm$json$Json$Encode$string = _Json_wrap;
@@ -5387,7 +5399,7 @@ var $author$project$Main$ClientForm = function (a) {
 	return {$: 0, a: a};
 };
 var $author$project$Main$DefaultInterestForm = function (a) {
-	return {$: 3, a: a};
+	return {$: 4, a: a};
 };
 var $author$project$Main$OpponentGreetingForm = function (a) {
 	return {$: 1, a: a};
@@ -5832,14 +5844,14 @@ var $author$project$Main$clientForm = function (client) {
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text('Rechtsform der Mandantschaft')
+												$elm$html$Html$text('Rechtsform unserer Mandantschaft')
 											])),
 										A2(
 										$elm$html$Html$select,
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$class('form-select'),
-												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Rechtsform'),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Rechtsform unserer Mandantschaft'),
 												$elm$html$Html$Events$onInput(
 												A2($elm$core$Basics$composeR, $author$project$Main$strToSwitchClientForm, $author$project$Main$SwitchClientForm))
 											]),
@@ -6248,6 +6260,127 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 					]))
 			]));
 };
+var $author$project$Main$RightToDeductInputTaxForm = function (a) {
+	return {$: 5, a: a};
+};
+var $elm$html$Html$Attributes$checked = $elm$html$Html$Attributes$boolProperty('checked');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$json$Json$Decode$bool = _Json_decodeBool;
+var $elm$html$Html$Events$targetChecked = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'checked']),
+	$elm$json$Json$Decode$bool);
+var $elm$html$Html$Events$onCheck = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'change',
+		A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetChecked));
+};
+var $author$project$Main$rightToDeductInputTaxForm = function (rightToDeductInputTax) {
+	return A2(
+		$elm$html$Html$form,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('mb-3')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('form-check')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$input,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('form-check-input'),
+								$elm$html$Html$Attributes$type_('checkbox'),
+								$elm$html$Html$Attributes$value(''),
+								$elm$html$Html$Attributes$checked(rightToDeductInputTax),
+								$elm$html$Html$Events$onCheck($author$project$Main$RightToDeductInputTaxForm)
+							]),
+						_List_Nil),
+						A2(
+						$elm$html$Html$label,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('form-check-label')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Vorsteuerabzugsberechtigung unserer Mandantschaft')
+							]))
+					]))
+			]));
+};
+var $author$project$Main$TimeOfDelayForm = function (a) {
+	return {$: 3, a: a};
+};
+var $author$project$Main$timeOfDelayForm = function (timeOfDelay) {
+	return A2(
+		$elm$html$Html$form,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('mb-3')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$author$project$Main$classes('row g-3')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('col-md-6')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$label,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-label')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Beginn des Verzugs')
+									])),
+								A2(
+								$elm$html$Html$input,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-control'),
+										$elm$html$Html$Attributes$type_('text'),
+										$elm$html$Html$Attributes$placeholder('Beginn des Verzugs'),
+										A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Beginn des Verzugs'),
+										$elm$html$Html$Events$onInput($author$project$Main$TimeOfDelayForm),
+										$elm$html$Html$Attributes$value(timeOfDelay)
+									]),
+								_List_Nil)
+							]))
+					]))
+			]));
+};
 var $author$project$Main$modelInput = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -6257,16 +6390,18 @@ var $author$project$Main$modelInput = function (model) {
 				A2(
 				$elm$html$Html$map,
 				$author$project$Main$ClientForm,
-				$author$project$Main$clientForm(model.e)),
+				$author$project$Main$clientForm(model.d)),
 				A2(
 				$elm$html$Html$map,
 				$author$project$Main$OpponentGreetingForm,
 				$author$project$Main$opponenGreetingForm(model.x)),
 				$author$project$Main$legalReasonForm(model.H),
+				$author$project$Main$timeOfDelayForm(model.J),
 				A2(
 				$elm$html$Html$map,
 				$author$project$Main$DefaultInterestForm,
-				$author$project$Main$defaultInterestForm(model.B))
+				$author$project$Main$defaultInterestForm(model.B)),
+				$author$project$Main$rightToDeductInputTaxForm(model.I)
 			]));
 };
 var $author$project$Main$clientDative = function (client) {
@@ -6289,9 +6424,10 @@ var $author$project$Main$clientDative = function (client) {
 		}
 	}
 };
-var $author$project$Main$claim = function (model) {
-	return 'Sie schulden ' + ($author$project$Main$clientDative(model.e) + (' ' + (model.H + ' noch einen Betrag in Höhe von EUR ...')));
-};
+var $author$project$Main$claim = F2(
+	function (client, legalReason) {
+		return 'Sie schulden ' + ($author$project$Main$clientDative(client) + (' ' + (legalReason + ' noch einen Betrag in Höhe von EUR ...')));
+	});
 var $author$project$Main$clientGenitive = function (client) {
 	if (!client.$) {
 		var g = client.a;
@@ -6312,16 +6448,19 @@ var $author$project$Main$clientGenitive = function (client) {
 		}
 	}
 };
-var $author$project$Main$default = function (model) {
-	return 'Vertraglich war vereinbart, dass Sie die Forderung ' + ($author$project$Main$clientGenitive(model.e) + ' binnen ... Tagen nach Rechnungslegung begleichen. Sie sind daher seit ... im Verzug.');
-};
+var $author$project$Main$default = F2(
+	function (client, timeOfDelay) {
+		return 'Vertraglich war vereinbart, dass Sie die Forderung ' + ($author$project$Main$clientGenitive(client) + (' binnen ... Tagen nach Rechnungslegung begleichen. Sie sind deshalb seit dem ' + (timeOfDelay + ' im Verzug.')));
+	});
 var $author$project$Main$defaultInterestText = function (defaultInterestValue) {
-	if (!defaultInterestValue.$) {
-		return 'Sie schulden daher zusätzlich Verzugszinsen in gesetzlicher Höhe. Die Zinsberechnung entnehmen Sie bitte der beiliegenden Forderungsaufstellung.';
-	} else {
-		var t = defaultInterestValue.a;
-		return 'Sie schulden daher zusätzlich Verzugszinsen. Der Zinssatz liegt über dem gesetzlichen Verzugszins, weil ' + (t + '.');
-	}
+	return 'Weil Sie im Verzug sind, schulden Sie zusätzlich Verzugszinsen' + (function () {
+		if (!defaultInterestValue.$) {
+			return ' in gesetzlicher Höhe.';
+		} else {
+			var t = defaultInterestValue.a;
+			return '. Der Zinssatz liegt über dem gesetzlichen Verzugszins, weil ' + (t + '.');
+		}
+	}() + ' Die Zinsberechnung entnehmen Sie bitte der beiliegenden Forderungsaufstellung.');
 };
 var $author$project$Main$greeting = function (opponentGreeting) {
 	switch (opponentGreeting.$) {
@@ -6367,6 +6506,42 @@ var $author$project$Main$representation = function (client) {
 	}();
 	return 'in der oben genannten Angelegenheit hat uns ' + (mdt + ' beauftragt und bevollmächtigt.');
 };
+var $author$project$Main$requestForPayment = function (client) {
+	return 'Namens ' + ($author$project$Main$clientGenitive(client) + (' fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag ' + ('in Höhe von EUR ... binnen 10 Tagen auf das Konto ' + ($author$project$Main$clientGenitive(client) + ' mit der IBAN ... zu überweisen.'))));
+};
+var $author$project$Main$clientNominative = function (client) {
+	if (!client.$) {
+		var g = client.a;
+		switch (g) {
+			case 0:
+				return 'mein Mandant';
+			case 1:
+				return 'meine Mandantin';
+			default:
+				return 'meine Mandantschaft';
+		}
+	} else {
+		var g = client.a;
+		if (!g) {
+			return 'mein Mandant';
+		} else {
+			return 'meine Mandantin';
+		}
+	}
+};
+var $elm$core$Basics$not = _Basics_not;
+var $elm$core$String$toUpper = _String_toUpper;
+var $author$project$Main$rightToDeductInputTaxText = F2(
+	function (client, rightToDeductInputTax) {
+		return (!rightToDeductInputTax) ? ($elm$core$String$toUpper(
+			A2(
+				$elm$core$String$left,
+				1,
+				$author$project$Main$clientNominative(client))) + (A2(
+			$elm$core$String$dropLeft,
+			1,
+			$author$project$Main$clientNominative(client)) + ' ist zum Vorsteuerabzug nicht berechtigt.')) : '';
+	});
 var $elm$html$Html$br = _VirtualDom_node('br');
 var $elm$html$Html$strong = _VirtualDom_node('strong');
 var $author$project$Main$rubrum = function (client) {
@@ -6413,7 +6588,7 @@ var $author$project$Main$result = function (model) {
 					[
 						$elm$html$Html$Attributes$class('pt-3')
 					]),
-				$author$project$Main$rubrum(model.e)),
+				$author$project$Main$rubrum(model.d)),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
@@ -6428,7 +6603,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$representation(model.e))
+						$author$project$Main$representation(model.d))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6436,7 +6611,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$claim(model))
+						A2($author$project$Main$claim, model.d, model.H))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6444,7 +6619,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$default(model))
+						A2($author$project$Main$default, model.d, model.J))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6459,7 +6634,8 @@ var $author$project$Main$result = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Namens m. M. fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag in Höhe von EUR ... binnen 10 Tagen auf das Konto m. M. mit der IBAN ... zu überweisen.')
+						$elm$html$Html$text(
+						$author$project$Main$requestForPayment(model.d))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6480,7 +6656,8 @@ var $author$project$Main$result = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text('M. M. ist zum Vorsteuerabzug nicht berechtigt.')
+						$elm$html$Html$text(
+						A2($author$project$Main$rightToDeductInputTaxText, model.d, model.I))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6543,7 +6720,10 @@ var $author$project$Main$view = function (model) {
 							[
 								A2(
 								$elm$html$Html$h2,
-								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('mb-3')
+									]),
 								_List_fromArray(
 									[
 										$elm$html$Html$text('Eingaben')
@@ -6557,7 +6737,10 @@ var $author$project$Main$view = function (model) {
 							[
 								A2(
 								$elm$html$Html$h2,
-								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('mb-3')
+									]),
 								_List_fromArray(
 									[
 										$elm$html$Html$text('Ergebnis')
@@ -6568,6 +6751,6 @@ var $author$project$Main$view = function (model) {
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$sandbox(
-	{ax: $author$project$Main$init, aF: $author$project$Main$update, aG: $author$project$Main$view});
+	{az: $author$project$Main$init, aH: $author$project$Main$update, aI: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
