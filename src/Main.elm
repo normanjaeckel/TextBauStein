@@ -2,7 +2,7 @@ module Main exposing (main)
 
 import Browser
 import Html exposing (..)
-import Html.Attributes exposing (attribute, checked, class, classList, default, placeholder, rows, selected, type_, value)
+import Html.Attributes exposing (attribute, checked, class, classList, default, for, id, placeholder, rows, selected, type_, value)
 import Html.Events exposing (onCheck, onInput)
 
 
@@ -23,6 +23,10 @@ type alias Model =
     , defaultInterest : DefaultInterest
     , rightToDeductInputTax : RightToDeductInputTax
     }
+
+
+
+-- TODO: Vereinbarung über Verzugsbeginn; Betrag Hauptforderung; Gesamtbetrag laut Forderungsaufstellung; Zahlung an uns oder an Mandant mit IBAN-Feld;
 
 
 init : Model
@@ -238,11 +242,11 @@ modelInput : Model -> Html Msg
 modelInput model =
     div []
         [ clientForm model.client |> map ClientForm
+        , rightToDeductInputTaxForm model.rightToDeductInputTax
         , opponenGreetingForm model.opponentGreeting |> map OpponentGreetingForm
         , legalReasonForm model.legalReason
         , timeOfDelayForm model.timeOfDelay
         , defaultInterestForm model.defaultInterest |> map DefaultInterestForm
-        , rightToDeductInputTaxForm model.rightToDeductInputTax
         ]
 
 
@@ -256,9 +260,10 @@ clientForm client =
                     form [ class "mb-3" ]
                         [ div [ classes "row g-3" ]
                             [ div [ class "col-md-3" ]
-                                [ label [ class "form-label" ] [ text "Anrede" ]
+                                [ label [ class "form-label", for "clientFormNaturalPersonGender" ] [ text "Anrede" ]
                                 , select
                                     [ class "form-select"
+                                    , id "clientFormNaturalPersonGender"
                                     , attribute "aria-label" "Anrede"
                                     , onInput (strToGender >> NaturalPersonFormGender)
                                     ]
@@ -268,9 +273,10 @@ clientForm client =
                                     ]
                                 ]
                             , div [ class "col-md-3" ]
-                                [ label [ class "form-label" ] [ text "Name" ]
+                                [ label [ class "form-label", for "clientFormNaturalPersonName" ] [ text "Name" ]
                                 , input
                                     [ class "form-control"
+                                    , id "clientFormNaturalPersonName"
                                     , type_ "text"
                                     , placeholder "Name"
                                     , attribute "aria-label" "Name"
@@ -280,9 +286,10 @@ clientForm client =
                                     []
                                 ]
                             , div [ class "col-md-3" ]
-                                [ label [ class "form-label" ] [ text "Adresse" ]
+                                [ label [ class "form-label", for "clientFormNaturalPersonAddress" ] [ text "Adresse" ]
                                 , input
                                     [ class "form-control"
+                                    , id "clientFormNaturalPersonAddress"
                                     , type_ "text"
                                     , placeholder "Adresse"
                                     , attribute "aria-label" "Adresse"
@@ -299,9 +306,10 @@ clientForm client =
                     form [ class "mb-3" ]
                         [ div [ classes "row g-3" ]
                             [ div [ class "col-md-3" ]
-                                [ label [ class "form-label" ] [ text "Grammatisches Geschlecht" ]
+                                [ label [ class "form-label", for "clientFormLegalEntityGrammar" ] [ text "Grammatisches Geschlecht" ]
                                 , select
                                     [ class "form-select"
+                                    , id "clientFormLegalEntityGrammar"
                                     , attribute "aria-label" "Grammatisches Geschlecht"
                                     , onInput (strToGrammar >> LegalEntityFormGrammar)
                                     ]
@@ -310,9 +318,10 @@ clientForm client =
                                     ]
                                 ]
                             , div [ class "col-md-3" ]
-                                [ label [ class "form-label" ] [ text "Name" ]
+                                [ label [ class "form-label", for "clientFormLegalEntityName" ] [ text "Name" ]
                                 , input
                                     [ class "form-control"
+                                    , id "clientFormLegalEntityName"
                                     , type_ "text"
                                     , placeholder "Name"
                                     , attribute "aria-label" "Name"
@@ -322,9 +331,10 @@ clientForm client =
                                     []
                                 ]
                             , div [ class "col-md-3" ]
-                                [ label [ class "form-label" ] [ text "Adresse" ]
+                                [ label [ class "form-label", for "clientFormLegalEntityAddress" ] [ text "Adresse" ]
                                 , input
                                     [ class "form-control"
+                                    , id "clientFormLegalEntityAddress"
                                     , type_ "text"
                                     , placeholder "Adresse"
                                     , attribute "aria-label" "Adresse"
@@ -341,9 +351,10 @@ clientForm client =
         [ form [ class "mb-3" ]
             [ div [ classes "row g-3" ]
                 [ div [ class "col-md-3" ]
-                    [ label [ class "form-label" ] [ text "Rechtsform unserer Mandantschaft" ]
+                    [ label [ class "form-label", for "clientFormSwitchClientForm" ] [ text "Rechtsform unserer Mandantschaft" ]
                     , select
                         [ class "form-select"
+                        , id "clientFormSwitchClientForm"
                         , attribute "aria-label" "Rechtsform unserer Mandantschaft"
                         , onInput (strToSwitchClientForm >> SwitchClientForm)
                         ]
@@ -385,6 +396,18 @@ strToSwitchClientForm s =
 
     else
         SwitchClientFormLegalEntity
+
+
+rightToDeductInputTaxForm : RightToDeductInputTax -> Html Msg
+rightToDeductInputTaxForm rightToDeductInputTax =
+    form [ class "mb-3" ]
+        [ div [ class "form-check" ]
+            [ input [ class "form-check-input", id "rightToDeductInputTaxFormCheckbox", type_ "checkbox", value "", checked rightToDeductInputTax, onCheck RightToDeductInputTaxForm ]
+                []
+            , label [ class "form-check-label", for "rightToDeductInputTaxFormCheckbox" ]
+                [ text "Vorsteuerabzugsberechtigung unserer Mandantschaft" ]
+            ]
+        ]
 
 
 opponenGreetingForm : OpponentGreeting -> Html OpponentGreetingForm
@@ -548,18 +571,6 @@ switchDefaultInterestForm s =
         DefaultInterestFormHigherDefaultInterest "..."
 
 
-rightToDeductInputTaxForm : RightToDeductInputTax -> Html Msg
-rightToDeductInputTaxForm rightToDeductInputTax =
-    form [ class "mb-3" ]
-        [ div [ class "form-check" ]
-            [ input [ class "form-check-input", type_ "checkbox", value "", checked rightToDeductInputTax, onCheck RightToDeductInputTaxForm ]
-                []
-            , label [ class "form-check-label" ]
-                [ text "Vorsteuerabzugsberechtigung unserer Mandantschaft" ]
-            ]
-        ]
-
-
 
 -- RESULT
 
@@ -574,12 +585,9 @@ result model =
         , p [] [ text <| default model.client model.timeOfDelay ]
         , p [] [ text <| defaultInterestText model.defaultInterest ]
         , p [] [ text <| requestForPayment model.client ]
-        , p [] [ text "Da Sie sich im Verzug befinden, schulden Sie auch ..." ]
-        , p [] [ text "RVG Tabelle" ]
-        , p [] [ text <| rightToDeductInputTaxText model.client model.rightToDeductInputTax ]
-        , p [] [ text "Sie können die Freistellung durch Erklärung oder dadurch bewirken, dass Sie den Betrag unter Angabe des Aktenzeichens auf unser auf Seite es dieses Schreibens unten angegebenes Geschäftskonto überweisen." ]
-        , p [] [ text "Weitere Inkassokosten werden derzeit nicht geltend gemacht." ]
+        , lawyersFees model.client model.rightToDeductInputTax
         , p [] [ text "Die für uns zuständige Rechtsanwaltskammer ist die Rechtsanwaltskammer Sachsen, Glacisstraße 6, 01099 Dresden. Die E-Mail-Adresse der Rechtsanwaltskammer Sachsen lautet info@rak-sachsen.de." ]
+        , p [] [ text <| judicialEnforcement model.client ]
         , p [] [ text "Mit freundlichen Grüßen" ]
         ]
 
@@ -688,18 +696,76 @@ requestForPayment client =
         ++ " mit der IBAN ... zu überweisen."
 
 
-rightToDeductInputTaxText : Client -> RightToDeductInputTax -> String
+lawyersFees : Client -> RightToDeductInputTax -> Html Msg
+lawyersFees client rightToDeductInputTax =
+    div []
+        [ p []
+            [ text <|
+                "Da Sie sich im Verzug befinden, schulden Sie auch die Freistellung "
+                    ++ clientGenitive client
+                    ++ " von den Kosten unserer Beauftragung. Diese Kosten berechnen sich nach dem Rechtsanwaltsvergütungsgesetz wie folgt:"
+            ]
+        , p [] [ text "Gegenstandswert EUR ..." ]
+        , div [ class "row" ]
+            [ div [ class "col-9 offset-1" ]
+                [ table [ classes "table table-borderless table-sm" ]
+                    [ tbody []
+                        [ tr []
+                            [ td [] [ text "1,3 Geschäftsgebühr Nr. 2300 VV RVG:" ]
+                            , td [ class "rvg-table-eur" ] [ text "EUR ..." ]
+                            ]
+                        , tr []
+                            [ td [] [ text "Pauschale für Entgelte für Post- und Telekommunikationsdienstleistungen Nr. 7002 VV RVG:" ]
+                            , td [] [ text "EUR ..." ]
+                            ]
+                        , tr []
+                            [ td [] [ text "Umsatzsteuer 19 % Nr. 7008 VV RVG:" ]
+                            , td [] [ text "EUR ..." ]
+                            ]
+                        ]
+                    , tfoot []
+                        [ tr [ class "rvg-table-sum" ]
+                            [ td [] [ strong [] [ text "Summe:" ] ]
+                            , td [] [ strong [] [ text "EUR ..." ] ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        , rightToDeductInputTaxText client rightToDeductInputTax
+        , p []
+            [ text <|
+                "Sie können die Freistellung durch Erklärung oder dadurch bewirken, dass Sie den Betrag unter Angabe des Aktenzeichens auf unser auf der erste Seite dieses Schreibens unten angegebenes Geschäftskonto überweisen. "
+                    ++ "Für die Freistellung setze ich Ihnen ebenfalls eine Frist von 10 Tagen nach Zugang dieses Schreibens. Sollte die Frist fruchtlos verstreichen, wird "
+                    ++ clientNominative client
+                    ++ " die Freistellung ablehnen und Ersatz in Geld verlangen."
+            ]
+        , p [] [ text "Weitere Inkassokosten werden derzeit nicht geltend gemacht." ]
+        ]
+
+
+rightToDeductInputTaxText : Client -> RightToDeductInputTax -> Html Msg
 rightToDeductInputTaxText client rightToDeductInputTax =
     if not rightToDeductInputTax then
-        (clientNominative client
-            |> String.left 1
-            |> String.toUpper
-        )
-            ++ (clientNominative client |> String.dropLeft 1)
-            ++ " ist zum Vorsteuerabzug nicht berechtigt."
+        p []
+            [ text <|
+                (clientNominative client
+                    |> String.left 1
+                    |> String.toUpper
+                )
+                    ++ (clientNominative client |> String.dropLeft 1)
+                    ++ " ist zum Vorsteuerabzug nicht berechtigt."
+            ]
 
     else
-        ""
+        div [] []
+
+
+judicialEnforcement : Client -> String
+judicialEnforcement client =
+    "Sollte die vorgenannten Fristen fruchtlos verstreichen, werde ich "
+        ++ clientDative client
+        ++ " empfehlen, die Forderung gegen Sie gerichtlich durchzusetzen."
 
 
 

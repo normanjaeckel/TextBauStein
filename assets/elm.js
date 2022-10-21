@@ -4375,7 +4375,7 @@ var $author$project$Main$GreetingCommon = {$: 2};
 var $author$project$Main$LegalDefaultInterest = {$: 0};
 var $author$project$Main$Model = F6(
 	function (client, opponentGreeting, legalReason, timeOfDelay, defaultInterest, rightToDeductInputTax) {
-		return {d: client, B: defaultInterest, H: legalReason, x: opponentGreeting, I: rightToDeductInputTax, J: timeOfDelay};
+		return {c: client, B: defaultInterest, H: legalReason, x: opponentGreeting, I: rightToDeductInputTax, J: timeOfDelay};
 	});
 var $author$project$Main$SwitchClientFormNaturalPerson = 0;
 var $author$project$Main$Die = 1;
@@ -4811,10 +4811,10 @@ var $elm$core$Array$builderToArray = F2(
 		if (!builder.a) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.c),
+				$elm$core$Elm$JsArray$length(builder.d),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.c);
+				builder.d);
 		} else {
 			var treeLen = builder.a * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
@@ -4823,10 +4823,10 @@ var $elm$core$Array$builderToArray = F2(
 			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.a);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.c) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.d) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.c);
+				builder.d);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -4839,7 +4839,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{e: nodeList, a: (len / $elm$core$Array$branchFactor) | 0, c: tail});
+					{e: nodeList, a: (len / $elm$core$Array$branchFactor) | 0, d: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -5223,7 +5223,7 @@ var $author$project$Main$update = F2(
 				switch (cf.$) {
 					case 1:
 						var npf = cf.a;
-						var _v2 = model.d;
+						var _v2 = model.c;
 						if (!_v2.$) {
 							var g = _v2.a;
 							var n = _v2.b;
@@ -5234,21 +5234,21 @@ var $author$project$Main$update = F2(
 									return _Utils_update(
 										model,
 										{
-											d: A3($author$project$Main$NaturalPerson, newGender, n, a)
+											c: A3($author$project$Main$NaturalPerson, newGender, n, a)
 										});
 								case 1:
 									var newName = npf.a;
 									return _Utils_update(
 										model,
 										{
-											d: A3($author$project$Main$NaturalPerson, g, newName, a)
+											c: A3($author$project$Main$NaturalPerson, g, newName, a)
 										});
 								default:
 									var newAddress = npf.a;
 									return _Utils_update(
 										model,
 										{
-											d: A3($author$project$Main$NaturalPerson, g, n, newAddress)
+											c: A3($author$project$Main$NaturalPerson, g, n, newAddress)
 										});
 							}
 						} else {
@@ -5256,7 +5256,7 @@ var $author$project$Main$update = F2(
 						}
 					case 2:
 						var lef = cf.a;
-						var _v4 = model.d;
+						var _v4 = model.c;
 						if (!_v4.$) {
 							return model;
 						} else {
@@ -5269,21 +5269,21 @@ var $author$project$Main$update = F2(
 									return _Utils_update(
 										model,
 										{
-											d: A3($author$project$Main$LegalEntity, newGrammar, n, a)
+											c: A3($author$project$Main$LegalEntity, newGrammar, n, a)
 										});
 								case 1:
 									var newName = lef.a;
 									return _Utils_update(
 										model,
 										{
-											d: A3($author$project$Main$LegalEntity, g, newName, a)
+											c: A3($author$project$Main$LegalEntity, g, newName, a)
 										});
 								default:
 									var newAddress = lef.a;
 									return _Utils_update(
 										model,
 										{
-											d: A3($author$project$Main$LegalEntity, g, n, newAddress)
+											c: A3($author$project$Main$LegalEntity, g, n, newAddress)
 										});
 							}
 						}
@@ -5292,7 +5292,7 @@ var $author$project$Main$update = F2(
 						return _Utils_update(
 							model,
 							{
-								d: $author$project$Main$initClient(scf)
+								c: $author$project$Main$initClient(scf)
 							});
 				}
 			case 1:
@@ -5447,7 +5447,9 @@ var $elm$core$Basics$composeR = F3(
 		return g(
 			f(x));
 	});
+var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
 var $elm$html$Html$form = _VirtualDom_node('form');
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$label = _VirtualDom_node('label');
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
@@ -5549,7 +5551,8 @@ var $author$project$Main$clientForm = function (client) {
 											$elm$html$Html$label,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('form-label')
+													$elm$html$Html$Attributes$class('form-label'),
+													$elm$html$Html$Attributes$for('clientFormNaturalPersonGender')
 												]),
 											_List_fromArray(
 												[
@@ -5560,6 +5563,7 @@ var $author$project$Main$clientForm = function (client) {
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class('form-select'),
+													$elm$html$Html$Attributes$id('clientFormNaturalPersonGender'),
 													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Anrede'),
 													$elm$html$Html$Events$onInput(
 													A2($elm$core$Basics$composeR, $author$project$Main$strToGender, $author$project$Main$NaturalPersonFormGender))
@@ -5613,7 +5617,8 @@ var $author$project$Main$clientForm = function (client) {
 											$elm$html$Html$label,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('form-label')
+													$elm$html$Html$Attributes$class('form-label'),
+													$elm$html$Html$Attributes$for('clientFormNaturalPersonName')
 												]),
 											_List_fromArray(
 												[
@@ -5624,6 +5629,7 @@ var $author$project$Main$clientForm = function (client) {
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class('form-control'),
+													$elm$html$Html$Attributes$id('clientFormNaturalPersonName'),
 													$elm$html$Html$Attributes$type_('text'),
 													$elm$html$Html$Attributes$placeholder('Name'),
 													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Name'),
@@ -5644,7 +5650,8 @@ var $author$project$Main$clientForm = function (client) {
 											$elm$html$Html$label,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('form-label')
+													$elm$html$Html$Attributes$class('form-label'),
+													$elm$html$Html$Attributes$for('clientFormNaturalPersonAddress')
 												]),
 											_List_fromArray(
 												[
@@ -5655,6 +5662,7 @@ var $author$project$Main$clientForm = function (client) {
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class('form-control'),
+													$elm$html$Html$Attributes$id('clientFormNaturalPersonAddress'),
 													$elm$html$Html$Attributes$type_('text'),
 													$elm$html$Html$Attributes$placeholder('Adresse'),
 													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Adresse'),
@@ -5700,7 +5708,8 @@ var $author$project$Main$clientForm = function (client) {
 											$elm$html$Html$label,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('form-label')
+													$elm$html$Html$Attributes$class('form-label'),
+													$elm$html$Html$Attributes$for('clientFormLegalEntityGrammar')
 												]),
 											_List_fromArray(
 												[
@@ -5711,6 +5720,7 @@ var $author$project$Main$clientForm = function (client) {
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class('form-select'),
+													$elm$html$Html$Attributes$id('clientFormLegalEntityGrammar'),
 													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Grammatisches Geschlecht'),
 													$elm$html$Html$Events$onInput(
 													A2($elm$core$Basics$composeR, $author$project$Main$strToGrammar, $author$project$Main$LegalEntityFormGrammar))
@@ -5753,7 +5763,8 @@ var $author$project$Main$clientForm = function (client) {
 											$elm$html$Html$label,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('form-label')
+													$elm$html$Html$Attributes$class('form-label'),
+													$elm$html$Html$Attributes$for('clientFormLegalEntityName')
 												]),
 											_List_fromArray(
 												[
@@ -5764,6 +5775,7 @@ var $author$project$Main$clientForm = function (client) {
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class('form-control'),
+													$elm$html$Html$Attributes$id('clientFormLegalEntityName'),
 													$elm$html$Html$Attributes$type_('text'),
 													$elm$html$Html$Attributes$placeholder('Name'),
 													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Name'),
@@ -5784,7 +5796,8 @@ var $author$project$Main$clientForm = function (client) {
 											$elm$html$Html$label,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('form-label')
+													$elm$html$Html$Attributes$class('form-label'),
+													$elm$html$Html$Attributes$for('clientFormLegalEntityAddress')
 												]),
 											_List_fromArray(
 												[
@@ -5795,6 +5808,7 @@ var $author$project$Main$clientForm = function (client) {
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class('form-control'),
+													$elm$html$Html$Attributes$id('clientFormLegalEntityAddress'),
 													$elm$html$Html$Attributes$type_('text'),
 													$elm$html$Html$Attributes$placeholder('Adresse'),
 													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Adresse'),
@@ -5840,7 +5854,8 @@ var $author$project$Main$clientForm = function (client) {
 										$elm$html$Html$label,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$class('form-label')
+												$elm$html$Html$Attributes$class('form-label'),
+												$elm$html$Html$Attributes$for('clientFormSwitchClientForm')
 											]),
 										_List_fromArray(
 											[
@@ -5851,6 +5866,7 @@ var $author$project$Main$clientForm = function (client) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$class('form-select'),
+												$elm$html$Html$Attributes$id('clientFormSwitchClientForm'),
 												A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Rechtsform unserer Mandantschaft'),
 												$elm$html$Html$Events$onInput(
 												A2($elm$core$Basics$composeR, $author$project$Main$strToSwitchClientForm, $author$project$Main$SwitchClientForm))
@@ -6308,6 +6324,7 @@ var $author$project$Main$rightToDeductInputTaxForm = function (rightToDeductInpu
 						_List_fromArray(
 							[
 								$elm$html$Html$Attributes$class('form-check-input'),
+								$elm$html$Html$Attributes$id('rightToDeductInputTaxFormCheckbox'),
 								$elm$html$Html$Attributes$type_('checkbox'),
 								$elm$html$Html$Attributes$value(''),
 								$elm$html$Html$Attributes$checked(rightToDeductInputTax),
@@ -6318,7 +6335,8 @@ var $author$project$Main$rightToDeductInputTaxForm = function (rightToDeductInpu
 						$elm$html$Html$label,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('form-check-label')
+								$elm$html$Html$Attributes$class('form-check-label'),
+								$elm$html$Html$Attributes$for('rightToDeductInputTaxFormCheckbox')
 							]),
 						_List_fromArray(
 							[
@@ -6390,7 +6408,8 @@ var $author$project$Main$modelInput = function (model) {
 				A2(
 				$elm$html$Html$map,
 				$author$project$Main$ClientForm,
-				$author$project$Main$clientForm(model.d)),
+				$author$project$Main$clientForm(model.c)),
+				$author$project$Main$rightToDeductInputTaxForm(model.I),
 				A2(
 				$elm$html$Html$map,
 				$author$project$Main$OpponentGreetingForm,
@@ -6400,8 +6419,7 @@ var $author$project$Main$modelInput = function (model) {
 				A2(
 				$elm$html$Html$map,
 				$author$project$Main$DefaultInterestForm,
-				$author$project$Main$defaultInterestForm(model.B)),
-				$author$project$Main$rightToDeductInputTaxForm(model.I)
+				$author$project$Main$defaultInterestForm(model.B))
 			]));
 };
 var $author$project$Main$clientDative = function (client) {
@@ -6474,7 +6492,233 @@ var $author$project$Main$greeting = function (opponentGreeting) {
 			return 'Sehr geehrte Damen und Herren,';
 	}
 };
+var $author$project$Main$judicialEnforcement = function (client) {
+	return 'Sollte die vorgenannten Fristen fruchtlos verstreichen, werde ich ' + ($author$project$Main$clientDative(client) + ' empfehlen, die Forderung gegen Sie gerichtlich durchzusetzen.');
+};
+var $author$project$Main$clientNominative = function (client) {
+	if (!client.$) {
+		var g = client.a;
+		switch (g) {
+			case 0:
+				return 'mein Mandant';
+			case 1:
+				return 'meine Mandantin';
+			default:
+				return 'meine Mandantschaft';
+		}
+	} else {
+		var g = client.a;
+		if (!g) {
+			return 'mein Mandant';
+		} else {
+			return 'meine Mandantin';
+		}
+	}
+};
 var $elm$html$Html$p = _VirtualDom_node('p');
+var $elm$core$Basics$not = _Basics_not;
+var $elm$core$String$toUpper = _String_toUpper;
+var $author$project$Main$rightToDeductInputTaxText = F2(
+	function (client, rightToDeductInputTax) {
+		return (!rightToDeductInputTax) ? A2(
+			$elm$html$Html$p,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(
+					$elm$core$String$toUpper(
+						A2(
+							$elm$core$String$left,
+							1,
+							$author$project$Main$clientNominative(client))) + (A2(
+						$elm$core$String$dropLeft,
+						1,
+						$author$project$Main$clientNominative(client)) + ' ist zum Vorsteuerabzug nicht berechtigt.'))
+				])) : A2($elm$html$Html$div, _List_Nil, _List_Nil);
+	});
+var $elm$html$Html$strong = _VirtualDom_node('strong');
+var $elm$html$Html$table = _VirtualDom_node('table');
+var $elm$html$Html$tbody = _VirtualDom_node('tbody');
+var $elm$html$Html$td = _VirtualDom_node('td');
+var $elm$html$Html$tfoot = _VirtualDom_node('tfoot');
+var $elm$html$Html$tr = _VirtualDom_node('tr');
+var $author$project$Main$lawyersFees = F2(
+	function (client, rightToDeductInputTax) {
+		return A2(
+			$elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							'Da Sie sich im Verzug befinden, schulden Sie auch die Freistellung ' + ($author$project$Main$clientGenitive(client) + ' von den Kosten unserer Beauftragung. Diese Kosten berechnen sich nach dem Rechtsanwaltsvergütungsgesetz wie folgt:'))
+						])),
+					A2(
+					$elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Gegenstandswert EUR ...')
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('row')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('col-9 offset-1')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$table,
+									_List_fromArray(
+										[
+											$author$project$Main$classes('table table-borderless table-sm')
+										]),
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$tbody,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$tr,
+													_List_Nil,
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$td,
+															_List_Nil,
+															_List_fromArray(
+																[
+																	$elm$html$Html$text('1,3 Geschäftsgebühr Nr. 2300 VV RVG:')
+																])),
+															A2(
+															$elm$html$Html$td,
+															_List_fromArray(
+																[
+																	$elm$html$Html$Attributes$class('rvg-table-eur')
+																]),
+															_List_fromArray(
+																[
+																	$elm$html$Html$text('EUR ...')
+																]))
+														])),
+													A2(
+													$elm$html$Html$tr,
+													_List_Nil,
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$td,
+															_List_Nil,
+															_List_fromArray(
+																[
+																	$elm$html$Html$text('Pauschale für Entgelte für Post- und Telekommunikationsdienstleistungen Nr. 7002 VV RVG:')
+																])),
+															A2(
+															$elm$html$Html$td,
+															_List_Nil,
+															_List_fromArray(
+																[
+																	$elm$html$Html$text('EUR ...')
+																]))
+														])),
+													A2(
+													$elm$html$Html$tr,
+													_List_Nil,
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$td,
+															_List_Nil,
+															_List_fromArray(
+																[
+																	$elm$html$Html$text('Umsatzsteuer 19 % Nr. 7008 VV RVG:')
+																])),
+															A2(
+															$elm$html$Html$td,
+															_List_Nil,
+															_List_fromArray(
+																[
+																	$elm$html$Html$text('EUR ...')
+																]))
+														]))
+												])),
+											A2(
+											$elm$html$Html$tfoot,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$tr,
+													_List_fromArray(
+														[
+															$elm$html$Html$Attributes$class('rvg-table-sum')
+														]),
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$td,
+															_List_Nil,
+															_List_fromArray(
+																[
+																	A2(
+																	$elm$html$Html$strong,
+																	_List_Nil,
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$text('Summe:')
+																		]))
+																])),
+															A2(
+															$elm$html$Html$td,
+															_List_Nil,
+															_List_fromArray(
+																[
+																	A2(
+																	$elm$html$Html$strong,
+																	_List_Nil,
+																	_List_fromArray(
+																		[
+																			$elm$html$Html$text('EUR ...')
+																		]))
+																]))
+														]))
+												]))
+										]))
+								]))
+						])),
+					A2($author$project$Main$rightToDeductInputTaxText, client, rightToDeductInputTax),
+					A2(
+					$elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							'Sie können die Freistellung durch Erklärung oder dadurch bewirken, dass Sie den Betrag unter Angabe des Aktenzeichens auf unser auf der erste Seite dieses Schreibens unten angegebenes Geschäftskonto überweisen. ' + ('Für die Freistellung setze ich Ihnen ebenfalls eine Frist von 10 Tagen nach Zugang dieses Schreibens. Sollte die Frist fruchtlos verstreichen, wird ' + ($author$project$Main$clientNominative(client) + ' die Freistellung ablehnen und Ersatz in Geld verlangen.')))
+						])),
+					A2(
+					$elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Weitere Inkassokosten werden derzeit nicht geltend gemacht.')
+						]))
+				]));
+	});
 var $author$project$Main$representation = function (client) {
 	var mdt = function () {
 		if (!client.$) {
@@ -6509,41 +6753,7 @@ var $author$project$Main$representation = function (client) {
 var $author$project$Main$requestForPayment = function (client) {
 	return 'Namens ' + ($author$project$Main$clientGenitive(client) + (' fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag ' + ('in Höhe von EUR ... binnen 10 Tagen auf das Konto ' + ($author$project$Main$clientGenitive(client) + ' mit der IBAN ... zu überweisen.'))));
 };
-var $author$project$Main$clientNominative = function (client) {
-	if (!client.$) {
-		var g = client.a;
-		switch (g) {
-			case 0:
-				return 'mein Mandant';
-			case 1:
-				return 'meine Mandantin';
-			default:
-				return 'meine Mandantschaft';
-		}
-	} else {
-		var g = client.a;
-		if (!g) {
-			return 'mein Mandant';
-		} else {
-			return 'meine Mandantin';
-		}
-	}
-};
-var $elm$core$Basics$not = _Basics_not;
-var $elm$core$String$toUpper = _String_toUpper;
-var $author$project$Main$rightToDeductInputTaxText = F2(
-	function (client, rightToDeductInputTax) {
-		return (!rightToDeductInputTax) ? ($elm$core$String$toUpper(
-			A2(
-				$elm$core$String$left,
-				1,
-				$author$project$Main$clientNominative(client))) + (A2(
-			$elm$core$String$dropLeft,
-			1,
-			$author$project$Main$clientNominative(client)) + ' ist zum Vorsteuerabzug nicht berechtigt.')) : '';
-	});
 var $elm$html$Html$br = _VirtualDom_node('br');
-var $elm$html$Html$strong = _VirtualDom_node('strong');
 var $author$project$Main$rubrum = function (client) {
 	var name = function () {
 		if (!client.$) {
@@ -6588,7 +6798,7 @@ var $author$project$Main$result = function (model) {
 					[
 						$elm$html$Html$Attributes$class('pt-3')
 					]),
-				$author$project$Main$rubrum(model.d)),
+				$author$project$Main$rubrum(model.c)),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
@@ -6603,7 +6813,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$representation(model.d))
+						$author$project$Main$representation(model.c))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6611,7 +6821,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($author$project$Main$claim, model.d, model.H))
+						A2($author$project$Main$claim, model.c, model.H))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6619,7 +6829,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($author$project$Main$default, model.d, model.J))
+						A2($author$project$Main$default, model.c, model.J))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6635,21 +6845,15 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$requestForPayment(model.d))
+						$author$project$Main$requestForPayment(model.c))
 					])),
+				A2($author$project$Main$lawyersFees, model.c, model.I),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Da Sie sich im Verzug befinden, schulden Sie auch ...')
-					])),
-				A2(
-				$elm$html$Html$p,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text('RVG Tabelle')
+						$elm$html$Html$text('Die für uns zuständige Rechtsanwaltskammer ist die Rechtsanwaltskammer Sachsen, Glacisstraße 6, 01099 Dresden. Die E-Mail-Adresse der Rechtsanwaltskammer Sachsen lautet info@rak-sachsen.de.')
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6657,28 +6861,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($author$project$Main$rightToDeductInputTaxText, model.d, model.I))
-					])),
-				A2(
-				$elm$html$Html$p,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Sie können die Freistellung durch Erklärung oder dadurch bewirken, dass Sie den Betrag unter Angabe des Aktenzeichens auf unser auf Seite es dieses Schreibens unten angegebenes Geschäftskonto überweisen.')
-					])),
-				A2(
-				$elm$html$Html$p,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Weitere Inkassokosten werden derzeit nicht geltend gemacht.')
-					])),
-				A2(
-				$elm$html$Html$p,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Die für uns zuständige Rechtsanwaltskammer ist die Rechtsanwaltskammer Sachsen, Glacisstraße 6, 01099 Dresden. Die E-Mail-Adresse der Rechtsanwaltskammer Sachsen lautet info@rak-sachsen.de.')
+						$author$project$Main$judicialEnforcement(model.c))
 					])),
 				A2(
 				$elm$html$Html$p,
