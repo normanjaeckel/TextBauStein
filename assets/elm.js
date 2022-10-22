@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.O.C === region.T.C)
+	if (region.P.C === region.U.C)
 	{
-		return 'on line ' + region.O.C;
+		return 'on line ' + region.P.C;
 	}
-	return 'on lines ' + region.O.C + ' through ' + region.T.C;
+	return 'on lines ' + region.P.C + ' through ' + region.U.C;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.az,
-		impl.aH,
-		impl.aF,
+		impl.aA,
+		impl.aI,
+		impl.aG,
 		function() { return function() {} }
 	);
 });
@@ -2720,8 +2720,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		p: func(record.p),
-		P: record.P,
-		M: record.M
+		Q: record.Q,
+		N: record.N
 	}
 });
 
@@ -2990,10 +2990,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.p;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.P;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.Q;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.M) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.N) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.az,
-		impl.aH,
-		impl.aF,
+		impl.aA,
+		impl.aI,
+		impl.aG,
 		function(sendToApp, initialModel) {
-			var view = impl.aI;
+			var view = impl.aJ;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.az,
-		impl.aH,
-		impl.aF,
+		impl.aA,
+		impl.aI,
+		impl.aG,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.N && impl.N(sendToApp)
-			var view = impl.aI;
+			var divertHrefToApp = impl.O && impl.O(sendToApp)
+			var view = impl.aJ;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.as);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.at);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aG) && (_VirtualDom_doc.title = title = doc.aG);
+				(title !== doc.aH) && (_VirtualDom_doc.title = title = doc.aH);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aB;
-	var onUrlRequest = impl.aC;
+	var onUrlChange = impl.aC;
+	var onUrlRequest = impl.aD;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		N: function(sendToApp)
+		O: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.af === next.af
-							&& curr.X === next.X
-							&& curr.ac.a === next.ac.a
+							&& curr.ag === next.ag
+							&& curr.Y === next.Y
+							&& curr.ad.a === next.ad.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		az: function(flags)
+		aA: function(flags)
 		{
-			return A3(impl.az, flags, _Browser_getUrl(), key);
+			return A3(impl.aA, flags, _Browser_getUrl(), key);
 		},
+		aJ: impl.aJ,
 		aI: impl.aI,
-		aH: impl.aH,
-		aF: impl.aF
+		aG: impl.aG
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { ax: 'hidden', at: 'visibilitychange' }
+		? { ay: 'hidden', au: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { ax: 'mozHidden', at: 'mozvisibilitychange' }
+		? { ay: 'mozHidden', au: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { ax: 'msHidden', at: 'msvisibilitychange' }
+		? { ay: 'msHidden', au: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { ax: 'webkitHidden', at: 'webkitvisibilitychange' }
-		: { ax: 'hidden', at: 'visibilitychange' };
+		? { ay: 'webkitHidden', au: 'webkitvisibilitychange' }
+		: { ay: 'hidden', au: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		aj: _Browser_getScene(),
-		am: {
-			ao: _Browser_window.pageXOffset,
-			ap: _Browser_window.pageYOffset,
-			an: _Browser_doc.documentElement.clientWidth,
-			W: _Browser_doc.documentElement.clientHeight
+		ak: _Browser_getScene(),
+		an: {
+			ap: _Browser_window.pageXOffset,
+			aq: _Browser_window.pageYOffset,
+			ao: _Browser_doc.documentElement.clientWidth,
+			X: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		an: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		W: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		ao: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		X: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			aj: {
-				an: node.scrollWidth,
-				W: node.scrollHeight
+			ak: {
+				ao: node.scrollWidth,
+				X: node.scrollHeight
 			},
-			am: {
-				ao: node.scrollLeft,
-				ap: node.scrollTop,
-				an: node.clientWidth,
-				W: node.clientHeight
+			an: {
+				ap: node.scrollLeft,
+				aq: node.scrollTop,
+				ao: node.clientWidth,
+				X: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			aj: _Browser_getScene(),
-			am: {
-				ao: x,
-				ap: y,
-				an: _Browser_doc.documentElement.clientWidth,
-				W: _Browser_doc.documentElement.clientHeight
+			ak: _Browser_getScene(),
+			an: {
+				ap: x,
+				aq: y,
+				ao: _Browser_doc.documentElement.clientWidth,
+				X: _Browser_doc.documentElement.clientHeight
 			},
-			av: {
-				ao: x + rect.left,
-				ap: y + rect.top,
-				an: rect.width,
-				W: rect.height
+			aw: {
+				ap: x + rect.left,
+				aq: y + rect.top,
+				ao: rect.width,
+				X: rect.height
 			}
 		};
 	});
@@ -4373,9 +4373,9 @@ function _Browser_load(url)
 var $elm$core$Basics$False = 1;
 var $author$project$Main$GreetingCommon = {$: 2};
 var $author$project$Main$LegalDefaultInterest = {$: 0};
-var $author$project$Main$Model = F6(
-	function (client, opponentGreeting, legalReason, timeOfDelay, defaultInterest, rightToDeductInputTax) {
-		return {c: client, B: defaultInterest, H: legalReason, x: opponentGreeting, I: rightToDeductInputTax, J: timeOfDelay};
+var $author$project$Main$Model = F7(
+	function (client, opponentGreeting, legalReason, agreementOfBeginningOfDelay, timeOfDelay, defaultInterest, rightToDeductInputTax) {
+		return {H: agreementOfBeginningOfDelay, c: client, B: defaultInterest, I: legalReason, x: opponentGreeting, J: rightToDeductInputTax, K: timeOfDelay};
 	});
 var $author$project$Main$SwitchClientFormNaturalPerson = 0;
 var $author$project$Main$Die = 1;
@@ -4395,11 +4395,12 @@ var $author$project$Main$initClient = function (scf) {
 		return A3($author$project$Main$LegalEntity, 1, 'Muster GmbH', 'Musterstraße 1, 12345 Musterstadt');
 	}
 };
-var $author$project$Main$init = A6(
+var $author$project$Main$init = A7(
 	$author$project$Main$Model,
 	$author$project$Main$initClient(0),
 	$author$project$Main$GreetingCommon,
 	'aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ...',
+	'10',
 	'TT.MM.JJJJ',
 	$author$project$Main$LegalDefaultInterest,
 	false);
@@ -4906,7 +4907,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {V: fragment, X: host, aa: path, ac: port_, af: protocol, ag: query};
+		return {W: fragment, Y: host, ab: path, ad: port_, ag: protocol, ah: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5191,19 +5192,19 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $elm$browser$Browser$sandbox = function (impl) {
 	return _Browser_element(
 		{
-			az: function (_v0) {
-				return _Utils_Tuple2(impl.az, $elm$core$Platform$Cmd$none);
+			aA: function (_v0) {
+				return _Utils_Tuple2(impl.aA, $elm$core$Platform$Cmd$none);
 			},
-			aF: function (_v1) {
+			aG: function (_v1) {
 				return $elm$core$Platform$Sub$none;
 			},
-			aH: F2(
+			aI: F2(
 				function (msg, model) {
 					return _Utils_Tuple2(
-						A2(impl.aH, msg, model),
+						A2(impl.aI, msg, model),
 						$elm$core$Platform$Cmd$none);
 				}),
-			aI: impl.aI
+			aJ: impl.aJ
 		});
 };
 var $author$project$Main$GreetingMadame = function (a) {
@@ -5318,16 +5319,21 @@ var $author$project$Main$update = F2(
 							{x: $author$project$Main$GreetingCommon});
 				}
 			case 3:
+				var aobdf = msg.a;
+				return _Utils_update(
+					model,
+					{H: aobdf});
+			case 4:
 				var todf = msg.a;
 				return _Utils_update(
 					model,
-					{J: todf});
+					{K: todf});
 			case 2:
 				var lrf = msg.a;
 				return _Utils_update(
 					model,
-					{H: lrf});
-			case 4:
+					{I: lrf});
+			case 5:
 				var dif = msg.a;
 				if (!dif.$) {
 					return _Utils_update(
@@ -5345,7 +5351,7 @@ var $author$project$Main$update = F2(
 				var rdit = msg.a;
 				return _Utils_update(
 					model,
-					{I: rdit});
+					{J: rdit});
 		}
 	});
 var $elm$json$Json$Encode$string = _Json_wrap;
@@ -5397,9 +5403,6 @@ var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$html$Html$main_ = _VirtualDom_node('main');
 var $author$project$Main$ClientForm = function (a) {
 	return {$: 0, a: a};
-};
-var $author$project$Main$DefaultInterestForm = function (a) {
-	return {$: 4, a: a};
 };
 var $author$project$Main$OpponentGreetingForm = function (a) {
 	return {$: 1, a: a};
@@ -5900,6 +5903,45 @@ var $author$project$Main$clientForm = function (client) {
 				innerForm
 			]));
 };
+var $author$project$Main$DefaultInterestForm = function (a) {
+	return {$: 5, a: a};
+};
+var $author$project$Main$AgreementOfBeginningOfDelayForm = function (a) {
+	return {$: 3, a: a};
+};
+var $author$project$Main$agreementOfBeginningOfDelayForm = function (agreementOfBeginningOfDelay) {
+	return A2(
+		$elm$html$Html$form,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('col')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$label,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('form-label')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Vereinbarung über Fälligkeit: Tage nach Rechnungslegung')
+					])),
+				A2(
+				$elm$html$Html$input,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('form-control'),
+						$elm$html$Html$Attributes$type_('text'),
+						$elm$html$Html$Attributes$placeholder('Vereinbarung über Fälligkeit: Tage nach Rechnungslegung'),
+						A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Vereinbarung über Fälligkeit: Tage nach Rechnungslegung'),
+						$elm$html$Html$Events$onInput($author$project$Main$AgreementOfBeginningOfDelayForm),
+						$elm$html$Html$Attributes$value(agreementOfBeginningOfDelay)
+					]),
+				_List_Nil)
+			]));
+};
 var $author$project$Main$DefaultInterestFormHigherDefaultInterest = function (a) {
 	return {$: 1, a: a};
 };
@@ -5913,7 +5955,7 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 		$elm$html$Html$form,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('mb-3')
+				$elm$html$Html$Attributes$class('col-6')
 			]),
 		_List_fromArray(
 			[
@@ -5921,7 +5963,7 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$author$project$Main$classes('row g-3')
+						$elm$html$Html$Attributes$class('row')
 					]),
 				_List_fromArray(
 					[
@@ -5929,7 +5971,7 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('col-md-3')
+								$elm$html$Html$Attributes$class('col-6')
 							]),
 						_List_fromArray(
 							[
@@ -5988,7 +6030,7 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 								$elm$html$Html$div,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('col-md-3')
+										$elm$html$Html$Attributes$class('col-6')
 									]),
 								_List_fromArray(
 									[
@@ -6020,6 +6062,60 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 					]))
 			]));
 };
+var $author$project$Main$TimeOfDelayForm = function (a) {
+	return {$: 4, a: a};
+};
+var $author$project$Main$timeOfDelayForm = function (timeOfDelay) {
+	return A2(
+		$elm$html$Html$form,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('col')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$label,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('form-label')
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Beginn des Verzugs')
+					])),
+				A2(
+				$elm$html$Html$input,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('form-control'),
+						$elm$html$Html$Attributes$type_('text'),
+						$elm$html$Html$Attributes$placeholder('Beginn des Verzugs'),
+						A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Beginn des Verzugs'),
+						$elm$html$Html$Events$onInput($author$project$Main$TimeOfDelayForm),
+						$elm$html$Html$Attributes$value(timeOfDelay)
+					]),
+				_List_Nil)
+			]));
+};
+var $author$project$Main$delayForm = F3(
+	function (agreementOfBeginningOfDelay, timeOfDelay, defaultInterest) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$author$project$Main$classes('mb-3 row g-3')
+				]),
+			_List_fromArray(
+				[
+					$author$project$Main$agreementOfBeginningOfDelayForm(agreementOfBeginningOfDelay),
+					$author$project$Main$timeOfDelayForm(timeOfDelay),
+					A2(
+					$elm$html$Html$map,
+					$author$project$Main$DefaultInterestForm,
+					$author$project$Main$defaultInterestForm(defaultInterest))
+				]));
+	});
 var $author$project$Main$LegalReasonForm = function (a) {
 	return {$: 2, a: a};
 };
@@ -6277,7 +6373,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 			]));
 };
 var $author$project$Main$RightToDeductInputTaxForm = function (a) {
-	return {$: 5, a: a};
+	return {$: 6, a: a};
 };
 var $elm$html$Html$Attributes$checked = $elm$html$Html$Attributes$boolProperty('checked');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
@@ -6345,60 +6441,6 @@ var $author$project$Main$rightToDeductInputTaxForm = function (rightToDeductInpu
 					]))
 			]));
 };
-var $author$project$Main$TimeOfDelayForm = function (a) {
-	return {$: 3, a: a};
-};
-var $author$project$Main$timeOfDelayForm = function (timeOfDelay) {
-	return A2(
-		$elm$html$Html$form,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('mb-3')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$author$project$Main$classes('row g-3')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('col-md-6')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$label,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('form-label')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text('Beginn des Verzugs')
-									])),
-								A2(
-								$elm$html$Html$input,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('form-control'),
-										$elm$html$Html$Attributes$type_('text'),
-										$elm$html$Html$Attributes$placeholder('Beginn des Verzugs'),
-										A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Beginn des Verzugs'),
-										$elm$html$Html$Events$onInput($author$project$Main$TimeOfDelayForm),
-										$elm$html$Html$Attributes$value(timeOfDelay)
-									]),
-								_List_Nil)
-							]))
-					]))
-			]));
-};
 var $author$project$Main$modelInput = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -6409,17 +6451,13 @@ var $author$project$Main$modelInput = function (model) {
 				$elm$html$Html$map,
 				$author$project$Main$ClientForm,
 				$author$project$Main$clientForm(model.c)),
-				$author$project$Main$rightToDeductInputTaxForm(model.I),
+				$author$project$Main$rightToDeductInputTaxForm(model.J),
 				A2(
 				$elm$html$Html$map,
 				$author$project$Main$OpponentGreetingForm,
 				$author$project$Main$opponenGreetingForm(model.x)),
-				$author$project$Main$legalReasonForm(model.H),
-				$author$project$Main$timeOfDelayForm(model.J),
-				A2(
-				$elm$html$Html$map,
-				$author$project$Main$DefaultInterestForm,
-				$author$project$Main$defaultInterestForm(model.B))
+				$author$project$Main$legalReasonForm(model.I),
+				A3($author$project$Main$delayForm, model.H, model.K, model.B)
 			]));
 };
 var $author$project$Main$clientDative = function (client) {
@@ -6466,9 +6504,9 @@ var $author$project$Main$clientGenitive = function (client) {
 		}
 	}
 };
-var $author$project$Main$default = F2(
-	function (client, timeOfDelay) {
-		return 'Vertraglich war vereinbart, dass Sie die Forderung ' + ($author$project$Main$clientGenitive(client) + (' binnen ... Tagen nach Rechnungslegung begleichen. Sie sind deshalb seit dem ' + (timeOfDelay + ' im Verzug.')));
+var $author$project$Main$default = F3(
+	function (client, agreementOfBeginningOfDelay, timeOfDelay) {
+		return 'Vertraglich war vereinbart, dass Sie die Forderung ' + ($author$project$Main$clientGenitive(client) + (' binnen ' + (agreementOfBeginningOfDelay + (' Tagen nach Rechnungslegung begleichen. Sie sind deshalb seit dem ' + (timeOfDelay + ' im Verzug.')))));
 	});
 var $author$project$Main$defaultInterestText = function (defaultInterestValue) {
 	return 'Weil Sie im Verzug sind, schulden Sie zusätzlich Verzugszinsen' + (function () {
@@ -6821,7 +6859,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($author$project$Main$claim, model.c, model.H))
+						A2($author$project$Main$claim, model.c, model.I))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6829,7 +6867,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($author$project$Main$default, model.c, model.J))
+						A3($author$project$Main$default, model.c, model.H, model.K))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6847,7 +6885,7 @@ var $author$project$Main$result = function (model) {
 						$elm$html$Html$text(
 						$author$project$Main$requestForPayment(model.c))
 					])),
-				A2($author$project$Main$lawyersFees, model.c, model.I),
+				A2($author$project$Main$lawyersFees, model.c, model.J),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
@@ -6934,6 +6972,6 @@ var $author$project$Main$view = function (model) {
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$sandbox(
-	{az: $author$project$Main$init, aH: $author$project$Main$update, aI: $author$project$Main$view});
+	{aA: $author$project$Main$init, aI: $author$project$Main$update, aJ: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));

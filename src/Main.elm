@@ -19,6 +19,7 @@ type alias Model =
     { client : Client
     , opponentGreeting : OpponentGreeting
     , legalReason : LegalReason
+    , agreementOfBeginningOfDelay : AgreementOfBeginningOfDelay
     , timeOfDelay : TimeOfDelay
     , defaultInterest : DefaultInterest
     , rightToDeductInputTax : RightToDeductInputTax
@@ -35,6 +36,7 @@ init =
         (initClient SwitchClientFormNaturalPerson)
         GreetingCommon
         "aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ..."
+        "10"
         "TT.MM.JJJJ"
         LegalDefaultInterest
         False
@@ -84,6 +86,10 @@ type alias LegalReason =
     String
 
 
+type alias AgreementOfBeginningOfDelay =
+    String
+
+
 type alias TimeOfDelay =
     String
 
@@ -105,6 +111,7 @@ type Msg
     = ClientForm ClientForm
     | OpponentGreetingForm OpponentGreetingForm
     | LegalReasonForm LegalReason
+    | AgreementOfBeginningOfDelayForm AgreementOfBeginningOfDelay
     | TimeOfDelayForm TimeOfDelay
     | DefaultInterestForm DefaultInterestForm
     | RightToDeductInputTaxForm RightToDeductInputTax
@@ -195,6 +202,9 @@ update msg model =
                 OpponentGreetingFormGreetingCommon ->
                     { model | opponentGreeting = GreetingCommon }
 
+        AgreementOfBeginningOfDelayForm aobdf ->
+            { model | agreementOfBeginningOfDelay = aobdf }
+
         TimeOfDelayForm todf ->
             { model | timeOfDelay = todf }
 
@@ -245,8 +255,7 @@ modelInput model =
         , rightToDeductInputTaxForm model.rightToDeductInputTax
         , opponenGreetingForm model.opponentGreeting |> map OpponentGreetingForm
         , legalReasonForm model.legalReason
-        , timeOfDelayForm model.timeOfDelay
-        , defaultInterestForm model.defaultInterest |> map DefaultInterestForm
+        , delayForm model.agreementOfBeginningOfDelay model.timeOfDelay model.defaultInterest
         ]
 
 
@@ -506,31 +515,52 @@ legalReasonForm legalReason =
         ]
 
 
+delayForm : AgreementOfBeginningOfDelay -> TimeOfDelay -> DefaultInterest -> Html Msg
+delayForm agreementOfBeginningOfDelay timeOfDelay defaultInterest =
+    div [ classes "mb-3 row g-3" ]
+        [ agreementOfBeginningOfDelayForm agreementOfBeginningOfDelay
+        , timeOfDelayForm timeOfDelay
+        , defaultInterestForm defaultInterest |> map DefaultInterestForm
+        ]
+
+
+agreementOfBeginningOfDelayForm : AgreementOfBeginningOfDelay -> Html Msg
+agreementOfBeginningOfDelayForm agreementOfBeginningOfDelay =
+    form [ class "col" ]
+        [ label [ class "form-label" ] [ text "Vereinbarung über Fälligkeit: Tage nach Rechnungslegung" ]
+        , input
+            [ class "form-control"
+            , type_ "text"
+            , placeholder "Vereinbarung über Fälligkeit: Tage nach Rechnungslegung"
+            , attribute "aria-label" "Vereinbarung über Fälligkeit: Tage nach Rechnungslegung"
+            , onInput AgreementOfBeginningOfDelayForm
+            , value agreementOfBeginningOfDelay
+            ]
+            []
+        ]
+
+
 timeOfDelayForm : TimeOfDelay -> Html Msg
 timeOfDelayForm timeOfDelay =
-    form [ class "mb-3" ]
-        [ div [ classes "row g-3" ]
-            [ div [ class "col-md-6" ]
-                [ label [ class "form-label" ] [ text "Beginn des Verzugs" ]
-                , input
-                    [ class "form-control"
-                    , type_ "text"
-                    , placeholder "Beginn des Verzugs"
-                    , attribute "aria-label" "Beginn des Verzugs"
-                    , onInput TimeOfDelayForm
-                    , value timeOfDelay
-                    ]
-                    []
-                ]
+    form [ class "col" ]
+        [ label [ class "form-label" ] [ text "Beginn des Verzugs" ]
+        , input
+            [ class "form-control"
+            , type_ "text"
+            , placeholder "Beginn des Verzugs"
+            , attribute "aria-label" "Beginn des Verzugs"
+            , onInput TimeOfDelayForm
+            , value timeOfDelay
             ]
+            []
         ]
 
 
 defaultInterestForm : DefaultInterest -> Html DefaultInterestForm
 defaultInterestForm defaultInterest =
-    form [ class "mb-3" ]
-        [ div [ classes "row g-3" ]
-            [ div [ class "col-md-3" ]
+    form [ class "col-6" ]
+        [ div [ class "row" ]
+            [ div [ class "col-6" ]
                 [ label [ class "form-label" ] [ text "Verzugszinsen" ]
                 , select
                     [ class "form-select"
@@ -546,7 +576,7 @@ defaultInterestForm defaultInterest =
                     div [] []
 
                 HigherDefaultInterest txt ->
-                    div [ class "col-md-3" ]
+                    div [ class "col-6" ]
                         [ label [ class "form-label" ] [ text "Begründung für den höheren Verzugszins" ]
                         , input
                             [ class "form-control"
@@ -582,7 +612,7 @@ result model =
         , p [] [ text <| greeting model.opponentGreeting ]
         , p [] [ text <| representation model.client ]
         , p [] [ text <| claim model.client model.legalReason ]
-        , p [] [ text <| default model.client model.timeOfDelay ]
+        , p [] [ text <| default model.client model.agreementOfBeginningOfDelay model.timeOfDelay ]
         , p [] [ text <| defaultInterestText model.defaultInterest ]
         , p [] [ text <| requestForPayment model.client ]
         , lawyersFees model.client model.rightToDeductInputTax
@@ -664,11 +694,13 @@ claim client legalReason =
     "Sie schulden " ++ clientDative client ++ " " ++ legalReason ++ " noch einen Betrag in Höhe von EUR ..."
 
 
-default : Client -> TimeOfDelay -> String
-default client timeOfDelay =
+default : Client -> AgreementOfBeginningOfDelay -> TimeOfDelay -> String
+default client agreementOfBeginningOfDelay timeOfDelay =
     "Vertraglich war vereinbart, dass Sie die Forderung "
         ++ clientGenitive client
-        ++ " binnen ... Tagen nach Rechnungslegung begleichen. Sie sind deshalb seit dem "
+        ++ " binnen "
+        ++ agreementOfBeginningOfDelay
+        ++ " Tagen nach Rechnungslegung begleichen. Sie sind deshalb seit dem "
         ++ timeOfDelay
         ++ " im Verzug."
 
