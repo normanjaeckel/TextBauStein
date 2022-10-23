@@ -19,6 +19,8 @@ type alias Model =
     { client : Client
     , opponentGreeting : OpponentGreeting
     , legalReason : LegalReason
+    , principalAmount : PrincipalAmount
+    , sumOfAmount : SumOfAmount
     , agreementOfBeginningOfDelay : AgreementOfBeginningOfDelay
     , timeOfDelay : TimeOfDelay
     , defaultInterest : DefaultInterest
@@ -27,7 +29,7 @@ type alias Model =
 
 
 
--- TODO: Vereinbarung über Verzugsbeginn; Betrag Hauptforderung; Gesamtbetrag laut Forderungsaufstellung; Zahlung an uns oder an Mandant mit IBAN-Feld;
+-- TODO: Zahlung an uns oder an Mandant mit IBAN-Feld;
 
 
 init : Model
@@ -36,8 +38,10 @@ init =
         (initClient SwitchClientFormNaturalPerson)
         GreetingCommon
         "aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ..."
+        "0,00"
+        "0,00"
         "10"
-        "TT.MM.JJJJ"
+        "..."
         LegalDefaultInterest
         False
 
@@ -86,6 +90,14 @@ type alias LegalReason =
     String
 
 
+type alias PrincipalAmount =
+    String
+
+
+type alias SumOfAmount =
+    String
+
+
 type alias AgreementOfBeginningOfDelay =
     String
 
@@ -111,6 +123,8 @@ type Msg
     = ClientForm ClientForm
     | OpponentGreetingForm OpponentGreetingForm
     | LegalReasonForm LegalReason
+    | PrincipalAmountForm PrincipalAmount
+    | SumOfAmountForm SumOfAmount
     | AgreementOfBeginningOfDelayForm AgreementOfBeginningOfDelay
     | TimeOfDelayForm TimeOfDelay
     | DefaultInterestForm DefaultInterestForm
@@ -205,11 +219,17 @@ update msg model =
         AgreementOfBeginningOfDelayForm aobdf ->
             { model | agreementOfBeginningOfDelay = aobdf }
 
-        TimeOfDelayForm todf ->
-            { model | timeOfDelay = todf }
+        TimeOfDelayForm tod ->
+            { model | timeOfDelay = tod }
 
-        LegalReasonForm lrf ->
-            { model | legalReason = lrf }
+        LegalReasonForm lr ->
+            { model | legalReason = lr }
+
+        PrincipalAmountForm pa ->
+            { model | principalAmount = pa }
+
+        SumOfAmountForm sa ->
+            { model | sumOfAmount = sa }
 
         DefaultInterestForm dif ->
             case dif of
@@ -255,6 +275,7 @@ modelInput model =
         , rightToDeductInputTaxForm model.rightToDeductInputTax
         , opponenGreetingForm model.opponentGreeting |> map OpponentGreetingForm
         , legalReasonForm model.legalReason
+        , amountForm model.principalAmount model.sumOfAmount
         , delayForm model.agreementOfBeginningOfDelay model.timeOfDelay model.defaultInterest
         ]
 
@@ -355,16 +376,20 @@ clientForm client =
                             ]
                         ]
                         |> map LegalEntityForm
+
+        labelTextGeneral : String
+        labelTextGeneral =
+            "Rechtsform unserer Mandantschaft"
     in
     div []
         [ form [ class "mb-3" ]
             [ div [ classes "row g-3" ]
                 [ div [ class "col-md-3" ]
-                    [ label [ class "form-label", for "clientFormSwitchClientForm" ] [ text "Rechtsform unserer Mandantschaft" ]
+                    [ label [ class "form-label", for "clientFormSwitchClientForm" ] [ text labelTextGeneral ]
                     , select
                         [ class "form-select"
                         , id "clientFormSwitchClientForm"
-                        , attribute "aria-label" "Rechtsform unserer Mandantschaft"
+                        , attribute "aria-label" labelTextGeneral
                         , onInput (strToSwitchClientForm >> SwitchClientForm)
                         ]
                         [ option [ value "NaturalPerson" ] [ text "Natürliche Person" ]
@@ -433,14 +458,18 @@ opponenGreetingForm opponentGreeting =
 
                     GreetingCommon ->
                         case_ == GreetingCommon
+
+        labelTextGeneral : String
+        labelTextGeneral =
+            "Anrede im Brief"
     in
     form [ class "mb-3" ]
         [ div [ classes "row g-3" ]
             [ div [ class "col-md-3" ]
-                [ label [ class "form-label" ] [ text "Anrede im Brief" ]
+                [ label [ class "form-label" ] [ text labelTextGeneral ]
                 , select
                     [ class "form-select"
-                    , attribute "aria-label" "Anrede im Brief"
+                    , attribute "aria-label" labelTextGeneral
                     , onInput switchOpponentGreetingForm
                     ]
                     [ option [ value "GreetingSir", selected <| opponentGreetingCase opponentGreeting (GreetingSir "") ] [ text "Sehr geehrter Herr ...," ]
@@ -450,13 +479,17 @@ opponenGreetingForm opponentGreeting =
                 ]
             , case opponentGreeting of
                 GreetingSir txt ->
+                    let
+                        labelText =
+                            "Name des Empfängers"
+                    in
                     div [ class "col-md-3" ]
-                        [ label [ class "form-label" ] [ text "Name des Empfängers" ]
+                        [ label [ class "form-label" ] [ text labelText ]
                         , input
                             [ class "form-control"
                             , type_ "text"
-                            , placeholder "Name des Empfängers"
-                            , attribute "aria-label" "Name des Empfängers"
+                            , placeholder labelText
+                            , attribute "aria-label" labelText
                             , onInput OpponentGreetingFormGreetingSir
                             , value txt
                             ]
@@ -464,13 +497,17 @@ opponenGreetingForm opponentGreeting =
                         ]
 
                 GreetingMadame txt ->
+                    let
+                        labelText =
+                            "Name des Empfängers"
+                    in
                     div [ class "col-md-3" ]
-                        [ label [ class "form-label" ] [ text "Name des Empfängers" ]
+                        [ label [ class "form-label" ] [ text labelText ]
                         , input
                             [ class "form-control"
                             , type_ "text"
-                            , placeholder "Name des Empfängers"
-                            , attribute "aria-label" "Name des Empfängers"
+                            , placeholder labelText
+                            , attribute "aria-label" labelText
                             , onInput OpponentGreetingFormGreetingMadame
                             , value txt
                             ]
@@ -497,20 +534,64 @@ switchOpponentGreetingForm s =
 
 legalReasonForm : LegalReason -> Html Msg
 legalReasonForm legalReason =
+    let
+        labelText : String
+        labelText =
+            "Rechtsgrund der Forderung"
+    in
     form [ class "mb-3" ]
         [ div [ classes "row g-3" ]
             [ div [ class "col-md-6" ]
-                [ label [ class "form-label" ] [ text "Rechtsgrund der Forderung" ]
+                [ label [ class "form-label" ] [ text labelText ]
                 , textarea
                     [ class "form-control"
                     , rows 2
-                    , placeholder "Rechtsgrund der Forderung"
-                    , attribute "aria-label" "Rechtsgrund der Forderung"
+                    , placeholder labelText
+                    , attribute "aria-label" labelText
                     , onInput LegalReasonForm
                     , value legalReason
                     ]
                     []
                 ]
+            ]
+        ]
+
+
+amountForm : PrincipalAmount -> SumOfAmount -> Html Msg
+amountForm principalAmount sumOfAmount =
+    let
+        labelText1 : String
+        labelText1 =
+            "Hauptforderung in EUR"
+
+        labelText2 : String
+        labelText2 =
+            "Gesamtforderung in EUR"
+    in
+    div [ classes "mb-3 row g-3" ]
+        [ form [ class "col-md-3" ]
+            [ label [ class "form-label" ] [ text labelText1 ]
+            , input
+                [ class "form-control"
+                , type_ "text"
+                , placeholder labelText1
+                , attribute "aria-label" labelText1
+                , onInput PrincipalAmountForm
+                , value principalAmount
+                ]
+                []
+            ]
+        , form [ class "col-md-3" ]
+            [ label [ class "form-label" ] [ text labelText2 ]
+            , input
+                [ class "form-control"
+                , type_ "text"
+                , placeholder labelText2
+                , attribute "aria-label" labelText2
+                , onInput SumOfAmountForm
+                , value sumOfAmount
+                ]
+                []
             ]
         ]
 
@@ -526,13 +607,18 @@ delayForm agreementOfBeginningOfDelay timeOfDelay defaultInterest =
 
 agreementOfBeginningOfDelayForm : AgreementOfBeginningOfDelay -> Html Msg
 agreementOfBeginningOfDelayForm agreementOfBeginningOfDelay =
-    form [ class "col" ]
-        [ label [ class "form-label" ] [ text "Vereinbarung über Fälligkeit: Tage nach Rechnungslegung" ]
+    let
+        labelText : String
+        labelText =
+            "Fälligkeit nach Rechnung in Tagen"
+    in
+    form [ class "col-md-3" ]
+        [ label [ class "form-label" ] [ text labelText ]
         , input
             [ class "form-control"
             , type_ "text"
-            , placeholder "Vereinbarung über Fälligkeit: Tage nach Rechnungslegung"
-            , attribute "aria-label" "Vereinbarung über Fälligkeit: Tage nach Rechnungslegung"
+            , placeholder labelText
+            , attribute "aria-label" labelText
             , onInput AgreementOfBeginningOfDelayForm
             , value agreementOfBeginningOfDelay
             ]
@@ -542,13 +628,18 @@ agreementOfBeginningOfDelayForm agreementOfBeginningOfDelay =
 
 timeOfDelayForm : TimeOfDelay -> Html Msg
 timeOfDelayForm timeOfDelay =
-    form [ class "col" ]
-        [ label [ class "form-label" ] [ text "Beginn des Verzugs" ]
+    let
+        labelText : String
+        labelText =
+            "Beginn des Verzugs"
+    in
+    form [ class "col-md-3" ]
+        [ label [ class "form-label" ] [ text labelText ]
         , input
             [ class "form-control"
             , type_ "text"
-            , placeholder "Beginn des Verzugs"
-            , attribute "aria-label" "Beginn des Verzugs"
+            , placeholder labelText
+            , attribute "aria-label" labelText
             , onInput TimeOfDelayForm
             , value timeOfDelay
             ]
@@ -558,13 +649,22 @@ timeOfDelayForm timeOfDelay =
 
 defaultInterestForm : DefaultInterest -> Html DefaultInterestForm
 defaultInterestForm defaultInterest =
-    form [ class "col-6" ]
+    let
+        labelText1 : String
+        labelText1 =
+            "Verzugszinsen"
+
+        labelText2 : String
+        labelText2 =
+            "Begründung für den höheren Verzugszins"
+    in
+    form [ class "col-md-6" ]
         [ div [ class "row" ]
-            [ div [ class "col-6" ]
-                [ label [ class "form-label" ] [ text "Verzugszinsen" ]
+            [ div [ class "col-md-6" ]
+                [ label [ class "form-label" ] [ text labelText1 ]
                 , select
                     [ class "form-select"
-                    , attribute "aria-label" "Verzugszinsen"
+                    , attribute "aria-label" labelText1
                     , onInput switchDefaultInterestForm
                     ]
                     [ option [ value "LegalDefaultInterest", selected <| defaultInterest == LegalDefaultInterest ] [ text "Gesetzlicher Verzugszins" ]
@@ -576,13 +676,13 @@ defaultInterestForm defaultInterest =
                     div [] []
 
                 HigherDefaultInterest txt ->
-                    div [ class "col-6" ]
-                        [ label [ class "form-label" ] [ text "Begründung für den höheren Verzugszins" ]
+                    div [ class "col-md-6" ]
+                        [ label [ class "form-label" ] [ text labelText2 ]
                         , input
                             [ class "form-control"
                             , type_ "text"
-                            , placeholder "Begründung für den höheren Verzugszins"
-                            , attribute "aria-label" "Begründung für den höheren Verzugszins"
+                            , placeholder labelText2
+                            , attribute "aria-label" labelText2
                             , onInput DefaultInterestFormHigherDefaultInterest
                             , value txt
                             ]
@@ -611,10 +711,10 @@ result model =
         [ p [ class "pt-3" ] (rubrum model.client)
         , p [] [ text <| greeting model.opponentGreeting ]
         , p [] [ text <| representation model.client ]
-        , p [] [ text <| claim model.client model.legalReason ]
+        , p [] [ text <| claim model.client model.legalReason model.principalAmount ]
         , p [] [ text <| default model.client model.agreementOfBeginningOfDelay model.timeOfDelay ]
         , p [] [ text <| defaultInterestText model.defaultInterest ]
-        , p [] [ text <| requestForPayment model.client ]
+        , p [] [ text <| requestForPayment model.client model.sumOfAmount ]
         , lawyersFees model.client model.rightToDeductInputTax
         , p [] [ text "Die für uns zuständige Rechtsanwaltskammer ist die Rechtsanwaltskammer Sachsen, Glacisstraße 6, 01099 Dresden. Die E-Mail-Adresse der Rechtsanwaltskammer Sachsen lautet info@rak-sachsen.de." ]
         , p [] [ text <| judicialEnforcement model.client ]
@@ -689,9 +789,9 @@ representation client =
         ++ " beauftragt und bevollmächtigt."
 
 
-claim : Client -> String -> String
-claim client legalReason =
-    "Sie schulden " ++ clientDative client ++ " " ++ legalReason ++ " noch einen Betrag in Höhe von EUR ..."
+claim : Client -> LegalReason -> PrincipalAmount -> String
+claim client legalReason principalAmount =
+    "Sie schulden " ++ clientDative client ++ " " ++ legalReason ++ " noch einen Betrag in Höhe von EUR " ++ principalAmount ++ "."
 
 
 default : Client -> AgreementOfBeginningOfDelay -> TimeOfDelay -> String
@@ -718,12 +818,14 @@ defaultInterestText defaultInterestValue =
         ++ " Die Zinsberechnung entnehmen Sie bitte der beiliegenden Forderungsaufstellung."
 
 
-requestForPayment : Client -> String
-requestForPayment client =
+requestForPayment : Client -> SumOfAmount -> String
+requestForPayment client sumOfAmount =
     "Namens "
         ++ clientGenitive client
         ++ " fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag "
-        ++ "in Höhe von EUR ... binnen 10 Tagen auf das Konto "
+        ++ "in Höhe von EUR "
+        ++ sumOfAmount
+        ++ " binnen 10 Tagen auf das Konto "
         ++ clientGenitive client
         ++ " mit der IBAN ... zu überweisen."
 
