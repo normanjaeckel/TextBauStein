@@ -6805,79 +6805,83 @@ var $author$project$Main$lawyersFees = F2(
 									$elm$html$Html$table,
 									_List_fromArray(
 										[
-											$author$project$Main$classes('table table-borderless table-sm')
+											$author$project$Main$classes('table table-borderless table-sm align-top')
 										]),
 									_List_fromArray(
 										[
 											A2(
 											$elm$html$Html$tbody,
 											_List_Nil,
-											_List_fromArray(
-												[
-													A2(
-													$elm$html$Html$tr,
-													_List_Nil,
-													_List_fromArray(
-														[
-															A2(
-															$elm$html$Html$td,
-															_List_Nil,
-															_List_fromArray(
-																[
-																	$elm$html$Html$text('1,3 Geschäftsgebühr Nr. 2300 VV RVG:')
-																])),
-															A2(
-															$elm$html$Html$td,
-															_List_fromArray(
-																[
-																	$elm$html$Html$Attributes$class('rvg-table-eur')
-																]),
-															_List_fromArray(
-																[
-																	$elm$html$Html$text('EUR ...')
-																]))
-														])),
-													A2(
-													$elm$html$Html$tr,
-													_List_Nil,
-													_List_fromArray(
-														[
-															A2(
-															$elm$html$Html$td,
-															_List_Nil,
-															_List_fromArray(
-																[
-																	$elm$html$Html$text('Pauschale für Entgelte für Post- und Telekommunikationsdienstleistungen Nr. 7002 VV RVG:')
-																])),
-															A2(
-															$elm$html$Html$td,
-															_List_Nil,
-															_List_fromArray(
-																[
-																	$elm$html$Html$text('EUR ...')
-																]))
-														])),
-													A2(
-													$elm$html$Html$tr,
-													_List_Nil,
-													_List_fromArray(
-														[
-															A2(
-															$elm$html$Html$td,
-															_List_Nil,
-															_List_fromArray(
-																[
-																	$elm$html$Html$text('Umsatzsteuer 19 % Nr. 7008 VV RVG:')
-																])),
-															A2(
-															$elm$html$Html$td,
-															_List_Nil,
-															_List_fromArray(
-																[
-																	$elm$html$Html$text('EUR ...')
-																]))
-														]))
-												])),
+											_Utils_ap(
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$tr,
+														_List_Nil,
+														_List_fromArray(
+															[
+																A2(
+																$elm$html$Html$td,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('1,3 Geschäftsgebühr Nr. 2300 VV RVG:')
+																	])),
+																A2(
+																$elm$html$Html$td,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$Attributes$class('rvg-table-eur')
+																	]),
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('EUR ...')
+																	]))
+															])),
+														A2(
+														$elm$html$Html$tr,
+														_List_Nil,
+														_List_fromArray(
+															[
+																A2(
+																$elm$html$Html$td,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('Pauschale für Entgelte für Post- und Telekommunikationsdienstleistungen Nr. 7002 VV RVG:')
+																	])),
+																A2(
+																$elm$html$Html$td,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('EUR ...')
+																	]))
+															]))
+													]),
+												(!rightToDeductInputTax) ? _List_fromArray(
+													[
+														A2(
+														$elm$html$Html$tr,
+														_List_Nil,
+														_List_fromArray(
+															[
+																A2(
+																$elm$html$Html$td,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('Umsatzsteuer 19 % Nr. 7008 VV RVG:')
+																	])),
+																A2(
+																$elm$html$Html$td,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text('EUR ...')
+																	]))
+															]))
+													]) : _List_Nil)),
 											A2(
 											$elm$html$Html$tfoot,
 											_List_Nil,
