@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.R.C === region.W.C)
+	if (region.S.C === region.X.C)
 	{
-		return 'on line ' + region.R.C;
+		return 'on line ' + region.S.C;
 	}
-	return 'on lines ' + region.R.C + ' through ' + region.W.C;
+	return 'on lines ' + region.S.C + ' through ' + region.X.C;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aC,
-		impl.aK,
-		impl.aI,
+		impl.aD,
+		impl.aL,
+		impl.aJ,
 		function() { return function() {} }
 	);
 });
@@ -2720,8 +2720,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		p: func(record.p),
-		S: record.S,
-		P: record.P
+		T: record.T,
+		Q: record.Q
 	}
 });
 
@@ -2990,10 +2990,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.p;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.S;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.T;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.P) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.Q) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aC,
-		impl.aK,
-		impl.aI,
+		impl.aD,
+		impl.aL,
+		impl.aJ,
 		function(sendToApp, initialModel) {
-			var view = impl.aL;
+			var view = impl.aM;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aC,
-		impl.aK,
-		impl.aI,
+		impl.aD,
+		impl.aL,
+		impl.aJ,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.Q && impl.Q(sendToApp)
-			var view = impl.aL;
+			var divertHrefToApp = impl.R && impl.R(sendToApp)
+			var view = impl.aM;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.av);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aw);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aJ) && (_VirtualDom_doc.title = title = doc.aJ);
+				(title !== doc.aK) && (_VirtualDom_doc.title = title = doc.aK);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aE;
-	var onUrlRequest = impl.aF;
+	var onUrlChange = impl.aF;
+	var onUrlRequest = impl.aG;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		Q: function(sendToApp)
+		R: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ai === next.ai
-							&& curr._ === next._
-							&& curr.af.a === next.af.a
+							&& curr.aj === next.aj
+							&& curr.aa === next.aa
+							&& curr.ag.a === next.ag.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aC: function(flags)
+		aD: function(flags)
 		{
-			return A3(impl.aC, flags, _Browser_getUrl(), key);
+			return A3(impl.aD, flags, _Browser_getUrl(), key);
 		},
+		aM: impl.aM,
 		aL: impl.aL,
-		aK: impl.aK,
-		aI: impl.aI
+		aJ: impl.aJ
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aA: 'hidden', aw: 'visibilitychange' }
+		? { aB: 'hidden', ax: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aA: 'mozHidden', aw: 'mozvisibilitychange' }
+		? { aB: 'mozHidden', ax: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aA: 'msHidden', aw: 'msvisibilitychange' }
+		? { aB: 'msHidden', ax: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aA: 'webkitHidden', aw: 'webkitvisibilitychange' }
-		: { aA: 'hidden', aw: 'visibilitychange' };
+		? { aB: 'webkitHidden', ax: 'webkitvisibilitychange' }
+		: { aB: 'hidden', ax: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		am: _Browser_getScene(),
-		ap: {
-			ar: _Browser_window.pageXOffset,
-			as: _Browser_window.pageYOffset,
-			aq: _Browser_doc.documentElement.clientWidth,
-			Z: _Browser_doc.documentElement.clientHeight
+		an: _Browser_getScene(),
+		aq: {
+			as: _Browser_window.pageXOffset,
+			at: _Browser_window.pageYOffset,
+			ar: _Browser_doc.documentElement.clientWidth,
+			_: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aq: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		Z: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		ar: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		_: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			am: {
-				aq: node.scrollWidth,
-				Z: node.scrollHeight
+			an: {
+				ar: node.scrollWidth,
+				_: node.scrollHeight
 			},
-			ap: {
-				ar: node.scrollLeft,
-				as: node.scrollTop,
-				aq: node.clientWidth,
-				Z: node.clientHeight
+			aq: {
+				as: node.scrollLeft,
+				at: node.scrollTop,
+				ar: node.clientWidth,
+				_: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			am: _Browser_getScene(),
-			ap: {
-				ar: x,
-				as: y,
-				aq: _Browser_doc.documentElement.clientWidth,
-				Z: _Browser_doc.documentElement.clientHeight
+			an: _Browser_getScene(),
+			aq: {
+				as: x,
+				at: y,
+				ar: _Browser_doc.documentElement.clientWidth,
+				_: _Browser_doc.documentElement.clientHeight
 			},
-			ay: {
-				ar: x + rect.left,
-				as: y + rect.top,
-				aq: rect.width,
-				Z: rect.height
+			az: {
+				as: x + rect.left,
+				at: y + rect.top,
+				ar: rect.width,
+				_: rect.height
 			}
 		};
 	});
@@ -4373,10 +4373,27 @@ function _Browser_load(url)
 var $elm$core$Basics$False = 1;
 var $author$project$Main$GreetingCommon = {$: 2};
 var $author$project$Main$LegalDefaultInterest = {$: 0};
-var $author$project$Main$Model = F9(
-	function (client, opponentGreeting, legalReason, principalAmount, sumOfAmount, agreementOfBeginningOfDelay, timeOfDelay, defaultInterest, rightToDeductInputTax) {
-		return {H: agreementOfBeginningOfDelay, c: client, B: defaultInterest, I: legalReason, x: opponentGreeting, J: principalAmount, K: rightToDeductInputTax, L: sumOfAmount, M: timeOfDelay};
-	});
+var $author$project$Main$Model = function (client) {
+	return function (opponentGreeting) {
+		return function (legalReason) {
+			return function (principalAmount) {
+				return function (sumOfAmount) {
+					return function (paymentToRepresentative) {
+						return function (agreementOfBeginningOfDelay) {
+							return function (timeOfDelay) {
+								return function (defaultInterest) {
+									return function (rightToDeductInputTax) {
+										return {H: agreementOfBeginningOfDelay, c: client, B: defaultInterest, I: legalReason, x: opponentGreeting, J: paymentToRepresentative, K: principalAmount, L: rightToDeductInputTax, M: sumOfAmount, N: timeOfDelay};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
 var $author$project$Main$SwitchClientFormNaturalPerson = 0;
 var $author$project$Main$Die = 1;
 var $author$project$Main$LegalEntity = F3(
@@ -4395,17 +4412,8 @@ var $author$project$Main$initClient = function (scf) {
 		return A3($author$project$Main$LegalEntity, 1, 'Muster GmbH', 'Musterstraße 1, 12345 Musterstadt');
 	}
 };
-var $author$project$Main$init = A9(
-	$author$project$Main$Model,
-	$author$project$Main$initClient(0),
-	$author$project$Main$GreetingCommon,
-	'aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ...',
-	'0,00',
-	'0,00',
-	'10',
-	'...',
-	$author$project$Main$LegalDefaultInterest,
-	false);
+var $author$project$Main$init = $author$project$Main$Model(
+	$author$project$Main$initClient(0))($author$project$Main$GreetingCommon)('aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ...')('0,00')('0,00')(false)('10')('...')($author$project$Main$LegalDefaultInterest)(false);
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
 var $elm$core$Basics$LT = 0;
@@ -4909,7 +4917,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {Y: fragment, _: host, ad: path, af: port_, ai: protocol, aj: query};
+		return {Z: fragment, aa: host, ae: path, ag: port_, aj: protocol, ak: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5194,19 +5202,19 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $elm$browser$Browser$sandbox = function (impl) {
 	return _Browser_element(
 		{
-			aC: function (_v0) {
-				return _Utils_Tuple2(impl.aC, $elm$core$Platform$Cmd$none);
+			aD: function (_v0) {
+				return _Utils_Tuple2(impl.aD, $elm$core$Platform$Cmd$none);
 			},
-			aI: function (_v1) {
+			aJ: function (_v1) {
 				return $elm$core$Platform$Sub$none;
 			},
-			aK: F2(
+			aL: F2(
 				function (msg, model) {
 					return _Utils_Tuple2(
-						A2(impl.aK, msg, model),
+						A2(impl.aL, msg, model),
 						$elm$core$Platform$Cmd$none);
 				}),
-			aL: impl.aL
+			aM: impl.aM
 		});
 };
 var $author$project$Main$GreetingMadame = function (a) {
@@ -5320,16 +5328,16 @@ var $author$project$Main$update = F2(
 							model,
 							{x: $author$project$Main$GreetingCommon});
 				}
-			case 5:
+			case 6:
 				var aobdf = msg.a;
 				return _Utils_update(
 					model,
 					{H: aobdf});
-			case 6:
+			case 7:
 				var tod = msg.a;
 				return _Utils_update(
 					model,
-					{M: tod});
+					{N: tod});
 			case 2:
 				var lr = msg.a;
 				return _Utils_update(
@@ -5339,13 +5347,18 @@ var $author$project$Main$update = F2(
 				var pa = msg.a;
 				return _Utils_update(
 					model,
-					{J: pa});
+					{K: pa});
 			case 4:
 				var sa = msg.a;
 				return _Utils_update(
 					model,
-					{L: sa});
-			case 7:
+					{M: sa});
+			case 5:
+				var ptr = msg.a;
+				return _Utils_update(
+					model,
+					{J: ptr});
+			case 8:
 				var dif = msg.a;
 				if (!dif.$) {
 					return _Utils_update(
@@ -5363,7 +5376,7 @@ var $author$project$Main$update = F2(
 				var rdit = msg.a;
 				return _Utils_update(
 					model,
-					{K: rdit});
+					{L: rdit});
 		}
 	});
 var $elm$json$Json$Encode$string = _Json_wrap;
@@ -5410,6 +5423,7 @@ var $author$project$Main$classes = function (s) {
 	return $elm$html$Html$Attributes$classList(cl);
 };
 var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$em = _VirtualDom_node('em');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$html$Html$main_ = _VirtualDom_node('main');
@@ -5418,6 +5432,9 @@ var $author$project$Main$ClientForm = function (a) {
 };
 var $author$project$Main$OpponentGreetingForm = function (a) {
 	return {$: 1, a: a};
+};
+var $author$project$Main$PaymentToRepresentativeForm = function (a) {
+	return {$: 5, a: a};
 };
 var $author$project$Main$PrincipalAmountForm = function (a) {
 	return {$: 3, a: a};
@@ -5433,27 +5450,60 @@ var $elm$virtual_dom$VirtualDom$attribute = F2(
 			_VirtualDom_noJavaScriptOrHtmlUri(value));
 	});
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
+var $elm$json$Json$Encode$bool = _Json_wrap;
+var $elm$html$Html$Attributes$boolProperty = F2(
+	function (key, bool) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			$elm$json$Json$Encode$bool(bool));
+	});
+var $elm$html$Html$Attributes$checked = $elm$html$Html$Attributes$boolProperty('checked');
+var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
 var $elm$html$Html$form = _VirtualDom_node('form');
+var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$label = _VirtualDom_node('label');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
+var $elm$json$Json$Decode$bool = _Json_decodeBool;
+var $elm$html$Html$Events$targetChecked = A2(
+	$elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'checked']),
+	$elm$json$Json$Decode$bool);
+var $elm$html$Html$Events$onCheck = function (tagger) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'change',
+		A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetChecked));
+};
 var $elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
 };
 var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
 	return {$: 1, a: a};
 };
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
 var $elm$html$Html$Events$stopPropagationOn = F2(
 	function (event, decoder) {
 		return A2(
 			$elm$virtual_dom$VirtualDom$on,
 			event,
 			$elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
-	});
-var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
 	});
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $elm$html$Html$Events$targetValue = A2(
@@ -5475,8 +5525,9 @@ var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $author$project$Main$amountForm = F2(
-	function (principalAmount, sumOfAmount) {
+var $author$project$Main$amountForm = F3(
+	function (principalAmount, sumOfAmount, paymentToRepresentative) {
+		var labelText3 = 'Zahlung an Kanzlei';
 		var labelText2 = 'Gesamtforderung in EUR';
 		var labelText1 = 'Hauptforderung in EUR';
 		return A2(
@@ -5499,7 +5550,8 @@ var $author$project$Main$amountForm = F2(
 							$elm$html$Html$label,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('form-label')
+									$elm$html$Html$Attributes$class('form-label'),
+									$elm$html$Html$Attributes$for('principalAmountForm')
 								]),
 							_List_fromArray(
 								[
@@ -5510,6 +5562,7 @@ var $author$project$Main$amountForm = F2(
 							_List_fromArray(
 								[
 									$elm$html$Html$Attributes$class('form-control'),
+									$elm$html$Html$Attributes$id('principalAmountForm'),
 									$elm$html$Html$Attributes$type_('text'),
 									$elm$html$Html$Attributes$placeholder(labelText1),
 									A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText1),
@@ -5530,7 +5583,8 @@ var $author$project$Main$amountForm = F2(
 							$elm$html$Html$label,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('form-label')
+									$elm$html$Html$Attributes$class('form-label'),
+									$elm$html$Html$Attributes$for('sumOfAmountForm')
 								]),
 							_List_fromArray(
 								[
@@ -5541,6 +5595,7 @@ var $author$project$Main$amountForm = F2(
 							_List_fromArray(
 								[
 									$elm$html$Html$Attributes$class('form-control'),
+									$elm$html$Html$Attributes$id('sumOfAmountForm'),
 									$elm$html$Html$Attributes$type_('text'),
 									$elm$html$Html$Attributes$placeholder(labelText2),
 									A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText2),
@@ -5548,6 +5603,47 @@ var $author$project$Main$amountForm = F2(
 									$elm$html$Html$Attributes$value(sumOfAmount)
 								]),
 							_List_Nil)
+						])),
+					A2(
+					$elm$html$Html$form,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('col-md-3')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('form-check')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$input,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('form-check-input'),
+											$elm$html$Html$Attributes$id('paymentToRepresentativeFormCheckbox'),
+											$elm$html$Html$Attributes$type_('checkbox'),
+											$elm$html$Html$Attributes$value(''),
+											$elm$html$Html$Attributes$checked(paymentToRepresentative),
+											$elm$html$Html$Events$onCheck($author$project$Main$PaymentToRepresentativeForm)
+										]),
+									_List_Nil),
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('form-check-label'),
+											$elm$html$Html$Attributes$for('paymentToRepresentativeFormCheckbox')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text(labelText3)
+										]))
+								]))
 						]))
 				]));
 	});
@@ -5586,20 +5682,10 @@ var $elm$core$Basics$composeR = F3(
 		return g(
 			f(x));
 	});
-var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
-var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
 var $elm$html$Html$option = _VirtualDom_node('option');
 var $elm$html$Html$select = _VirtualDom_node('select');
-var $elm$json$Json$Encode$bool = _Json_wrap;
-var $elm$html$Html$Attributes$boolProperty = F2(
-	function (key, bool) {
-		return A2(
-			_VirtualDom_property,
-			key,
-			$elm$json$Json$Encode$bool(bool));
-	});
 var $elm$html$Html$Attributes$selected = $elm$html$Html$Attributes$boolProperty('selected');
 var $author$project$Main$strToGender = function (s) {
 	return (s === 'Male') ? 0 : ((s === 'Female') ? 1 : 2);
@@ -5999,10 +6085,10 @@ var $author$project$Main$clientForm = function (client) {
 			]));
 };
 var $author$project$Main$DefaultInterestForm = function (a) {
-	return {$: 7, a: a};
+	return {$: 8, a: a};
 };
 var $author$project$Main$AgreementOfBeginningOfDelayForm = function (a) {
-	return {$: 5, a: a};
+	return {$: 6, a: a};
 };
 var $author$project$Main$agreementOfBeginningOfDelayForm = function (agreementOfBeginningOfDelay) {
 	var labelText = 'Fälligkeit nach Rechnung in Tagen';
@@ -6018,7 +6104,8 @@ var $author$project$Main$agreementOfBeginningOfDelayForm = function (agreementOf
 				$elm$html$Html$label,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('form-label')
+						$elm$html$Html$Attributes$class('form-label'),
+						$elm$html$Html$Attributes$for('agreementOfBeginningOfDelayForm')
 					]),
 				_List_fromArray(
 					[
@@ -6029,6 +6116,7 @@ var $author$project$Main$agreementOfBeginningOfDelayForm = function (agreementOf
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$class('form-control'),
+						$elm$html$Html$Attributes$id('agreementOfBeginningOfDelayForm'),
 						$elm$html$Html$Attributes$type_('text'),
 						$elm$html$Html$Attributes$placeholder(labelText),
 						A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
@@ -6077,7 +6165,8 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 								$elm$html$Html$label,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('form-label')
+										$elm$html$Html$Attributes$class('form-label'),
+										$elm$html$Html$Attributes$for('defaultInterestFormSwitchDefaultInterest')
 									]),
 								_List_fromArray(
 									[
@@ -6088,6 +6177,7 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$class('form-select'),
+										$elm$html$Html$Attributes$id('defaultInterestFormSwitchDefaultInterest'),
 										A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText1),
 										$elm$html$Html$Events$onInput($author$project$Main$switchDefaultInterestForm)
 									]),
@@ -6136,7 +6226,8 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 										$elm$html$Html$label,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$class('form-label')
+												$elm$html$Html$Attributes$class('form-label'),
+												$elm$html$Html$Attributes$for('defaultInterestFormHigherDefaultInterest')
 											]),
 										_List_fromArray(
 											[
@@ -6147,6 +6238,7 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$class('form-control'),
+												$elm$html$Html$Attributes$id('defaultInterestFormHigherDefaultInterest'),
 												$elm$html$Html$Attributes$type_('text'),
 												$elm$html$Html$Attributes$placeholder(labelText2),
 												A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText2),
@@ -6161,7 +6253,7 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 			]));
 };
 var $author$project$Main$TimeOfDelayForm = function (a) {
-	return {$: 6, a: a};
+	return {$: 7, a: a};
 };
 var $author$project$Main$timeOfDelayForm = function (timeOfDelay) {
 	var labelText = 'Beginn des Verzugs';
@@ -6177,7 +6269,8 @@ var $author$project$Main$timeOfDelayForm = function (timeOfDelay) {
 				$elm$html$Html$label,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('form-label')
+						$elm$html$Html$Attributes$class('form-label'),
+						$elm$html$Html$Attributes$for('timeOfDelayForm')
 					]),
 				_List_fromArray(
 					[
@@ -6188,6 +6281,7 @@ var $author$project$Main$timeOfDelayForm = function (timeOfDelay) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$class('form-control'),
+						$elm$html$Html$Attributes$id('timeOfDelayForm'),
 						$elm$html$Html$Attributes$type_('text'),
 						$elm$html$Html$Attributes$placeholder(labelText),
 						A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
@@ -6255,7 +6349,8 @@ var $author$project$Main$legalReasonForm = function (legalReason) {
 								$elm$html$Html$label,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('form-label')
+										$elm$html$Html$Attributes$class('form-label'),
+										$elm$html$Html$Attributes$for('legalReasonForm')
 									]),
 								_List_fromArray(
 									[
@@ -6266,6 +6361,7 @@ var $author$project$Main$legalReasonForm = function (legalReason) {
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$class('form-control'),
+										$elm$html$Html$Attributes$id('legalReasonForm'),
 										$elm$html$Html$Attributes$rows(2),
 										$elm$html$Html$Attributes$placeholder(labelText),
 										A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
@@ -6332,7 +6428,8 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 								$elm$html$Html$label,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('form-label')
+										$elm$html$Html$Attributes$class('form-label'),
+										$elm$html$Html$Attributes$for('opponenGreetingFormSwitchOpponentGreetingForm')
 									]),
 								_List_fromArray(
 									[
@@ -6343,6 +6440,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$class('form-select'),
+										$elm$html$Html$Attributes$id('opponenGreetingFormSwitchOpponentGreetingForm'),
 										A2($elm$html$Html$Attributes$attribute, 'aria-label', labelTextGeneral),
 										$elm$html$Html$Events$onInput($author$project$Main$switchOpponentGreetingForm)
 									]),
@@ -6409,7 +6507,8 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 											$elm$html$Html$label,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('form-label')
+													$elm$html$Html$Attributes$class('form-label'),
+													$elm$html$Html$Attributes$for('opponentGreetingFormGreetingSir')
 												]),
 											_List_fromArray(
 												[
@@ -6420,6 +6519,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class('form-control'),
+													$elm$html$Html$Attributes$id('opponentGreetingFormGreetingSir'),
 													$elm$html$Html$Attributes$type_('text'),
 													$elm$html$Html$Attributes$placeholder(labelText),
 													A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
@@ -6443,7 +6543,8 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 											$elm$html$Html$label,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('form-label')
+													$elm$html$Html$Attributes$class('form-label'),
+													$elm$html$Html$Attributes$for('opponentGreetingFormGreetingMadame')
 												]),
 											_List_fromArray(
 												[
@@ -6454,6 +6555,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 											_List_fromArray(
 												[
 													$elm$html$Html$Attributes$class('form-control'),
+													$elm$html$Html$Attributes$id('opponentGreetingFormGreetingMadame'),
 													$elm$html$Html$Attributes$type_('text'),
 													$elm$html$Html$Attributes$placeholder(labelText),
 													A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
@@ -6476,30 +6578,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 			]));
 };
 var $author$project$Main$RightToDeductInputTaxForm = function (a) {
-	return {$: 8, a: a};
-};
-var $elm$html$Html$Attributes$checked = $elm$html$Html$Attributes$boolProperty('checked');
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
-};
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$json$Json$Decode$bool = _Json_decodeBool;
-var $elm$html$Html$Events$targetChecked = A2(
-	$elm$json$Json$Decode$at,
-	_List_fromArray(
-		['target', 'checked']),
-	$elm$json$Json$Decode$bool);
-var $elm$html$Html$Events$onCheck = function (tagger) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'change',
-		A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetChecked));
+	return {$: 9, a: a};
 };
 var $author$project$Main$rightToDeductInputTaxForm = function (rightToDeductInputTax) {
 	return A2(
@@ -6554,16 +6633,17 @@ var $author$project$Main$modelInput = function (model) {
 				$elm$html$Html$map,
 				$author$project$Main$ClientForm,
 				$author$project$Main$clientForm(model.c)),
-				$author$project$Main$rightToDeductInputTaxForm(model.K),
+				$author$project$Main$rightToDeductInputTaxForm(model.L),
 				A2(
 				$elm$html$Html$map,
 				$author$project$Main$OpponentGreetingForm,
 				$author$project$Main$opponenGreetingForm(model.x)),
 				$author$project$Main$legalReasonForm(model.I),
-				A2($author$project$Main$amountForm, model.J, model.L),
-				A3($author$project$Main$delayForm, model.H, model.M, model.B)
+				A3($author$project$Main$amountForm, model.K, model.M, model.J),
+				A3($author$project$Main$delayForm, model.H, model.N, model.B)
 			]));
 };
+var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$Main$clientDative = function (client) {
 	if (!client.$) {
 		var g = client.a;
@@ -6657,7 +6737,6 @@ var $author$project$Main$clientNominative = function (client) {
 		}
 	}
 };
-var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$core$Basics$not = _Basics_not;
 var $elm$core$String$toUpper = _String_toUpper;
 var $author$project$Main$rightToDeductInputTaxText = F2(
@@ -6704,7 +6783,7 @@ var $author$project$Main$lawyersFees = F2(
 					_List_Nil,
 					_List_fromArray(
 						[
-							$elm$html$Html$text('Gegenstandswert EUR ...')
+							$elm$html$Html$text('Gegenstandswert: EUR ...')
 						])),
 					A2(
 					$elm$html$Html$div,
@@ -6718,7 +6797,7 @@ var $author$project$Main$lawyersFees = F2(
 							$elm$html$Html$div,
 							_List_fromArray(
 								[
-									$elm$html$Html$Attributes$class('col-9 offset-1')
+									$author$project$Main$classes('col-9 offset-1')
 								]),
 							_List_fromArray(
 								[
@@ -6850,7 +6929,7 @@ var $author$project$Main$lawyersFees = F2(
 					_List_fromArray(
 						[
 							$elm$html$Html$text(
-							'Sie können die Freistellung durch Erklärung oder dadurch bewirken, dass Sie den Betrag unter Angabe des Aktenzeichens auf unser auf der erste Seite dieses Schreibens unten angegebenes Geschäftskonto überweisen. ' + ('Für die Freistellung setze ich Ihnen ebenfalls eine Frist von 10 Tagen nach Zugang dieses Schreibens. Sollte die Frist fruchtlos verstreichen, wird ' + ($author$project$Main$clientNominative(client) + ' die Freistellung ablehnen und Ersatz in Geld verlangen.')))
+							'Sie können die Freistellung durch Erklärung oder dadurch bewirken, dass Sie den Betrag unter Angabe des Aktenzeichens auf unser auf der erste Seite dieses Schreibens unten angegebenes Konto überweisen. ' + ('Für die Freistellung setze ich Ihnen ebenfalls eine Frist von 10 Tagen nach Zugang dieses Schreibens. Sollte die Frist fruchtlos verstreichen, wird ' + ($author$project$Main$clientNominative(client) + ' die Freistellung ablehnen und Ersatz in Geld verlangen.')))
 						])),
 					A2(
 					$elm$html$Html$p,
@@ -6892,9 +6971,9 @@ var $author$project$Main$representation = function (client) {
 	}();
 	return 'in der oben genannten Angelegenheit hat uns ' + (mdt + ' beauftragt und bevollmächtigt.');
 };
-var $author$project$Main$requestForPayment = F2(
-	function (client, sumOfAmount) {
-		return 'Namens ' + ($author$project$Main$clientGenitive(client) + (' fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag ' + ('in Höhe von EUR ' + (sumOfAmount + (' binnen 10 Tagen auf das Konto ' + ($author$project$Main$clientGenitive(client) + ' mit der IBAN ... zu überweisen.'))))));
+var $author$project$Main$requestForPayment = F3(
+	function (client, sumOfAmount, paymentToRepresentative) {
+		return 'Namens ' + ($author$project$Main$clientGenitive(client) + (' fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag ' + ('in Höhe von EUR ' + (sumOfAmount + (' binnen 10 Tagen ' + (paymentToRepresentative ? 'auf unser auf der erste Seite dieses Schreibens unten angegebenes Konto zu überweisen. Wir sind zum Empfang der Zahlung befugt.' : ('auf das Konto ' + ($author$project$Main$clientGenitive(client) + ' mit der IBAN ... zu überweisen.'))))))));
 	});
 var $elm$html$Html$br = _VirtualDom_node('br');
 var $author$project$Main$rubrum = function (client) {
@@ -6939,7 +7018,7 @@ var $author$project$Main$result = function (model) {
 				$elm$html$Html$p,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('pt-3')
+						$elm$html$Html$Attributes$class('pt-5')
 					]),
 				$author$project$Main$rubrum(model.c)),
 				A2(
@@ -6964,7 +7043,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A3($author$project$Main$claim, model.c, model.I, model.J))
+						A3($author$project$Main$claim, model.c, model.I, model.K))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6972,7 +7051,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A3($author$project$Main$default, model.c, model.H, model.M))
+						A3($author$project$Main$default, model.c, model.H, model.N))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -6988,9 +7067,9 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($author$project$Main$requestForPayment, model.c, model.L))
+						A3($author$project$Main$requestForPayment, model.c, model.M, model.J))
 					])),
-				A2($author$project$Main$lawyersFees, model.c, model.K),
+				A2($author$project$Main$lawyersFees, model.c, model.L),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
@@ -7031,7 +7110,10 @@ var $author$project$Main$view = function (model) {
 					[
 						A2(
 						$elm$html$Html$h1,
-						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('mb-3')
+							]),
 						_List_fromArray(
 							[
 								$elm$html$Html$text('TextBauStein Mahnschreiben')
@@ -7071,12 +7153,25 @@ var $author$project$Main$view = function (model) {
 									[
 										$elm$html$Html$text('Ergebnis')
 									])),
+								A2(
+								$elm$html$Html$p,
+								_List_Nil,
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$em,
+										_List_Nil,
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Nachdem man oben alles eingegeben hat, kann man den Text markieren, kopieren und in den Briefkopf einfügen. ' + 'Danach sind nur noch die Betreffzeile, die RVG-Berechnung und ggf. die IBAN des Mandanten zu ergänzen.')
+											]))
+									])),
 								$author$project$Main$result(model)
 							]))
 					]))
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$sandbox(
-	{aC: $author$project$Main$init, aK: $author$project$Main$update, aL: $author$project$Main$view});
+	{aD: $author$project$Main$init, aL: $author$project$Main$update, aM: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));

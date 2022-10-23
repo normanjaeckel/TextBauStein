@@ -21,6 +21,7 @@ type alias Model =
     , legalReason : LegalReason
     , principalAmount : PrincipalAmount
     , sumOfAmount : SumOfAmount
+    , paymentToRepresentative : PaymentToRepresentative
     , agreementOfBeginningOfDelay : AgreementOfBeginningOfDelay
     , timeOfDelay : TimeOfDelay
     , defaultInterest : DefaultInterest
@@ -40,6 +41,7 @@ init =
         "aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ..."
         "0,00"
         "0,00"
+        False
         "10"
         "..."
         LegalDefaultInterest
@@ -98,6 +100,10 @@ type alias SumOfAmount =
     String
 
 
+type alias PaymentToRepresentative =
+    Bool
+
+
 type alias AgreementOfBeginningOfDelay =
     String
 
@@ -125,6 +131,7 @@ type Msg
     | LegalReasonForm LegalReason
     | PrincipalAmountForm PrincipalAmount
     | SumOfAmountForm SumOfAmount
+    | PaymentToRepresentativeForm PaymentToRepresentative
     | AgreementOfBeginningOfDelayForm AgreementOfBeginningOfDelay
     | TimeOfDelayForm TimeOfDelay
     | DefaultInterestForm DefaultInterestForm
@@ -231,6 +238,9 @@ update msg model =
         SumOfAmountForm sa ->
             { model | sumOfAmount = sa }
 
+        PaymentToRepresentativeForm ptr ->
+            { model | paymentToRepresentative = ptr }
+
         DefaultInterestForm dif ->
             case dif of
                 DefaultInterestFormLegalDefaultInterest ->
@@ -251,13 +261,20 @@ view : Model -> Html Msg
 view model =
     div [ classes "container p-3 pb-5" ]
         [ main_ []
-            [ h1 [] [ text "TextBauStein Mahnschreiben" ]
+            [ h1 [ class "mb-3" ] [ text "TextBauStein Mahnschreiben" ]
             , div [ class "mb-5" ]
                 [ h2 [ class "mb-3" ] [ text "Eingaben" ]
                 , modelInput model
                 ]
             , div []
                 [ h2 [ class "mb-3" ] [ text "Ergebnis" ]
+                , p []
+                    [ em []
+                        [ text <|
+                            "Nachdem man oben alles eingegeben hat, kann man den Text markieren, kopieren und in den Briefkopf einfügen. "
+                                ++ "Danach sind nur noch die Betreffzeile, die RVG-Berechnung und ggf. die IBAN des Mandanten zu ergänzen."
+                        ]
+                    ]
                 , result model
                 ]
             ]
@@ -275,7 +292,7 @@ modelInput model =
         , rightToDeductInputTaxForm model.rightToDeductInputTax
         , opponenGreetingForm model.opponentGreeting |> map OpponentGreetingForm
         , legalReasonForm model.legalReason
-        , amountForm model.principalAmount model.sumOfAmount
+        , amountForm model.principalAmount model.sumOfAmount model.paymentToRepresentative
         , delayForm model.agreementOfBeginningOfDelay model.timeOfDelay model.defaultInterest
         ]
 
@@ -466,9 +483,10 @@ opponenGreetingForm opponentGreeting =
     form [ class "mb-3" ]
         [ div [ classes "row g-3" ]
             [ div [ class "col-md-3" ]
-                [ label [ class "form-label" ] [ text labelTextGeneral ]
+                [ label [ class "form-label", for "opponenGreetingFormSwitchOpponentGreetingForm" ] [ text labelTextGeneral ]
                 , select
                     [ class "form-select"
+                    , id "opponenGreetingFormSwitchOpponentGreetingForm"
                     , attribute "aria-label" labelTextGeneral
                     , onInput switchOpponentGreetingForm
                     ]
@@ -484,9 +502,10 @@ opponenGreetingForm opponentGreeting =
                             "Name des Empfängers"
                     in
                     div [ class "col-md-3" ]
-                        [ label [ class "form-label" ] [ text labelText ]
+                        [ label [ class "form-label", for "opponentGreetingFormGreetingSir" ] [ text labelText ]
                         , input
                             [ class "form-control"
+                            , id "opponentGreetingFormGreetingSir"
                             , type_ "text"
                             , placeholder labelText
                             , attribute "aria-label" labelText
@@ -502,9 +521,10 @@ opponenGreetingForm opponentGreeting =
                             "Name des Empfängers"
                     in
                     div [ class "col-md-3" ]
-                        [ label [ class "form-label" ] [ text labelText ]
+                        [ label [ class "form-label", for "opponentGreetingFormGreetingMadame" ] [ text labelText ]
                         , input
                             [ class "form-control"
+                            , id "opponentGreetingFormGreetingMadame"
                             , type_ "text"
                             , placeholder labelText
                             , attribute "aria-label" labelText
@@ -542,9 +562,10 @@ legalReasonForm legalReason =
     form [ class "mb-3" ]
         [ div [ classes "row g-3" ]
             [ div [ class "col-md-6" ]
-                [ label [ class "form-label" ] [ text labelText ]
+                [ label [ class "form-label", for "legalReasonForm" ] [ text labelText ]
                 , textarea
                     [ class "form-control"
+                    , id "legalReasonForm"
                     , rows 2
                     , placeholder labelText
                     , attribute "aria-label" labelText
@@ -557,8 +578,8 @@ legalReasonForm legalReason =
         ]
 
 
-amountForm : PrincipalAmount -> SumOfAmount -> Html Msg
-amountForm principalAmount sumOfAmount =
+amountForm : PrincipalAmount -> SumOfAmount -> PaymentToRepresentative -> Html Msg
+amountForm principalAmount sumOfAmount paymentToRepresentative =
     let
         labelText1 : String
         labelText1 =
@@ -567,12 +588,17 @@ amountForm principalAmount sumOfAmount =
         labelText2 : String
         labelText2 =
             "Gesamtforderung in EUR"
+
+        labelText3 : String
+        labelText3 =
+            "Zahlung an Kanzlei"
     in
     div [ classes "mb-3 row g-3" ]
         [ form [ class "col-md-3" ]
-            [ label [ class "form-label" ] [ text labelText1 ]
+            [ label [ class "form-label", for "principalAmountForm" ] [ text labelText1 ]
             , input
                 [ class "form-control"
+                , id "principalAmountForm"
                 , type_ "text"
                 , placeholder labelText1
                 , attribute "aria-label" labelText1
@@ -582,9 +608,10 @@ amountForm principalAmount sumOfAmount =
                 []
             ]
         , form [ class "col-md-3" ]
-            [ label [ class "form-label" ] [ text labelText2 ]
+            [ label [ class "form-label", for "sumOfAmountForm" ] [ text labelText2 ]
             , input
                 [ class "form-control"
+                , id "sumOfAmountForm"
                 , type_ "text"
                 , placeholder labelText2
                 , attribute "aria-label" labelText2
@@ -592,6 +619,21 @@ amountForm principalAmount sumOfAmount =
                 , value sumOfAmount
                 ]
                 []
+            ]
+        , form [ class "col-md-3" ]
+            [ div [ class "form-check" ]
+                [ input
+                    [ class "form-check-input"
+                    , id "paymentToRepresentativeFormCheckbox"
+                    , type_ "checkbox"
+                    , value ""
+                    , checked paymentToRepresentative
+                    , onCheck PaymentToRepresentativeForm
+                    ]
+                    []
+                , label [ class "form-check-label", for "paymentToRepresentativeFormCheckbox" ]
+                    [ text labelText3 ]
+                ]
             ]
         ]
 
@@ -613,9 +655,10 @@ agreementOfBeginningOfDelayForm agreementOfBeginningOfDelay =
             "Fälligkeit nach Rechnung in Tagen"
     in
     form [ class "col-md-3" ]
-        [ label [ class "form-label" ] [ text labelText ]
+        [ label [ class "form-label", for "agreementOfBeginningOfDelayForm" ] [ text labelText ]
         , input
             [ class "form-control"
+            , id "agreementOfBeginningOfDelayForm"
             , type_ "text"
             , placeholder labelText
             , attribute "aria-label" labelText
@@ -634,9 +677,10 @@ timeOfDelayForm timeOfDelay =
             "Beginn des Verzugs"
     in
     form [ class "col-md-3" ]
-        [ label [ class "form-label" ] [ text labelText ]
+        [ label [ class "form-label", for "timeOfDelayForm" ] [ text labelText ]
         , input
             [ class "form-control"
+            , id "timeOfDelayForm"
             , type_ "text"
             , placeholder labelText
             , attribute "aria-label" labelText
@@ -661,9 +705,10 @@ defaultInterestForm defaultInterest =
     form [ class "col-md-6" ]
         [ div [ class "row" ]
             [ div [ class "col-md-6" ]
-                [ label [ class "form-label" ] [ text labelText1 ]
+                [ label [ class "form-label", for "defaultInterestFormSwitchDefaultInterest" ] [ text labelText1 ]
                 , select
                     [ class "form-select"
+                    , id "defaultInterestFormSwitchDefaultInterest"
                     , attribute "aria-label" labelText1
                     , onInput switchDefaultInterestForm
                     ]
@@ -677,9 +722,10 @@ defaultInterestForm defaultInterest =
 
                 HigherDefaultInterest txt ->
                     div [ class "col-md-6" ]
-                        [ label [ class "form-label" ] [ text labelText2 ]
+                        [ label [ class "form-label", for "defaultInterestFormHigherDefaultInterest" ] [ text labelText2 ]
                         , input
                             [ class "form-control"
+                            , id "defaultInterestFormHigherDefaultInterest"
                             , type_ "text"
                             , placeholder labelText2
                             , attribute "aria-label" labelText2
@@ -708,13 +754,13 @@ switchDefaultInterestForm s =
 result : Model -> Html Msg
 result model =
     div [ class "col-8" ]
-        [ p [ class "pt-3" ] (rubrum model.client)
+        [ p [ class "pt-5" ] (rubrum model.client)
         , p [] [ text <| greeting model.opponentGreeting ]
         , p [] [ text <| representation model.client ]
         , p [] [ text <| claim model.client model.legalReason model.principalAmount ]
         , p [] [ text <| default model.client model.agreementOfBeginningOfDelay model.timeOfDelay ]
         , p [] [ text <| defaultInterestText model.defaultInterest ]
-        , p [] [ text <| requestForPayment model.client model.sumOfAmount ]
+        , p [] [ text <| requestForPayment model.client model.sumOfAmount model.paymentToRepresentative ]
         , lawyersFees model.client model.rightToDeductInputTax
         , p [] [ text "Die für uns zuständige Rechtsanwaltskammer ist die Rechtsanwaltskammer Sachsen, Glacisstraße 6, 01099 Dresden. Die E-Mail-Adresse der Rechtsanwaltskammer Sachsen lautet info@rak-sachsen.de." ]
         , p [] [ text <| judicialEnforcement model.client ]
@@ -818,16 +864,22 @@ defaultInterestText defaultInterestValue =
         ++ " Die Zinsberechnung entnehmen Sie bitte der beiliegenden Forderungsaufstellung."
 
 
-requestForPayment : Client -> SumOfAmount -> String
-requestForPayment client sumOfAmount =
+requestForPayment : Client -> SumOfAmount -> PaymentToRepresentative -> String
+requestForPayment client sumOfAmount paymentToRepresentative =
     "Namens "
         ++ clientGenitive client
         ++ " fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag "
         ++ "in Höhe von EUR "
         ++ sumOfAmount
-        ++ " binnen 10 Tagen auf das Konto "
-        ++ clientGenitive client
-        ++ " mit der IBAN ... zu überweisen."
+        ++ " binnen 10 Tagen "
+        ++ (if paymentToRepresentative then
+                "auf unser auf der erste Seite dieses Schreibens unten angegebenes Konto zu überweisen. Wir sind zum Empfang der Zahlung befugt."
+
+            else
+                "auf das Konto "
+                    ++ clientGenitive client
+                    ++ " mit der IBAN ... zu überweisen."
+           )
 
 
 lawyersFees : Client -> RightToDeductInputTax -> Html Msg
@@ -839,9 +891,9 @@ lawyersFees client rightToDeductInputTax =
                     ++ clientGenitive client
                     ++ " von den Kosten unserer Beauftragung. Diese Kosten berechnen sich nach dem Rechtsanwaltsvergütungsgesetz wie folgt:"
             ]
-        , p [] [ text "Gegenstandswert EUR ..." ]
+        , p [] [ text "Gegenstandswert: EUR ..." ]
         , div [ class "row" ]
-            [ div [ class "col-9 offset-1" ]
+            [ div [ classes "col-9 offset-1" ]
                 [ table [ classes "table table-borderless table-sm" ]
                     [ tbody []
                         [ tr []
@@ -869,7 +921,7 @@ lawyersFees client rightToDeductInputTax =
         , rightToDeductInputTaxText client rightToDeductInputTax
         , p []
             [ text <|
-                "Sie können die Freistellung durch Erklärung oder dadurch bewirken, dass Sie den Betrag unter Angabe des Aktenzeichens auf unser auf der erste Seite dieses Schreibens unten angegebenes Geschäftskonto überweisen. "
+                "Sie können die Freistellung durch Erklärung oder dadurch bewirken, dass Sie den Betrag unter Angabe des Aktenzeichens auf unser auf der erste Seite dieses Schreibens unten angegebenes Konto überweisen. "
                     ++ "Für die Freistellung setze ich Ihnen ebenfalls eine Frist von 10 Tagen nach Zugang dieses Schreibens. Sollte die Frist fruchtlos verstreichen, wird "
                     ++ clientNominative client
                     ++ " die Freistellung ablehnen und Ersatz in Geld verlangen."
