@@ -762,8 +762,8 @@ result model =
         , p [] [ text <| defaultInterestText model.defaultInterest ]
         , p [] [ text <| requestForPayment model.client model.sumOfAmount model.paymentToRepresentative ]
         , lawyersFees model.client model.rightToDeductInputTax
-        , p [] [ text "Die für uns zuständige Rechtsanwaltskammer ist die Rechtsanwaltskammer Sachsen, Glacisstraße 6, 01099 Dresden. Die E-Mail-Adresse der Rechtsanwaltskammer Sachsen lautet info@rak-sachsen.de." ]
         , p [] [ text <| judicialEnforcement model.client ]
+        , p [] [ text "Die für uns zuständige Rechtsanwaltskammer ist die Rechtsanwaltskammer Sachsen, Glacisstraße 6, 01099 Dresden. Die E-Mail-Adresse der Rechtsanwaltskammer Sachsen lautet info@rak-sachsen.de." ]
         , p [] [ text "Mit freundlichen Grüßen" ]
         ]
 
@@ -873,7 +873,7 @@ requestForPayment client sumOfAmount paymentToRepresentative =
         ++ sumOfAmount
         ++ " binnen 10 Tagen "
         ++ (if paymentToRepresentative then
-                "auf unser auf der erste Seite dieses Schreibens unten angegebenes Konto zu überweisen. Wir sind zum Empfang der Zahlung befugt."
+                "auf unser im Briefbogen angegebenes Konto zu überweisen. Wir sind zum Empfang der Zahlung befugt."
 
             else
                 "auf das Konto "

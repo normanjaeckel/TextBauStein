@@ -6977,7 +6977,7 @@ var $author$project$Main$representation = function (client) {
 };
 var $author$project$Main$requestForPayment = F3(
 	function (client, sumOfAmount, paymentToRepresentative) {
-		return 'Namens ' + ($author$project$Main$clientGenitive(client) + (' fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag ' + ('in Höhe von EUR ' + (sumOfAmount + (' binnen 10 Tagen ' + (paymentToRepresentative ? 'auf unser auf der erste Seite dieses Schreibens unten angegebenes Konto zu überweisen. Wir sind zum Empfang der Zahlung befugt.' : ('auf das Konto ' + ($author$project$Main$clientGenitive(client) + ' mit der IBAN ... zu überweisen.'))))))));
+		return 'Namens ' + ($author$project$Main$clientGenitive(client) + (' fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag ' + ('in Höhe von EUR ' + (sumOfAmount + (' binnen 10 Tagen ' + (paymentToRepresentative ? 'auf unser im Briefbogen angegebenes Konto zu überweisen. Wir sind zum Empfang der Zahlung befugt.' : ('auf das Konto ' + ($author$project$Main$clientGenitive(client) + ' mit der IBAN ... zu überweisen.'))))))));
 	});
 var $elm$html$Html$br = _VirtualDom_node('br');
 var $author$project$Main$rubrum = function (client) {
@@ -7079,15 +7079,15 @@ var $author$project$Main$result = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text('Die für uns zuständige Rechtsanwaltskammer ist die Rechtsanwaltskammer Sachsen, Glacisstraße 6, 01099 Dresden. Die E-Mail-Adresse der Rechtsanwaltskammer Sachsen lautet info@rak-sachsen.de.')
+						$elm$html$Html$text(
+						$author$project$Main$judicialEnforcement(model.c))
 					])),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$text(
-						$author$project$Main$judicialEnforcement(model.c))
+						$elm$html$Html$text('Die für uns zuständige Rechtsanwaltskammer ist die Rechtsanwaltskammer Sachsen, Glacisstraße 6, 01099 Dresden. Die E-Mail-Adresse der Rechtsanwaltskammer Sachsen lautet info@rak-sachsen.de.')
 					])),
 				A2(
 				$elm$html$Html$p,
