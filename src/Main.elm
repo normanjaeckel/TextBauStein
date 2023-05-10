@@ -16,7 +16,8 @@ main =
 
 
 type alias Model =
-    { client : Client
+    { referenceNumber : ReferenceNumber
+    , client : Client
     , opponentGreeting : OpponentGreeting
     , legalReason : LegalReason
     , principalAmount : PrincipalAmount
@@ -36,6 +37,7 @@ type alias Model =
 init : Model
 init =
     Model
+        ""
         (initClient SwitchClientFormNaturalPerson)
         GreetingCommon
         "aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ..."
@@ -46,6 +48,10 @@ init =
         "..."
         LegalDefaultInterest
         False
+
+
+type alias ReferenceNumber =
+    String
 
 
 initClient : SwitchClientForm -> Client
@@ -126,7 +132,8 @@ type alias RightToDeductInputTax =
 
 
 type Msg
-    = ClientForm ClientForm
+    = ReferenceNumberForm ReferenceNumber
+    | ClientForm ClientForm
     | OpponentGreetingForm OpponentGreetingForm
     | LegalReasonForm LegalReason
     | PrincipalAmountForm PrincipalAmount
@@ -175,6 +182,9 @@ type DefaultInterestForm
 update : Msg -> Model -> Model
 update msg model =
     case msg of
+        ReferenceNumberForm rnf ->
+            { model | referenceNumber = rnf }
+
         ClientForm cf ->
             case cf of
                 NaturalPersonForm npf ->
@@ -272,7 +282,7 @@ view model =
                     [ em []
                         [ text <|
                             "Nachdem man oben alles eingegeben hat, kann man den Text markieren, kopieren und in den Briefkopf einfügen. "
-                                ++ "Danach sind nur noch die Betreffzeile, die RVG-Berechnung und ggf. die IBAN des Mandanten zu ergänzen."
+                                ++ "Danach sind noch Adresse, Aktenzeichen und die Betreffzeile sowie die Zahlungsdaten und die RVG-Berechnung anzupassen."
                         ]
                     ]
                 , result model
@@ -288,12 +298,37 @@ view model =
 modelInput : Model -> Html Msg
 modelInput model =
     div []
-        [ clientForm model.client |> map ClientForm
+        [ referenceNumberForm model.referenceNumber
+        , clientForm model.client |> map ClientForm
         , rightToDeductInputTaxForm model.rightToDeductInputTax
         , opponenGreetingForm model.opponentGreeting |> map OpponentGreetingForm
         , legalReasonForm model.legalReason
         , amountForm model.principalAmount model.sumOfAmount model.paymentToRepresentative
         , delayForm model.agreementOfBeginningOfDelay model.timeOfDelay model.defaultInterest
+        ]
+
+
+referenceNumberForm : ReferenceNumber -> Html Msg
+referenceNumberForm referenceNumber =
+    let
+        labelText : String
+        labelText =
+            "Unser Aktenzeichen"
+    in
+    form [ classes "mb-3 row g-3" ]
+        [ div [ class "col-md-3" ]
+            [ label [ class "form-label", for "referenceNumberForm" ] [ text labelText ]
+            , input
+                [ class "form-control"
+                , id "referenceNumberForm"
+                , type_ "text"
+                , placeholder labelText
+                , attribute "aria-label" labelText
+                , onInput ReferenceNumberForm
+                , value referenceNumber
+                ]
+                []
+            ]
         ]
 
 
@@ -304,92 +339,88 @@ clientForm client =
         innerForm =
             case client of
                 NaturalPerson g n a ->
-                    form [ class "mb-3" ]
-                        [ div [ classes "row g-3" ]
-                            [ div [ class "col-md-3" ]
-                                [ label [ class "form-label", for "clientFormNaturalPersonGender" ] [ text "Anrede" ]
-                                , select
-                                    [ class "form-select"
-                                    , id "clientFormNaturalPersonGender"
-                                    , attribute "aria-label" "Anrede"
-                                    , onInput (strToGender >> NaturalPersonFormGender)
-                                    ]
-                                    [ option [ value "Male", selected <| g == Male ] [ text "Herr" ]
-                                    , option [ value "Female", selected <| g == Female ] [ text "Frau" ]
-                                    , option [ value "Undefined", selected <| g == Undefined ] [ text "(ohne)" ]
-                                    ]
+                    form [ class "mb-3 row g-3" ]
+                        [ div [ class "col-md-3" ]
+                            [ label [ class "form-label", for "clientFormNaturalPersonGender" ] [ text "Anrede" ]
+                            , select
+                                [ class "form-select"
+                                , id "clientFormNaturalPersonGender"
+                                , attribute "aria-label" "Anrede"
+                                , onInput (strToGender >> NaturalPersonFormGender)
                                 ]
-                            , div [ class "col-md-3" ]
-                                [ label [ class "form-label", for "clientFormNaturalPersonName" ] [ text "Name" ]
-                                , input
-                                    [ class "form-control"
-                                    , id "clientFormNaturalPersonName"
-                                    , type_ "text"
-                                    , placeholder "Name"
-                                    , attribute "aria-label" "Name"
-                                    , onInput NaturalPersonFormName
-                                    , value n
-                                    ]
-                                    []
+                                [ option [ value "Male", selected <| g == Male ] [ text "Herr" ]
+                                , option [ value "Female", selected <| g == Female ] [ text "Frau" ]
+                                , option [ value "Undefined", selected <| g == Undefined ] [ text "(ohne)" ]
                                 ]
-                            , div [ class "col-md-3" ]
-                                [ label [ class "form-label", for "clientFormNaturalPersonAddress" ] [ text "Adresse" ]
-                                , input
-                                    [ class "form-control"
-                                    , id "clientFormNaturalPersonAddress"
-                                    , type_ "text"
-                                    , placeholder "Adresse"
-                                    , attribute "aria-label" "Adresse"
-                                    , onInput NaturalPersonFormAddress
-                                    , value a
-                                    ]
-                                    []
+                            ]
+                        , div [ class "col-md-3" ]
+                            [ label [ class "form-label", for "clientFormNaturalPersonName" ] [ text "Name" ]
+                            , input
+                                [ class "form-control"
+                                , id "clientFormNaturalPersonName"
+                                , type_ "text"
+                                , placeholder "Name"
+                                , attribute "aria-label" "Name"
+                                , onInput NaturalPersonFormName
+                                , value n
                                 ]
+                                []
+                            ]
+                        , div [ class "col-md-3" ]
+                            [ label [ class "form-label", for "clientFormNaturalPersonAddress" ] [ text "Adresse" ]
+                            , input
+                                [ class "form-control"
+                                , id "clientFormNaturalPersonAddress"
+                                , type_ "text"
+                                , placeholder "Adresse"
+                                , attribute "aria-label" "Adresse"
+                                , onInput NaturalPersonFormAddress
+                                , value a
+                                ]
+                                []
                             ]
                         ]
                         |> map NaturalPersonForm
 
                 LegalEntity g n a ->
-                    form [ class "mb-3" ]
-                        [ div [ classes "row g-3" ]
-                            [ div [ class "col-md-3" ]
-                                [ label [ class "form-label", for "clientFormLegalEntityGrammar" ] [ text "Grammatisches Geschlecht" ]
-                                , select
-                                    [ class "form-select"
-                                    , id "clientFormLegalEntityGrammar"
-                                    , attribute "aria-label" "Grammatisches Geschlecht"
-                                    , onInput (strToGrammar >> LegalEntityFormGrammar)
-                                    ]
-                                    [ option [ value "Der", selected <| g == Der ] [ text "der" ]
-                                    , option [ value "Die", selected <| g == Die ] [ text "die" ]
-                                    ]
+                    form [ classes "mb-3 row g-3" ]
+                        [ div [ class "col-md-3" ]
+                            [ label [ class "form-label", for "clientFormLegalEntityGrammar" ] [ text "Grammatisches Geschlecht" ]
+                            , select
+                                [ class "form-select"
+                                , id "clientFormLegalEntityGrammar"
+                                , attribute "aria-label" "Grammatisches Geschlecht"
+                                , onInput (strToGrammar >> LegalEntityFormGrammar)
                                 ]
-                            , div [ class "col-md-3" ]
-                                [ label [ class "form-label", for "clientFormLegalEntityName" ] [ text "Name" ]
-                                , input
-                                    [ class "form-control"
-                                    , id "clientFormLegalEntityName"
-                                    , type_ "text"
-                                    , placeholder "Name"
-                                    , attribute "aria-label" "Name"
-                                    , onInput LegalEntityFormName
-                                    , value n
-                                    ]
-                                    []
+                                [ option [ value "Der", selected <| g == Der ] [ text "der" ]
+                                , option [ value "Die", selected <| g == Die ] [ text "die" ]
                                 ]
-                            , div [ class "col-md-3" ]
-                                [ label [ class "form-label", for "clientFormLegalEntityAddress" ] [ text "Adresse" ]
-                                , input
-                                    [ class "form-control"
-                                    , id "clientFormLegalEntityAddress"
-                                    , type_ "text"
-                                    , placeholder "Adresse"
-                                    , attribute "aria-label" "Adresse"
-                                    , onInput LegalEntityFormAddress
-                                    , value a
-                                    ]
-                                    []
+                            ]
+                        , div [ class "col-md-3" ]
+                            [ label [ class "form-label", for "clientFormLegalEntityName" ] [ text "Name" ]
+                            , input
+                                [ class "form-control"
+                                , id "clientFormLegalEntityName"
+                                , type_ "text"
+                                , placeholder "Name"
+                                , attribute "aria-label" "Name"
+                                , onInput LegalEntityFormName
+                                , value n
                                 ]
+                                []
+                            ]
+                        , div [ class "col-md-3" ]
+                            [ label [ class "form-label", for "clientFormLegalEntityAddress" ] [ text "Adresse" ]
+                            , input
+                                [ class "form-control"
+                                , id "clientFormLegalEntityAddress"
+                                , type_ "text"
+                                , placeholder "Adresse"
+                                , attribute "aria-label" "Adresse"
+                                , onInput LegalEntityFormAddress
+                                , value a
+                                ]
+                                []
                             ]
                         ]
                         |> map LegalEntityForm
@@ -399,19 +430,17 @@ clientForm client =
             "Rechtsform unserer Mandantschaft"
     in
     div []
-        [ form [ class "mb-3" ]
-            [ div [ classes "row g-3" ]
-                [ div [ class "col-md-3" ]
-                    [ label [ class "form-label", for "clientFormSwitchClientForm" ] [ text labelTextGeneral ]
-                    , select
-                        [ class "form-select"
-                        , id "clientFormSwitchClientForm"
-                        , attribute "aria-label" labelTextGeneral
-                        , onInput (strToSwitchClientForm >> SwitchClientForm)
-                        ]
-                        [ option [ value "NaturalPerson" ] [ text "Natürliche Person" ]
-                        , option [ value "LegalEntity" ] [ text "Juristische Person / Gesellschaft" ]
-                        ]
+        [ form [ classes "mb-3 row g-3" ]
+            [ div [ class "col-md-3" ]
+                [ label [ class "form-label", for "clientFormSwitchClientForm" ] [ text labelTextGeneral ]
+                , select
+                    [ class "form-select"
+                    , id "clientFormSwitchClientForm"
+                    , attribute "aria-label" labelTextGeneral
+                    , onInput (strToSwitchClientForm >> SwitchClientForm)
+                    ]
+                    [ option [ value "NaturalPerson" ] [ text "Natürliche Person" ]
+                    , option [ value "LegalEntity" ] [ text "Juristische Person / Gesellschaft" ]
                     ]
                 ]
             ]
@@ -480,62 +509,64 @@ opponenGreetingForm opponentGreeting =
         labelTextGeneral =
             "Anrede im Brief"
     in
-    form [ class "mb-3" ]
-        [ div [ classes "row g-3" ]
-            [ div [ class "col-md-3" ]
-                [ label [ class "form-label", for "opponenGreetingFormSwitchOpponentGreetingForm" ] [ text labelTextGeneral ]
-                , select
-                    [ class "form-select"
-                    , id "opponenGreetingFormSwitchOpponentGreetingForm"
-                    , attribute "aria-label" labelTextGeneral
-                    , onInput switchOpponentGreetingForm
+    form [ classes "mb-3 row g-3" ]
+        [ div [ class "col-md-6" ]
+            [ div [ class "row" ]
+                [ div [ class "col-md-6" ]
+                    [ label [ class "form-label", for "opponenGreetingFormSwitchOpponentGreetingForm" ] [ text labelTextGeneral ]
+                    , select
+                        [ class "form-select"
+                        , id "opponenGreetingFormSwitchOpponentGreetingForm"
+                        , attribute "aria-label" labelTextGeneral
+                        , onInput switchOpponentGreetingForm
+                        ]
+                        [ option [ value "GreetingSir", selected <| opponentGreetingCase opponentGreeting (GreetingSir "") ] [ text "Sehr geehrter Herr ...," ]
+                        , option [ value "GreetingMadame", selected <| opponentGreetingCase opponentGreeting (GreetingMadame "") ] [ text "Sehr geehrte Frau ...," ]
+                        , option [ value "GreetingCommon", selected <| opponentGreetingCase opponentGreeting GreetingCommon ] [ text "Sehr geehrte Damen und Herren," ]
+                        ]
                     ]
-                    [ option [ value "GreetingSir", selected <| opponentGreetingCase opponentGreeting (GreetingSir "") ] [ text "Sehr geehrter Herr ...," ]
-                    , option [ value "GreetingMadame", selected <| opponentGreetingCase opponentGreeting (GreetingMadame "") ] [ text "Sehr geehrte Frau ...," ]
-                    , option [ value "GreetingCommon", selected <| opponentGreetingCase opponentGreeting GreetingCommon ] [ text "Sehr geehrte Damen und Herren," ]
-                    ]
+                , case opponentGreeting of
+                    GreetingSir txt ->
+                        let
+                            labelText =
+                                "Name des Empfängers"
+                        in
+                        div [ class "col-md-6" ]
+                            [ label [ class "form-label", for "opponentGreetingFormGreetingSir" ] [ text labelText ]
+                            , input
+                                [ class "form-control"
+                                , id "opponentGreetingFormGreetingSir"
+                                , type_ "text"
+                                , placeholder labelText
+                                , attribute "aria-label" labelText
+                                , onInput OpponentGreetingFormGreetingSir
+                                , value txt
+                                ]
+                                []
+                            ]
+
+                    GreetingMadame txt ->
+                        let
+                            labelText =
+                                "Name des Empfängers"
+                        in
+                        div [ class "col-md-6" ]
+                            [ label [ class "form-label", for "opponentGreetingFormGreetingMadame" ] [ text labelText ]
+                            , input
+                                [ class "form-control"
+                                , id "opponentGreetingFormGreetingMadame"
+                                , type_ "text"
+                                , placeholder labelText
+                                , attribute "aria-label" labelText
+                                , onInput OpponentGreetingFormGreetingMadame
+                                , value txt
+                                ]
+                                []
+                            ]
+
+                    GreetingCommon ->
+                        div [ class "col-md-6" ] []
                 ]
-            , case opponentGreeting of
-                GreetingSir txt ->
-                    let
-                        labelText =
-                            "Name des Empfängers"
-                    in
-                    div [ class "col-md-3" ]
-                        [ label [ class "form-label", for "opponentGreetingFormGreetingSir" ] [ text labelText ]
-                        , input
-                            [ class "form-control"
-                            , id "opponentGreetingFormGreetingSir"
-                            , type_ "text"
-                            , placeholder labelText
-                            , attribute "aria-label" labelText
-                            , onInput OpponentGreetingFormGreetingSir
-                            , value txt
-                            ]
-                            []
-                        ]
-
-                GreetingMadame txt ->
-                    let
-                        labelText =
-                            "Name des Empfängers"
-                    in
-                    div [ class "col-md-3" ]
-                        [ label [ class "form-label", for "opponentGreetingFormGreetingMadame" ] [ text labelText ]
-                        , input
-                            [ class "form-control"
-                            , id "opponentGreetingFormGreetingMadame"
-                            , type_ "text"
-                            , placeholder labelText
-                            , attribute "aria-label" labelText
-                            , onInput OpponentGreetingFormGreetingMadame
-                            , value txt
-                            ]
-                            []
-                        ]
-
-                GreetingCommon ->
-                    div [ class "col-md-3" ] []
             ]
         ]
 
@@ -559,21 +590,19 @@ legalReasonForm legalReason =
         labelText =
             "Rechtsgrund der Forderung"
     in
-    form [ class "mb-3" ]
-        [ div [ classes "row g-3" ]
-            [ div [ class "col-md-6" ]
-                [ label [ class "form-label", for "legalReasonForm" ] [ text labelText ]
-                , textarea
-                    [ class "form-control"
-                    , id "legalReasonForm"
-                    , rows 2
-                    , placeholder labelText
-                    , attribute "aria-label" labelText
-                    , onInput LegalReasonForm
-                    , value legalReason
-                    ]
-                    []
+    form [ class "mb-3 row g-3" ]
+        [ div [ class "col-md-6" ]
+            [ label [ class "form-label", for "legalReasonForm" ] [ text labelText ]
+            , textarea
+                [ class "form-control"
+                , id "legalReasonForm"
+                , rows 2
+                , placeholder labelText
+                , attribute "aria-label" labelText
+                , onInput LegalReasonForm
+                , value legalReason
                 ]
+                []
             ]
         ]
 
@@ -593,8 +622,8 @@ amountForm principalAmount sumOfAmount paymentToRepresentative =
         labelText3 =
             "Zahlung an Kanzlei"
     in
-    div [ classes "mb-3 row g-3" ]
-        [ form [ class "col-md-3" ]
+    form [ classes "mb-3 row g-3" ]
+        [ div [ class "col-md-3" ]
             [ label [ class "form-label", for "principalAmountForm" ] [ text labelText1 ]
             , input
                 [ class "form-control"
@@ -607,7 +636,7 @@ amountForm principalAmount sumOfAmount paymentToRepresentative =
                 ]
                 []
             ]
-        , form [ class "col-md-3" ]
+        , div [ class "col-md-3" ]
             [ label [ class "form-label", for "sumOfAmountForm" ] [ text labelText2 ]
             , input
                 [ class "form-control"
@@ -620,7 +649,7 @@ amountForm principalAmount sumOfAmount paymentToRepresentative =
                 ]
                 []
             ]
-        , form [ class "col-md-3" ]
+        , div [ class "col-md-3" ]
             [ div [ class "form-check" ]
                 [ input
                     [ class "form-check-input"
@@ -640,7 +669,7 @@ amountForm principalAmount sumOfAmount paymentToRepresentative =
 
 delayForm : AgreementOfBeginningOfDelay -> TimeOfDelay -> DefaultInterest -> Html Msg
 delayForm agreementOfBeginningOfDelay timeOfDelay defaultInterest =
-    div [ classes "mb-3 row g-3" ]
+    form [ classes "mb-3 row g-3" ]
         [ agreementOfBeginningOfDelayForm agreementOfBeginningOfDelay
         , timeOfDelayForm timeOfDelay
         , defaultInterestForm defaultInterest |> map DefaultInterestForm
@@ -654,7 +683,7 @@ agreementOfBeginningOfDelayForm agreementOfBeginningOfDelay =
         labelText =
             "Fälligkeit nach Rechnung in Tagen"
     in
-    form [ class "col-md-3" ]
+    div [ class "col-md-3" ]
         [ label [ class "form-label", for "agreementOfBeginningOfDelayForm" ] [ text labelText ]
         , input
             [ class "form-control"
@@ -676,7 +705,7 @@ timeOfDelayForm timeOfDelay =
         labelText =
             "Beginn des Verzugs"
     in
-    form [ class "col-md-3" ]
+    div [ class "col-md-3" ]
         [ label [ class "form-label", for "timeOfDelayForm" ] [ text labelText ]
         , input
             [ class "form-control"
@@ -702,7 +731,7 @@ defaultInterestForm defaultInterest =
         labelText2 =
             "Begründung für den höheren Verzugszins"
     in
-    form [ class "col-md-6" ]
+    div [ class "col-md-6" ]
         [ div [ class "row" ]
             [ div [ class "col-md-6" ]
                 [ label [ class "form-label", for "defaultInterestFormSwitchDefaultInterest" ] [ text labelText1 ]
@@ -754,22 +783,25 @@ switchDefaultInterestForm s =
 result : Model -> Html Msg
 result model =
     div [ class "col-8" ]
-        [ p [ class "pt-5" ] (rubrum model.client)
+        [ div [ class "pt-5" ] (rubrum model.referenceNumber model.client)
         , p [] [ text <| greeting model.opponentGreeting ]
         , p [] [ text <| representation model.client ]
+        , div [] (summary model.referenceNumber model.client model.paymentToRepresentative model.sumOfAmount)
+        , p [] [ text "Im Einzelnen:" ]
         , p [] [ text <| claim model.client model.legalReason model.principalAmount ]
         , p [] [ text <| default model.client model.agreementOfBeginningOfDelay model.timeOfDelay ]
         , p [] [ text <| defaultInterestText model.defaultInterest ]
-        , p [] [ text <| requestForPayment model.client model.sumOfAmount model.paymentToRepresentative ]
-        , lawyersFees model.client model.rightToDeductInputTax
+        , p [] [ text <| sumOfAmoutText model.sumOfAmount ]
+        , p [] [ text <| requestForPayment model.client model.paymentToRepresentative ]
+        , lawyersFees model.client model.principalAmount model.rightToDeductInputTax
         , p [] [ text <| judicialEnforcement model.client ]
         , p [] [ text "Die für uns zuständige Rechtsanwaltskammer ist die Rechtsanwaltskammer Sachsen, Glacisstraße 6, 01099 Dresden. Die E-Mail-Adresse der Rechtsanwaltskammer Sachsen lautet info@rak-sachsen.de." ]
         , p [] [ text "Mit freundlichen Grüßen" ]
         ]
 
 
-rubrum : Client -> List (Html Msg)
-rubrum client =
+rubrum : ReferenceNumber -> Client -> List (Html Msg)
+rubrum referenceNumber client =
     let
         name : Name
         name =
@@ -780,7 +812,9 @@ rubrum client =
                 LegalEntity _ n _ ->
                     n
     in
-    [ strong [] [ text <| name ++ " ./. ..." ], br [] [], strong [] [ text "wegen ..." ] ]
+    [ p [] [ text <| "Aktenzeichen: " ++ referenceNumber ]
+    , p [] [ strong [] [ text <| name ++ " ./. ..." ], br [] [], strong [] [ text "wegen ..." ] ]
+    ]
 
 
 greeting : OpponentGreeting -> String
@@ -835,6 +869,47 @@ representation client =
         ++ " beauftragt und bevollmächtigt."
 
 
+summary : ReferenceNumber -> Client -> PaymentToRepresentative -> SumOfAmount -> List (Html Msg)
+summary referenceNumber client paymentToRepresentative sumOfAmount =
+    let
+        clientName : Name
+        clientName =
+            case client of
+                NaturalPerson _ n _ ->
+                    n
+
+                LegalEntity _ n _ ->
+                    n
+    in
+    if paymentToRepresentative then
+        [ p [] [ text "Zusammenfassung:" ]
+        , p [] [ text "Bitte überweisen Sie aus den nachfolgenden Gründen binnen 10 Tagen nach Erhalt dieses Schreibens folgenden Betrag:" ]
+        , ul [ class "list-without-marker" ]
+            [ li [] [ text <| "Forderung und Rechtsanwaltskosten: EUR ... ← Hier Summe ausrechnen" ]
+            , li [] [ text "IBAN: DE..." ]
+            , li [] [ text <| "Verwendungszweck: " ++ clientName ++ ", Az. " ++ referenceNumber ]
+            , li [] [ text "Kontoinhaber: GOB Legal Rechtsanwaltsgesellschaft mbH" ]
+            ]
+        ]
+
+    else
+        [ p [] [ text "Zusammenfassung:" ]
+        , p [] [ text "Bitte überweisen Sie aus den nachfolgenden Gründen binnen 10 Tagen nach Erhalt dieses Schreibens folgende Beträge:" ]
+        , ul [ class "list-without-marker" ]
+            [ li [] [ text <| "Forderung: EUR " ++ sumOfAmount ]
+            , li [] [ text "IBAN: ..." ]
+            , li [] [ text "Verwendungszweck: Forderung gemäß Schreiben der GOB Legal Rechtsanwaltsgesellschaft vom ..." ]
+            , li [] [ text <| "Kontoinhaber: " ++ clientName ]
+            ]
+        , ul [ class "list-without-marker" ]
+            [ li [] [ text "Rechtsanwaltskosten: EUR ..." ]
+            , li [] [ text "IBAN: DE..." ]
+            , li [] [ text <| "Verwendungszweck: " ++ clientName ++ ", Az. " ++ referenceNumber ]
+            , li [] [ text "Kontoinhaber: GOB Legal Rechtsanwaltsgesellschaft mbH" ]
+            ]
+        ]
+
+
 claim : Client -> LegalReason -> PrincipalAmount -> String
 claim client legalReason principalAmount =
     "Sie schulden " ++ clientDative client ++ " " ++ legalReason ++ " noch einen Betrag in Höhe von EUR " ++ principalAmount ++ "."
@@ -864,26 +939,26 @@ defaultInterestText defaultInterestValue =
         ++ " Die Zinsberechnung entnehmen Sie bitte der beiliegenden Forderungsaufstellung."
 
 
-requestForPayment : Client -> SumOfAmount -> PaymentToRepresentative -> String
-requestForPayment client sumOfAmount paymentToRepresentative =
+sumOfAmoutText : SumOfAmount -> String
+sumOfAmoutText sumOfAmount =
+    "Die Gesamtforderung (ohne Rechtsanwaltskosten) beträgt EUR " ++ sumOfAmount ++ "."
+
+
+requestForPayment : Client -> PaymentToRepresentative -> String
+requestForPayment client paymentToRepresentative =
     "Namens "
         ++ clientGenitive client
-        ++ " fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag "
-        ++ "in Höhe von EUR "
-        ++ sumOfAmount
-        ++ " binnen 10 Tagen "
+        ++ " fordere ich Sie auf, den Betrag wie oben bezeichnet zu überweisen."
         ++ (if paymentToRepresentative then
-                "auf unser im Briefbogen angegebenes Konto zu überweisen. Wir sind zum Empfang der Zahlung befugt."
+                " Wir sind zum Empfang der Zahlung befugt."
 
             else
-                "auf das Konto "
-                    ++ clientGenitive client
-                    ++ " mit der IBAN ... zu überweisen."
+                ""
            )
 
 
-lawyersFees : Client -> RightToDeductInputTax -> Html Msg
-lawyersFees client rightToDeductInputTax =
+lawyersFees : Client -> PrincipalAmount -> RightToDeductInputTax -> Html Msg
+lawyersFees client principalAmount rightToDeductInputTax =
     div []
         [ p []
             [ text <|
@@ -891,13 +966,13 @@ lawyersFees client rightToDeductInputTax =
                     ++ clientGenitive client
                     ++ " von den Kosten unserer Beauftragung. Diese Kosten berechnen sich nach dem Rechtsanwaltsvergütungsgesetz wie folgt:"
             ]
-        , p [] [ text "Gegenstandswert: EUR ..." ]
+        , p [] [ text <| "Gegenstandswert: EUR " ++ principalAmount ]
         , div [ class "row" ]
             [ div [ classes "col-9 offset-1" ]
                 [ table [ classes "table table-borderless table-sm align-top" ]
                     [ tbody []
                         ([ tr []
-                            [ td [] [ text "1,3 Geschäftsgebühr Nr. 2300 VV RVG:" ]
+                            [ td [] [ text "0,9 bzw. 1,3 Geschäftsgebühr Nr. 2300 VV RVG:" ]
                             , td [ class "rvg-table-eur" ] [ text "EUR ..." ]
                             ]
                          , tr []
@@ -928,7 +1003,7 @@ lawyersFees client rightToDeductInputTax =
         , rightToDeductInputTaxText client rightToDeductInputTax
         , p []
             [ text <|
-                "Sie können die Freistellung durch Erklärung oder dadurch bewirken, dass Sie den Betrag unter Angabe des Aktenzeichens auf unser auf der erste Seite dieses Schreibens unten angegebenes Konto überweisen. "
+                "Sie können die Freistellung u. a. dadurch bewirken, dass Sie die Rechtsanwaltskosten an uns wie oben angegeben überweisen. "
                     ++ "Für die Freistellung setze ich Ihnen ebenfalls eine Frist von 10 Tagen nach Zugang dieses Schreibens. Sollte die Frist fruchtlos verstreichen, wird "
                     ++ clientNominative client
                     ++ " die Freistellung ablehnen und Ersatz in Geld verlangen."

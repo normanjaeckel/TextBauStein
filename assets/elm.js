@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.S.C === region.X.C)
+	if (region.T.C === region.Y.C)
 	{
-		return 'on line ' + region.S.C;
+		return 'on line ' + region.T.C;
 	}
-	return 'on lines ' + region.S.C + ' through ' + region.X.C;
+	return 'on lines ' + region.T.C + ' through ' + region.Y.C;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aD,
-		impl.aL,
-		impl.aJ,
+		impl.aE,
+		impl.aM,
+		impl.aK,
 		function() { return function() {} }
 	);
 });
@@ -2720,8 +2720,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		p: func(record.p),
-		T: record.T,
-		Q: record.Q
+		U: record.U,
+		R: record.R
 	}
 });
 
@@ -2990,10 +2990,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.p;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.T;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.U;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.Q) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.R) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aD,
-		impl.aL,
-		impl.aJ,
+		impl.aE,
+		impl.aM,
+		impl.aK,
 		function(sendToApp, initialModel) {
-			var view = impl.aM;
+			var view = impl.aN;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aD,
-		impl.aL,
-		impl.aJ,
+		impl.aE,
+		impl.aM,
+		impl.aK,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.R && impl.R(sendToApp)
-			var view = impl.aM;
+			var divertHrefToApp = impl.S && impl.S(sendToApp)
+			var view = impl.aN;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aw);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.ax);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aK) && (_VirtualDom_doc.title = title = doc.aK);
+				(title !== doc.aL) && (_VirtualDom_doc.title = title = doc.aL);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aF;
-	var onUrlRequest = impl.aG;
+	var onUrlChange = impl.aG;
+	var onUrlRequest = impl.aH;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		R: function(sendToApp)
+		S: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.aj === next.aj
-							&& curr.aa === next.aa
-							&& curr.ag.a === next.ag.a
+							&& curr.ak === next.ak
+							&& curr.ab === next.ab
+							&& curr.ah.a === next.ah.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aD: function(flags)
+		aE: function(flags)
 		{
-			return A3(impl.aD, flags, _Browser_getUrl(), key);
+			return A3(impl.aE, flags, _Browser_getUrl(), key);
 		},
+		aN: impl.aN,
 		aM: impl.aM,
-		aL: impl.aL,
-		aJ: impl.aJ
+		aK: impl.aK
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aB: 'hidden', ax: 'visibilitychange' }
+		? { aC: 'hidden', ay: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aB: 'mozHidden', ax: 'mozvisibilitychange' }
+		? { aC: 'mozHidden', ay: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aB: 'msHidden', ax: 'msvisibilitychange' }
+		? { aC: 'msHidden', ay: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aB: 'webkitHidden', ax: 'webkitvisibilitychange' }
-		: { aB: 'hidden', ax: 'visibilitychange' };
+		? { aC: 'webkitHidden', ay: 'webkitvisibilitychange' }
+		: { aC: 'hidden', ay: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		an: _Browser_getScene(),
-		aq: {
-			as: _Browser_window.pageXOffset,
-			at: _Browser_window.pageYOffset,
-			ar: _Browser_doc.documentElement.clientWidth,
-			_: _Browser_doc.documentElement.clientHeight
+		ao: _Browser_getScene(),
+		ar: {
+			at: _Browser_window.pageXOffset,
+			au: _Browser_window.pageYOffset,
+			as: _Browser_doc.documentElement.clientWidth,
+			aa: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		ar: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		_: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		as: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		aa: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			an: {
-				ar: node.scrollWidth,
-				_: node.scrollHeight
+			ao: {
+				as: node.scrollWidth,
+				aa: node.scrollHeight
 			},
-			aq: {
-				as: node.scrollLeft,
-				at: node.scrollTop,
-				ar: node.clientWidth,
-				_: node.clientHeight
+			ar: {
+				at: node.scrollLeft,
+				au: node.scrollTop,
+				as: node.clientWidth,
+				aa: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			an: _Browser_getScene(),
-			aq: {
-				as: x,
-				at: y,
-				ar: _Browser_doc.documentElement.clientWidth,
-				_: _Browser_doc.documentElement.clientHeight
+			ao: _Browser_getScene(),
+			ar: {
+				at: x,
+				au: y,
+				as: _Browser_doc.documentElement.clientWidth,
+				aa: _Browser_doc.documentElement.clientHeight
 			},
-			az: {
-				as: x + rect.left,
-				at: y + rect.top,
-				ar: rect.width,
-				_: rect.height
+			aA: {
+				at: x + rect.left,
+				au: y + rect.top,
+				as: rect.width,
+				aa: rect.height
 			}
 		};
 	});
@@ -4373,17 +4373,19 @@ function _Browser_load(url)
 var $elm$core$Basics$False = 1;
 var $author$project$Main$GreetingCommon = {$: 2};
 var $author$project$Main$LegalDefaultInterest = {$: 0};
-var $author$project$Main$Model = function (client) {
-	return function (opponentGreeting) {
-		return function (legalReason) {
-			return function (principalAmount) {
-				return function (sumOfAmount) {
-					return function (paymentToRepresentative) {
-						return function (agreementOfBeginningOfDelay) {
-							return function (timeOfDelay) {
-								return function (defaultInterest) {
-									return function (rightToDeductInputTax) {
-										return {H: agreementOfBeginningOfDelay, c: client, B: defaultInterest, I: legalReason, x: opponentGreeting, J: paymentToRepresentative, K: principalAmount, L: rightToDeductInputTax, M: sumOfAmount, N: timeOfDelay};
+var $author$project$Main$Model = function (referenceNumber) {
+	return function (client) {
+		return function (opponentGreeting) {
+			return function (legalReason) {
+				return function (principalAmount) {
+					return function (sumOfAmount) {
+						return function (paymentToRepresentative) {
+							return function (agreementOfBeginningOfDelay) {
+								return function (timeOfDelay) {
+									return function (defaultInterest) {
+										return function (rightToDeductInputTax) {
+											return {L: agreementOfBeginningOfDelay, a: client, B: defaultInterest, M: legalReason, x: opponentGreeting, D: paymentToRepresentative, E: principalAmount, F: referenceNumber, N: rightToDeductInputTax, G: sumOfAmount, O: timeOfDelay};
+										};
 									};
 								};
 							};
@@ -4412,7 +4414,7 @@ var $author$project$Main$initClient = function (scf) {
 		return A3($author$project$Main$LegalEntity, 1, 'Muster GmbH', 'Musterstraße 1, 12345 Musterstadt');
 	}
 };
-var $author$project$Main$init = $author$project$Main$Model(
+var $author$project$Main$init = $author$project$Main$Model('')(
 	$author$project$Main$initClient(0))($author$project$Main$GreetingCommon)('aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ...')('0,00')('0,00')(false)('10')('...')($author$project$Main$LegalDefaultInterest)(false);
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
@@ -4819,7 +4821,7 @@ var $elm$core$Array$treeFromBuilder = F2(
 	});
 var $elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.a) {
+		if (!builder.b) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
 				$elm$core$Elm$JsArray$length(builder.d),
@@ -4827,11 +4829,11 @@ var $elm$core$Array$builderToArray = F2(
 				$elm$core$Elm$JsArray$empty,
 				builder.d);
 		} else {
-			var treeLen = builder.a * $elm$core$Array$branchFactor;
+			var treeLen = builder.b * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
 			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.e) : builder.e;
-			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.a);
+			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.b);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
 				$elm$core$Elm$JsArray$length(builder.d) + treeLen,
@@ -4850,7 +4852,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{e: nodeList, a: (len / $elm$core$Array$branchFactor) | 0, d: tail});
+					{e: nodeList, b: (len / $elm$core$Array$branchFactor) | 0, d: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -4917,7 +4919,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {Z: fragment, aa: host, ae: path, ag: port_, aj: protocol, ak: query};
+		return {_: fragment, ab: host, af: path, ah: port_, ak: protocol, al: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5202,19 +5204,19 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $elm$browser$Browser$sandbox = function (impl) {
 	return _Browser_element(
 		{
-			aD: function (_v0) {
-				return _Utils_Tuple2(impl.aD, $elm$core$Platform$Cmd$none);
+			aE: function (_v0) {
+				return _Utils_Tuple2(impl.aE, $elm$core$Platform$Cmd$none);
 			},
-			aJ: function (_v1) {
+			aK: function (_v1) {
 				return $elm$core$Platform$Sub$none;
 			},
-			aL: F2(
+			aM: F2(
 				function (msg, model) {
 					return _Utils_Tuple2(
-						A2(impl.aL, msg, model),
+						A2(impl.aM, msg, model),
 						$elm$core$Platform$Cmd$none);
 				}),
-			aM: impl.aM
+			aN: impl.aN
 		});
 };
 var $author$project$Main$GreetingMadame = function (a) {
@@ -5230,11 +5232,16 @@ var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 0:
+				var rnf = msg.a;
+				return _Utils_update(
+					model,
+					{F: rnf});
+			case 1:
 				var cf = msg.a;
 				switch (cf.$) {
 					case 1:
 						var npf = cf.a;
-						var _v2 = model.c;
+						var _v2 = model.a;
 						if (!_v2.$) {
 							var g = _v2.a;
 							var n = _v2.b;
@@ -5245,21 +5252,21 @@ var $author$project$Main$update = F2(
 									return _Utils_update(
 										model,
 										{
-											c: A3($author$project$Main$NaturalPerson, newGender, n, a)
+											a: A3($author$project$Main$NaturalPerson, newGender, n, a)
 										});
 								case 1:
 									var newName = npf.a;
 									return _Utils_update(
 										model,
 										{
-											c: A3($author$project$Main$NaturalPerson, g, newName, a)
+											a: A3($author$project$Main$NaturalPerson, g, newName, a)
 										});
 								default:
 									var newAddress = npf.a;
 									return _Utils_update(
 										model,
 										{
-											c: A3($author$project$Main$NaturalPerson, g, n, newAddress)
+											a: A3($author$project$Main$NaturalPerson, g, n, newAddress)
 										});
 							}
 						} else {
@@ -5267,7 +5274,7 @@ var $author$project$Main$update = F2(
 						}
 					case 2:
 						var lef = cf.a;
-						var _v4 = model.c;
+						var _v4 = model.a;
 						if (!_v4.$) {
 							return model;
 						} else {
@@ -5280,21 +5287,21 @@ var $author$project$Main$update = F2(
 									return _Utils_update(
 										model,
 										{
-											c: A3($author$project$Main$LegalEntity, newGrammar, n, a)
+											a: A3($author$project$Main$LegalEntity, newGrammar, n, a)
 										});
 								case 1:
 									var newName = lef.a;
 									return _Utils_update(
 										model,
 										{
-											c: A3($author$project$Main$LegalEntity, g, newName, a)
+											a: A3($author$project$Main$LegalEntity, g, newName, a)
 										});
 								default:
 									var newAddress = lef.a;
 									return _Utils_update(
 										model,
 										{
-											c: A3($author$project$Main$LegalEntity, g, n, newAddress)
+											a: A3($author$project$Main$LegalEntity, g, n, newAddress)
 										});
 							}
 						}
@@ -5303,10 +5310,10 @@ var $author$project$Main$update = F2(
 						return _Utils_update(
 							model,
 							{
-								c: $author$project$Main$initClient(scf)
+								a: $author$project$Main$initClient(scf)
 							});
 				}
-			case 1:
+			case 2:
 				var ogf = msg.a;
 				switch (ogf.$) {
 					case 0:
@@ -5328,37 +5335,37 @@ var $author$project$Main$update = F2(
 							model,
 							{x: $author$project$Main$GreetingCommon});
 				}
-			case 6:
+			case 7:
 				var aobdf = msg.a;
 				return _Utils_update(
 					model,
-					{H: aobdf});
-			case 7:
+					{L: aobdf});
+			case 8:
 				var tod = msg.a;
 				return _Utils_update(
 					model,
-					{N: tod});
-			case 2:
+					{O: tod});
+			case 3:
 				var lr = msg.a;
 				return _Utils_update(
 					model,
-					{I: lr});
-			case 3:
+					{M: lr});
+			case 4:
 				var pa = msg.a;
 				return _Utils_update(
 					model,
-					{K: pa});
-			case 4:
+					{E: pa});
+			case 5:
 				var sa = msg.a;
 				return _Utils_update(
 					model,
-					{M: sa});
-			case 5:
+					{G: sa});
+			case 6:
 				var ptr = msg.a;
 				return _Utils_update(
 					model,
-					{J: ptr});
-			case 8:
+					{D: ptr});
+			case 9:
 				var dif = msg.a;
 				if (!dif.$) {
 					return _Utils_update(
@@ -5376,7 +5383,7 @@ var $author$project$Main$update = F2(
 				var rdit = msg.a;
 				return _Utils_update(
 					model,
-					{L: rdit});
+					{N: rdit});
 		}
 	});
 var $elm$json$Json$Encode$string = _Json_wrap;
@@ -5428,19 +5435,19 @@ var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$html$Html$main_ = _VirtualDom_node('main');
 var $author$project$Main$ClientForm = function (a) {
-	return {$: 0, a: a};
-};
-var $author$project$Main$OpponentGreetingForm = function (a) {
 	return {$: 1, a: a};
 };
+var $author$project$Main$OpponentGreetingForm = function (a) {
+	return {$: 2, a: a};
+};
 var $author$project$Main$PaymentToRepresentativeForm = function (a) {
-	return {$: 5, a: a};
+	return {$: 6, a: a};
 };
 var $author$project$Main$PrincipalAmountForm = function (a) {
-	return {$: 3, a: a};
+	return {$: 4, a: a};
 };
 var $author$project$Main$SumOfAmountForm = function (a) {
-	return {$: 4, a: a};
+	return {$: 5, a: a};
 };
 var $elm$virtual_dom$VirtualDom$attribute = F2(
 	function (key, value) {
@@ -5531,7 +5538,7 @@ var $author$project$Main$amountForm = F3(
 		var labelText2 = 'Gesamtforderung in EUR';
 		var labelText1 = 'Hauptforderung in EUR';
 		return A2(
-			$elm$html$Html$div,
+			$elm$html$Html$form,
 			_List_fromArray(
 				[
 					$author$project$Main$classes('mb-3 row g-3')
@@ -5539,7 +5546,7 @@ var $author$project$Main$amountForm = F3(
 			_List_fromArray(
 				[
 					A2(
-					$elm$html$Html$form,
+					$elm$html$Html$div,
 					_List_fromArray(
 						[
 							$elm$html$Html$Attributes$class('col-md-3')
@@ -5572,7 +5579,7 @@ var $author$project$Main$amountForm = F3(
 							_List_Nil)
 						])),
 					A2(
-					$elm$html$Html$form,
+					$elm$html$Html$div,
 					_List_fromArray(
 						[
 							$elm$html$Html$Attributes$class('col-md-3')
@@ -5605,7 +5612,7 @@ var $author$project$Main$amountForm = F3(
 							_List_Nil)
 						])),
 					A2(
-					$elm$html$Html$form,
+					$elm$html$Html$div,
 					_List_fromArray(
 						[
 							$elm$html$Html$Attributes$class('col-md-3')
@@ -5711,7 +5718,7 @@ var $author$project$Main$clientForm = function (client) {
 					$elm$html$Html$form,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('mb-3')
+							$elm$html$Html$Attributes$class('mb-3 row g-3')
 						]),
 					_List_fromArray(
 						[
@@ -5719,142 +5726,133 @@ var $author$project$Main$clientForm = function (client) {
 							$elm$html$Html$div,
 							_List_fromArray(
 								[
-									$author$project$Main$classes('row g-3')
+									$elm$html$Html$Attributes$class('col-md-3')
 								]),
 							_List_fromArray(
 								[
 									A2(
-									$elm$html$Html$div,
+									$elm$html$Html$label,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('col-md-3')
+											$elm$html$Html$Attributes$class('form-label'),
+											$elm$html$Html$Attributes$for('clientFormNaturalPersonGender')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Anrede')
+										])),
+									A2(
+									$elm$html$Html$select,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('form-select'),
+											$elm$html$Html$Attributes$id('clientFormNaturalPersonGender'),
+											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Anrede'),
+											$elm$html$Html$Events$onInput(
+											A2($elm$core$Basics$composeR, $author$project$Main$strToGender, $author$project$Main$NaturalPersonFormGender))
 										]),
 									_List_fromArray(
 										[
 											A2(
-											$elm$html$Html$label,
+											$elm$html$Html$option,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('form-label'),
-													$elm$html$Html$Attributes$for('clientFormNaturalPersonGender')
+													$elm$html$Html$Attributes$value('Male'),
+													$elm$html$Html$Attributes$selected(!g)
 												]),
 											_List_fromArray(
 												[
-													$elm$html$Html$text('Anrede')
+													$elm$html$Html$text('Herr')
 												])),
 											A2(
-											$elm$html$Html$select,
+											$elm$html$Html$option,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('form-select'),
-													$elm$html$Html$Attributes$id('clientFormNaturalPersonGender'),
-													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Anrede'),
-													$elm$html$Html$Events$onInput(
-													A2($elm$core$Basics$composeR, $author$project$Main$strToGender, $author$project$Main$NaturalPersonFormGender))
+													$elm$html$Html$Attributes$value('Female'),
+													$elm$html$Html$Attributes$selected(g === 1)
 												]),
 											_List_fromArray(
 												[
-													A2(
-													$elm$html$Html$option,
-													_List_fromArray(
-														[
-															$elm$html$Html$Attributes$value('Male'),
-															$elm$html$Html$Attributes$selected(!g)
-														]),
-													_List_fromArray(
-														[
-															$elm$html$Html$text('Herr')
-														])),
-													A2(
-													$elm$html$Html$option,
-													_List_fromArray(
-														[
-															$elm$html$Html$Attributes$value('Female'),
-															$elm$html$Html$Attributes$selected(g === 1)
-														]),
-													_List_fromArray(
-														[
-															$elm$html$Html$text('Frau')
-														])),
-													A2(
-													$elm$html$Html$option,
-													_List_fromArray(
-														[
-															$elm$html$Html$Attributes$value('Undefined'),
-															$elm$html$Html$Attributes$selected(g === 2)
-														]),
-													_List_fromArray(
-														[
-															$elm$html$Html$text('(ohne)')
-														]))
+													$elm$html$Html$text('Frau')
+												])),
+											A2(
+											$elm$html$Html$option,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$value('Undefined'),
+													$elm$html$Html$Attributes$selected(g === 2)
+												]),
+											_List_fromArray(
+												[
+													$elm$html$Html$text('(ohne)')
 												]))
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('col-md-3')
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$label,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('form-label'),
-													$elm$html$Html$Attributes$for('clientFormNaturalPersonName')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text('Name')
-												])),
-											A2(
-											$elm$html$Html$input,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('form-control'),
-													$elm$html$Html$Attributes$id('clientFormNaturalPersonName'),
-													$elm$html$Html$Attributes$type_('text'),
-													$elm$html$Html$Attributes$placeholder('Name'),
-													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Name'),
-													$elm$html$Html$Events$onInput($author$project$Main$NaturalPersonFormName),
-													$elm$html$Html$Attributes$value(n)
-												]),
-											_List_Nil)
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('col-md-3')
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$label,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('form-label'),
-													$elm$html$Html$Attributes$for('clientFormNaturalPersonAddress')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text('Adresse')
-												])),
-											A2(
-											$elm$html$Html$input,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('form-control'),
-													$elm$html$Html$Attributes$id('clientFormNaturalPersonAddress'),
-													$elm$html$Html$Attributes$type_('text'),
-													$elm$html$Html$Attributes$placeholder('Adresse'),
-													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Adresse'),
-													$elm$html$Html$Events$onInput($author$project$Main$NaturalPersonFormAddress),
-													$elm$html$Html$Attributes$value(a)
-												]),
-											_List_Nil)
 										]))
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('col-md-3')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('form-label'),
+											$elm$html$Html$Attributes$for('clientFormNaturalPersonName')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Name')
+										])),
+									A2(
+									$elm$html$Html$input,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('form-control'),
+											$elm$html$Html$Attributes$id('clientFormNaturalPersonName'),
+											$elm$html$Html$Attributes$type_('text'),
+											$elm$html$Html$Attributes$placeholder('Name'),
+											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Name'),
+											$elm$html$Html$Events$onInput($author$project$Main$NaturalPersonFormName),
+											$elm$html$Html$Attributes$value(n)
+										]),
+									_List_Nil)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('col-md-3')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('form-label'),
+											$elm$html$Html$Attributes$for('clientFormNaturalPersonAddress')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Adresse')
+										])),
+									A2(
+									$elm$html$Html$input,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('form-control'),
+											$elm$html$Html$Attributes$id('clientFormNaturalPersonAddress'),
+											$elm$html$Html$Attributes$type_('text'),
+											$elm$html$Html$Attributes$placeholder('Adresse'),
+											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Adresse'),
+											$elm$html$Html$Events$onInput($author$project$Main$NaturalPersonFormAddress),
+											$elm$html$Html$Attributes$value(a)
+										]),
+									_List_Nil)
 								]))
 						])));
 		} else {
@@ -5868,7 +5866,7 @@ var $author$project$Main$clientForm = function (client) {
 					$elm$html$Html$form,
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('mb-3')
+							$author$project$Main$classes('mb-3 row g-3')
 						]),
 					_List_fromArray(
 						[
@@ -5876,131 +5874,122 @@ var $author$project$Main$clientForm = function (client) {
 							$elm$html$Html$div,
 							_List_fromArray(
 								[
-									$author$project$Main$classes('row g-3')
+									$elm$html$Html$Attributes$class('col-md-3')
 								]),
 							_List_fromArray(
 								[
 									A2(
-									$elm$html$Html$div,
+									$elm$html$Html$label,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('col-md-3')
+											$elm$html$Html$Attributes$class('form-label'),
+											$elm$html$Html$Attributes$for('clientFormLegalEntityGrammar')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Grammatisches Geschlecht')
+										])),
+									A2(
+									$elm$html$Html$select,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('form-select'),
+											$elm$html$Html$Attributes$id('clientFormLegalEntityGrammar'),
+											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Grammatisches Geschlecht'),
+											$elm$html$Html$Events$onInput(
+											A2($elm$core$Basics$composeR, $author$project$Main$strToGrammar, $author$project$Main$LegalEntityFormGrammar))
 										]),
 									_List_fromArray(
 										[
 											A2(
-											$elm$html$Html$label,
+											$elm$html$Html$option,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('form-label'),
-													$elm$html$Html$Attributes$for('clientFormLegalEntityGrammar')
+													$elm$html$Html$Attributes$value('Der'),
+													$elm$html$Html$Attributes$selected(!g)
 												]),
 											_List_fromArray(
 												[
-													$elm$html$Html$text('Grammatisches Geschlecht')
+													$elm$html$Html$text('der')
 												])),
 											A2(
-											$elm$html$Html$select,
+											$elm$html$Html$option,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('form-select'),
-													$elm$html$Html$Attributes$id('clientFormLegalEntityGrammar'),
-													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Grammatisches Geschlecht'),
-													$elm$html$Html$Events$onInput(
-													A2($elm$core$Basics$composeR, $author$project$Main$strToGrammar, $author$project$Main$LegalEntityFormGrammar))
+													$elm$html$Html$Attributes$value('Die'),
+													$elm$html$Html$Attributes$selected(g === 1)
 												]),
 											_List_fromArray(
 												[
-													A2(
-													$elm$html$Html$option,
-													_List_fromArray(
-														[
-															$elm$html$Html$Attributes$value('Der'),
-															$elm$html$Html$Attributes$selected(!g)
-														]),
-													_List_fromArray(
-														[
-															$elm$html$Html$text('der')
-														])),
-													A2(
-													$elm$html$Html$option,
-													_List_fromArray(
-														[
-															$elm$html$Html$Attributes$value('Die'),
-															$elm$html$Html$Attributes$selected(g === 1)
-														]),
-													_List_fromArray(
-														[
-															$elm$html$Html$text('die')
-														]))
+													$elm$html$Html$text('die')
 												]))
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('col-md-3')
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$label,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('form-label'),
-													$elm$html$Html$Attributes$for('clientFormLegalEntityName')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text('Name')
-												])),
-											A2(
-											$elm$html$Html$input,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('form-control'),
-													$elm$html$Html$Attributes$id('clientFormLegalEntityName'),
-													$elm$html$Html$Attributes$type_('text'),
-													$elm$html$Html$Attributes$placeholder('Name'),
-													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Name'),
-													$elm$html$Html$Events$onInput($author$project$Main$LegalEntityFormName),
-													$elm$html$Html$Attributes$value(n)
-												]),
-											_List_Nil)
-										])),
-									A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('col-md-3')
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$label,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('form-label'),
-													$elm$html$Html$Attributes$for('clientFormLegalEntityAddress')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text('Adresse')
-												])),
-											A2(
-											$elm$html$Html$input,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('form-control'),
-													$elm$html$Html$Attributes$id('clientFormLegalEntityAddress'),
-													$elm$html$Html$Attributes$type_('text'),
-													$elm$html$Html$Attributes$placeholder('Adresse'),
-													A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Adresse'),
-													$elm$html$Html$Events$onInput($author$project$Main$LegalEntityFormAddress),
-													$elm$html$Html$Attributes$value(a)
-												]),
-											_List_Nil)
 										]))
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('col-md-3')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('form-label'),
+											$elm$html$Html$Attributes$for('clientFormLegalEntityName')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Name')
+										])),
+									A2(
+									$elm$html$Html$input,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('form-control'),
+											$elm$html$Html$Attributes$id('clientFormLegalEntityName'),
+											$elm$html$Html$Attributes$type_('text'),
+											$elm$html$Html$Attributes$placeholder('Name'),
+											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Name'),
+											$elm$html$Html$Events$onInput($author$project$Main$LegalEntityFormName),
+											$elm$html$Html$Attributes$value(n)
+										]),
+									_List_Nil)
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('col-md-3')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$label,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('form-label'),
+											$elm$html$Html$Attributes$for('clientFormLegalEntityAddress')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Adresse')
+										])),
+									A2(
+									$elm$html$Html$input,
+									_List_fromArray(
+										[
+											$elm$html$Html$Attributes$class('form-control'),
+											$elm$html$Html$Attributes$id('clientFormLegalEntityAddress'),
+											$elm$html$Html$Attributes$type_('text'),
+											$elm$html$Html$Attributes$placeholder('Adresse'),
+											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Adresse'),
+											$elm$html$Html$Events$onInput($author$project$Main$LegalEntityFormAddress),
+											$elm$html$Html$Attributes$value(a)
+										]),
+									_List_Nil)
 								]))
 						])));
 		}
@@ -6014,7 +6003,7 @@ var $author$project$Main$clientForm = function (client) {
 				$elm$html$Html$form,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('mb-3')
+						$author$project$Main$classes('mb-3 row g-3')
 					]),
 				_List_fromArray(
 					[
@@ -6022,61 +6011,52 @@ var $author$project$Main$clientForm = function (client) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$author$project$Main$classes('row g-3')
+								$elm$html$Html$Attributes$class('col-md-3')
 							]),
 						_List_fromArray(
 							[
 								A2(
-								$elm$html$Html$div,
+								$elm$html$Html$label,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('col-md-3')
+										$elm$html$Html$Attributes$class('form-label'),
+										$elm$html$Html$Attributes$for('clientFormSwitchClientForm')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(labelTextGeneral)
+									])),
+								A2(
+								$elm$html$Html$select,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-select'),
+										$elm$html$Html$Attributes$id('clientFormSwitchClientForm'),
+										A2($elm$html$Html$Attributes$attribute, 'aria-label', labelTextGeneral),
+										$elm$html$Html$Events$onInput(
+										A2($elm$core$Basics$composeR, $author$project$Main$strToSwitchClientForm, $author$project$Main$SwitchClientForm))
 									]),
 								_List_fromArray(
 									[
 										A2(
-										$elm$html$Html$label,
+										$elm$html$Html$option,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$class('form-label'),
-												$elm$html$Html$Attributes$for('clientFormSwitchClientForm')
+												$elm$html$Html$Attributes$value('NaturalPerson')
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text(labelTextGeneral)
+												$elm$html$Html$text('Natürliche Person')
 											])),
 										A2(
-										$elm$html$Html$select,
+										$elm$html$Html$option,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$class('form-select'),
-												$elm$html$Html$Attributes$id('clientFormSwitchClientForm'),
-												A2($elm$html$Html$Attributes$attribute, 'aria-label', labelTextGeneral),
-												$elm$html$Html$Events$onInput(
-												A2($elm$core$Basics$composeR, $author$project$Main$strToSwitchClientForm, $author$project$Main$SwitchClientForm))
+												$elm$html$Html$Attributes$value('LegalEntity')
 											]),
 										_List_fromArray(
 											[
-												A2(
-												$elm$html$Html$option,
-												_List_fromArray(
-													[
-														$elm$html$Html$Attributes$value('NaturalPerson')
-													]),
-												_List_fromArray(
-													[
-														$elm$html$Html$text('Natürliche Person')
-													])),
-												A2(
-												$elm$html$Html$option,
-												_List_fromArray(
-													[
-														$elm$html$Html$Attributes$value('LegalEntity')
-													]),
-												_List_fromArray(
-													[
-														$elm$html$Html$text('Juristische Person / Gesellschaft')
-													]))
+												$elm$html$Html$text('Juristische Person / Gesellschaft')
 											]))
 									]))
 							]))
@@ -6085,15 +6065,15 @@ var $author$project$Main$clientForm = function (client) {
 			]));
 };
 var $author$project$Main$DefaultInterestForm = function (a) {
-	return {$: 8, a: a};
+	return {$: 9, a: a};
 };
 var $author$project$Main$AgreementOfBeginningOfDelayForm = function (a) {
-	return {$: 6, a: a};
+	return {$: 7, a: a};
 };
 var $author$project$Main$agreementOfBeginningOfDelayForm = function (agreementOfBeginningOfDelay) {
 	var labelText = 'Fälligkeit nach Rechnung in Tagen';
 	return A2(
-		$elm$html$Html$form,
+		$elm$html$Html$div,
 		_List_fromArray(
 			[
 				$elm$html$Html$Attributes$class('col-md-3')
@@ -6138,7 +6118,7 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 	var labelText2 = 'Begründung für den höheren Verzugszins';
 	var labelText1 = 'Verzugszinsen';
 	return A2(
-		$elm$html$Html$form,
+		$elm$html$Html$div,
 		_List_fromArray(
 			[
 				$elm$html$Html$Attributes$class('col-md-6')
@@ -6253,12 +6233,12 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 			]));
 };
 var $author$project$Main$TimeOfDelayForm = function (a) {
-	return {$: 7, a: a};
+	return {$: 8, a: a};
 };
 var $author$project$Main$timeOfDelayForm = function (timeOfDelay) {
 	var labelText = 'Beginn des Verzugs';
 	return A2(
-		$elm$html$Html$form,
+		$elm$html$Html$div,
 		_List_fromArray(
 			[
 				$elm$html$Html$Attributes$class('col-md-3')
@@ -6294,7 +6274,7 @@ var $author$project$Main$timeOfDelayForm = function (timeOfDelay) {
 var $author$project$Main$delayForm = F3(
 	function (agreementOfBeginningOfDelay, timeOfDelay, defaultInterest) {
 		return A2(
-			$elm$html$Html$div,
+			$elm$html$Html$form,
 			_List_fromArray(
 				[
 					$author$project$Main$classes('mb-3 row g-3')
@@ -6310,7 +6290,7 @@ var $author$project$Main$delayForm = F3(
 				]));
 	});
 var $author$project$Main$LegalReasonForm = function (a) {
-	return {$: 2, a: a};
+	return {$: 3, a: a};
 };
 var $elm$html$Html$Attributes$rows = function (n) {
 	return A2(
@@ -6325,7 +6305,7 @@ var $author$project$Main$legalReasonForm = function (legalReason) {
 		$elm$html$Html$form,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('mb-3')
+				$elm$html$Html$Attributes$class('mb-3 row g-3')
 			]),
 		_List_fromArray(
 			[
@@ -6333,43 +6313,34 @@ var $author$project$Main$legalReasonForm = function (legalReason) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$author$project$Main$classes('row g-3')
+						$elm$html$Html$Attributes$class('col-md-6')
 					]),
 				_List_fromArray(
 					[
 						A2(
-						$elm$html$Html$div,
+						$elm$html$Html$label,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('col-md-6')
+								$elm$html$Html$Attributes$class('form-label'),
+								$elm$html$Html$Attributes$for('legalReasonForm')
 							]),
 						_List_fromArray(
 							[
-								A2(
-								$elm$html$Html$label,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('form-label'),
-										$elm$html$Html$Attributes$for('legalReasonForm')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text(labelText)
-									])),
-								A2(
-								$elm$html$Html$textarea,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('form-control'),
-										$elm$html$Html$Attributes$id('legalReasonForm'),
-										$elm$html$Html$Attributes$rows(2),
-										$elm$html$Html$Attributes$placeholder(labelText),
-										A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
-										$elm$html$Html$Events$onInput($author$project$Main$LegalReasonForm),
-										$elm$html$Html$Attributes$value(legalReason)
-									]),
-								_List_Nil)
-							]))
+								$elm$html$Html$text(labelText)
+							])),
+						A2(
+						$elm$html$Html$textarea,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('form-control'),
+								$elm$html$Html$Attributes$id('legalReasonForm'),
+								$elm$html$Html$Attributes$rows(2),
+								$elm$html$Html$Attributes$placeholder(labelText),
+								A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
+								$elm$html$Html$Events$onInput($author$project$Main$LegalReasonForm),
+								$elm$html$Html$Attributes$value(legalReason)
+							]),
+						_List_Nil)
 					]))
 			]));
 };
@@ -6404,7 +6375,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 		$elm$html$Html$form,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('mb-3')
+				$author$project$Main$classes('mb-3 row g-3')
 			]),
 		_List_fromArray(
 			[
@@ -6412,7 +6383,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$author$project$Main$classes('row g-3')
+						$elm$html$Html$Attributes$class('col-md-6')
 					]),
 				_List_fromArray(
 					[
@@ -6420,165 +6391,222 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 						$elm$html$Html$div,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$class('col-md-3')
+								$elm$html$Html$Attributes$class('row')
 							]),
 						_List_fromArray(
 							[
 								A2(
-								$elm$html$Html$label,
+								$elm$html$Html$div,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('form-label'),
-										$elm$html$Html$Attributes$for('opponenGreetingFormSwitchOpponentGreetingForm')
-									]),
-								_List_fromArray(
-									[
-										$elm$html$Html$text(labelTextGeneral)
-									])),
-								A2(
-								$elm$html$Html$select,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('form-select'),
-										$elm$html$Html$Attributes$id('opponenGreetingFormSwitchOpponentGreetingForm'),
-										A2($elm$html$Html$Attributes$attribute, 'aria-label', labelTextGeneral),
-										$elm$html$Html$Events$onInput($author$project$Main$switchOpponentGreetingForm)
+										$elm$html$Html$Attributes$class('col-md-6')
 									]),
 								_List_fromArray(
 									[
 										A2(
-										$elm$html$Html$option,
+										$elm$html$Html$label,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$value('GreetingSir'),
-												$elm$html$Html$Attributes$selected(
-												A2(
-													opponentGreetingCase,
-													opponentGreeting,
-													$author$project$Main$GreetingSir('')))
+												$elm$html$Html$Attributes$class('form-label'),
+												$elm$html$Html$Attributes$for('opponenGreetingFormSwitchOpponentGreetingForm')
 											]),
 										_List_fromArray(
 											[
-												$elm$html$Html$text('Sehr geehrter Herr ...,')
+												$elm$html$Html$text(labelTextGeneral)
 											])),
 										A2(
-										$elm$html$Html$option,
+										$elm$html$Html$select,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$value('GreetingMadame'),
-												$elm$html$Html$Attributes$selected(
+												$elm$html$Html$Attributes$class('form-select'),
+												$elm$html$Html$Attributes$id('opponenGreetingFormSwitchOpponentGreetingForm'),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', labelTextGeneral),
+												$elm$html$Html$Events$onInput($author$project$Main$switchOpponentGreetingForm)
+											]),
+										_List_fromArray(
+											[
 												A2(
-													opponentGreetingCase,
-													opponentGreeting,
-													$author$project$Main$GreetingMadame('')))
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text('Sehr geehrte Frau ...,')
-											])),
-										A2(
-										$elm$html$Html$option,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$value('GreetingCommon'),
-												$elm$html$Html$Attributes$selected(
-												A2(opponentGreetingCase, opponentGreeting, $author$project$Main$GreetingCommon))
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text('Sehr geehrte Damen und Herren,')
+												$elm$html$Html$option,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$value('GreetingSir'),
+														$elm$html$Html$Attributes$selected(
+														A2(
+															opponentGreetingCase,
+															opponentGreeting,
+															$author$project$Main$GreetingSir('')))
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('Sehr geehrter Herr ...,')
+													])),
+												A2(
+												$elm$html$Html$option,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$value('GreetingMadame'),
+														$elm$html$Html$Attributes$selected(
+														A2(
+															opponentGreetingCase,
+															opponentGreeting,
+															$author$project$Main$GreetingMadame('')))
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('Sehr geehrte Frau ...,')
+													])),
+												A2(
+												$elm$html$Html$option,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$value('GreetingCommon'),
+														$elm$html$Html$Attributes$selected(
+														A2(opponentGreetingCase, opponentGreeting, $author$project$Main$GreetingCommon))
+													]),
+												_List_fromArray(
+													[
+														$elm$html$Html$text('Sehr geehrte Damen und Herren,')
+													]))
 											]))
-									]))
+									])),
+								function () {
+								switch (opponentGreeting.$) {
+									case 0:
+										var txt = opponentGreeting.a;
+										var labelText = 'Name des Empfängers';
+										return A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('col-md-6')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$label,
+													_List_fromArray(
+														[
+															$elm$html$Html$Attributes$class('form-label'),
+															$elm$html$Html$Attributes$for('opponentGreetingFormGreetingSir')
+														]),
+													_List_fromArray(
+														[
+															$elm$html$Html$text(labelText)
+														])),
+													A2(
+													$elm$html$Html$input,
+													_List_fromArray(
+														[
+															$elm$html$Html$Attributes$class('form-control'),
+															$elm$html$Html$Attributes$id('opponentGreetingFormGreetingSir'),
+															$elm$html$Html$Attributes$type_('text'),
+															$elm$html$Html$Attributes$placeholder(labelText),
+															A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
+															$elm$html$Html$Events$onInput($author$project$Main$OpponentGreetingFormGreetingSir),
+															$elm$html$Html$Attributes$value(txt)
+														]),
+													_List_Nil)
+												]));
+									case 1:
+										var txt = opponentGreeting.a;
+										var labelText = 'Name des Empfängers';
+										return A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('col-md-6')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$label,
+													_List_fromArray(
+														[
+															$elm$html$Html$Attributes$class('form-label'),
+															$elm$html$Html$Attributes$for('opponentGreetingFormGreetingMadame')
+														]),
+													_List_fromArray(
+														[
+															$elm$html$Html$text(labelText)
+														])),
+													A2(
+													$elm$html$Html$input,
+													_List_fromArray(
+														[
+															$elm$html$Html$Attributes$class('form-control'),
+															$elm$html$Html$Attributes$id('opponentGreetingFormGreetingMadame'),
+															$elm$html$Html$Attributes$type_('text'),
+															$elm$html$Html$Attributes$placeholder(labelText),
+															A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
+															$elm$html$Html$Events$onInput($author$project$Main$OpponentGreetingFormGreetingMadame),
+															$elm$html$Html$Attributes$value(txt)
+														]),
+													_List_Nil)
+												]));
+									default:
+										return A2(
+											$elm$html$Html$div,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('col-md-6')
+												]),
+											_List_Nil);
+								}
+							}()
+							]))
+					]))
+			]));
+};
+var $author$project$Main$ReferenceNumberForm = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Main$referenceNumberForm = function (referenceNumber) {
+	var labelText = 'Unser Aktenzeichen';
+	return A2(
+		$elm$html$Html$form,
+		_List_fromArray(
+			[
+				$author$project$Main$classes('mb-3 row g-3')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('col-md-3')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$label,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('form-label'),
+								$elm$html$Html$Attributes$for('referenceNumberForm')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(labelText)
 							])),
-						function () {
-						switch (opponentGreeting.$) {
-							case 0:
-								var txt = opponentGreeting.a;
-								var labelText = 'Name des Empfängers';
-								return A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('col-md-3')
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$label,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('form-label'),
-													$elm$html$Html$Attributes$for('opponentGreetingFormGreetingSir')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text(labelText)
-												])),
-											A2(
-											$elm$html$Html$input,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('form-control'),
-													$elm$html$Html$Attributes$id('opponentGreetingFormGreetingSir'),
-													$elm$html$Html$Attributes$type_('text'),
-													$elm$html$Html$Attributes$placeholder(labelText),
-													A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
-													$elm$html$Html$Events$onInput($author$project$Main$OpponentGreetingFormGreetingSir),
-													$elm$html$Html$Attributes$value(txt)
-												]),
-											_List_Nil)
-										]));
-							case 1:
-								var txt = opponentGreeting.a;
-								var labelText = 'Name des Empfängers';
-								return A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('col-md-3')
-										]),
-									_List_fromArray(
-										[
-											A2(
-											$elm$html$Html$label,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('form-label'),
-													$elm$html$Html$Attributes$for('opponentGreetingFormGreetingMadame')
-												]),
-											_List_fromArray(
-												[
-													$elm$html$Html$text(labelText)
-												])),
-											A2(
-											$elm$html$Html$input,
-											_List_fromArray(
-												[
-													$elm$html$Html$Attributes$class('form-control'),
-													$elm$html$Html$Attributes$id('opponentGreetingFormGreetingMadame'),
-													$elm$html$Html$Attributes$type_('text'),
-													$elm$html$Html$Attributes$placeholder(labelText),
-													A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
-													$elm$html$Html$Events$onInput($author$project$Main$OpponentGreetingFormGreetingMadame),
-													$elm$html$Html$Attributes$value(txt)
-												]),
-											_List_Nil)
-										]));
-							default:
-								return A2(
-									$elm$html$Html$div,
-									_List_fromArray(
-										[
-											$elm$html$Html$Attributes$class('col-md-3')
-										]),
-									_List_Nil);
-						}
-					}()
+						A2(
+						$elm$html$Html$input,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('form-control'),
+								$elm$html$Html$Attributes$id('referenceNumberForm'),
+								$elm$html$Html$Attributes$type_('text'),
+								$elm$html$Html$Attributes$placeholder(labelText),
+								A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
+								$elm$html$Html$Events$onInput($author$project$Main$ReferenceNumberForm),
+								$elm$html$Html$Attributes$value(referenceNumber)
+							]),
+						_List_Nil)
 					]))
 			]));
 };
 var $author$project$Main$RightToDeductInputTaxForm = function (a) {
-	return {$: 9, a: a};
+	return {$: 10, a: a};
 };
 var $author$project$Main$rightToDeductInputTaxForm = function (rightToDeductInputTax) {
 	return A2(
@@ -6629,18 +6657,19 @@ var $author$project$Main$modelInput = function (model) {
 		_List_Nil,
 		_List_fromArray(
 			[
+				$author$project$Main$referenceNumberForm(model.F),
 				A2(
 				$elm$html$Html$map,
 				$author$project$Main$ClientForm,
-				$author$project$Main$clientForm(model.c)),
-				$author$project$Main$rightToDeductInputTaxForm(model.L),
+				$author$project$Main$clientForm(model.a)),
+				$author$project$Main$rightToDeductInputTaxForm(model.N),
 				A2(
 				$elm$html$Html$map,
 				$author$project$Main$OpponentGreetingForm,
 				$author$project$Main$opponenGreetingForm(model.x)),
-				$author$project$Main$legalReasonForm(model.I),
-				A3($author$project$Main$amountForm, model.K, model.M, model.J),
-				A3($author$project$Main$delayForm, model.H, model.N, model.B)
+				$author$project$Main$legalReasonForm(model.M),
+				A3($author$project$Main$amountForm, model.E, model.G, model.D),
+				A3($author$project$Main$delayForm, model.L, model.O, model.B)
 			]));
 };
 var $elm$html$Html$p = _VirtualDom_node('p');
@@ -6763,8 +6792,8 @@ var $elm$html$Html$tbody = _VirtualDom_node('tbody');
 var $elm$html$Html$td = _VirtualDom_node('td');
 var $elm$html$Html$tfoot = _VirtualDom_node('tfoot');
 var $elm$html$Html$tr = _VirtualDom_node('tr');
-var $author$project$Main$lawyersFees = F2(
-	function (client, rightToDeductInputTax) {
+var $author$project$Main$lawyersFees = F3(
+	function (client, principalAmount, rightToDeductInputTax) {
 		return A2(
 			$elm$html$Html$div,
 			_List_Nil,
@@ -6783,7 +6812,7 @@ var $author$project$Main$lawyersFees = F2(
 					_List_Nil,
 					_List_fromArray(
 						[
-							$elm$html$Html$text('Gegenstandswert: EUR ...')
+							$elm$html$Html$text('Gegenstandswert: EUR ' + principalAmount)
 						])),
 					A2(
 					$elm$html$Html$div,
@@ -6825,7 +6854,7 @@ var $author$project$Main$lawyersFees = F2(
 																_List_Nil,
 																_List_fromArray(
 																	[
-																		$elm$html$Html$text('1,3 Geschäftsgebühr Nr. 2300 VV RVG:')
+																		$elm$html$Html$text('0,9 bzw. 1,3 Geschäftsgebühr Nr. 2300 VV RVG:')
 																	])),
 																A2(
 																$elm$html$Html$td,
@@ -6933,7 +6962,7 @@ var $author$project$Main$lawyersFees = F2(
 					_List_fromArray(
 						[
 							$elm$html$Html$text(
-							'Sie können die Freistellung durch Erklärung oder dadurch bewirken, dass Sie den Betrag unter Angabe des Aktenzeichens auf unser auf der erste Seite dieses Schreibens unten angegebenes Konto überweisen. ' + ('Für die Freistellung setze ich Ihnen ebenfalls eine Frist von 10 Tagen nach Zugang dieses Schreibens. Sollte die Frist fruchtlos verstreichen, wird ' + ($author$project$Main$clientNominative(client) + ' die Freistellung ablehnen und Ersatz in Geld verlangen.')))
+							'Sie können die Freistellung u. a. dadurch bewirken, dass Sie die Rechtsanwaltskosten an uns wie oben angegeben überweisen. ' + ('Für die Freistellung setze ich Ihnen ebenfalls eine Frist von 10 Tagen nach Zugang dieses Schreibens. Sollte die Frist fruchtlos verstreichen, wird ' + ($author$project$Main$clientNominative(client) + ' die Freistellung ablehnen und Ersatz in Geld verlangen.')))
 						])),
 					A2(
 					$elm$html$Html$p,
@@ -6975,40 +7004,215 @@ var $author$project$Main$representation = function (client) {
 	}();
 	return 'in der oben genannten Angelegenheit hat uns ' + (mdt + ' beauftragt und bevollmächtigt.');
 };
-var $author$project$Main$requestForPayment = F3(
-	function (client, sumOfAmount, paymentToRepresentative) {
-		return 'Namens ' + ($author$project$Main$clientGenitive(client) + (' fordere ich Sie auf, den aus der Forderungsaufstellung ersichtlichen Gesamtbetrag ' + ('in Höhe von EUR ' + (sumOfAmount + (' binnen 10 Tagen ' + (paymentToRepresentative ? 'auf unser im Briefbogen angegebenes Konto zu überweisen. Wir sind zum Empfang der Zahlung befugt.' : ('auf das Konto ' + ($author$project$Main$clientGenitive(client) + ' mit der IBAN ... zu überweisen.'))))))));
+var $author$project$Main$requestForPayment = F2(
+	function (client, paymentToRepresentative) {
+		return 'Namens ' + ($author$project$Main$clientGenitive(client) + (' fordere ich Sie auf, den Betrag wie oben bezeichnet zu überweisen.' + (paymentToRepresentative ? ' Wir sind zum Empfang der Zahlung befugt.' : '')));
 	});
 var $elm$html$Html$br = _VirtualDom_node('br');
-var $author$project$Main$rubrum = function (client) {
-	var name = function () {
-		if (!client.$) {
-			var n = client.b;
-			return n;
-		} else {
-			var n = client.b;
-			return n;
-		}
-	}();
-	return _List_fromArray(
-		[
-			A2(
-			$elm$html$Html$strong,
-			_List_Nil,
-			_List_fromArray(
-				[
-					$elm$html$Html$text(name + ' ./. ...')
-				])),
-			A2($elm$html$Html$br, _List_Nil, _List_Nil),
-			A2(
-			$elm$html$Html$strong,
-			_List_Nil,
-			_List_fromArray(
-				[
-					$elm$html$Html$text('wegen ...')
-				]))
-		]);
+var $author$project$Main$rubrum = F2(
+	function (referenceNumber, client) {
+		var name = function () {
+			if (!client.$) {
+				var n = client.b;
+				return n;
+			} else {
+				var n = client.b;
+				return n;
+			}
+		}();
+		return _List_fromArray(
+			[
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Aktenzeichen: ' + referenceNumber)
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$strong,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(name + ' ./. ...')
+							])),
+						A2($elm$html$Html$br, _List_Nil, _List_Nil),
+						A2(
+						$elm$html$Html$strong,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('wegen ...')
+							]))
+					]))
+			]);
+	});
+var $author$project$Main$sumOfAmoutText = function (sumOfAmount) {
+	return 'Die Gesamtforderung (ohne Rechtsanwaltskosten) beträgt EUR ' + (sumOfAmount + '.');
 };
+var $elm$html$Html$li = _VirtualDom_node('li');
+var $elm$html$Html$ul = _VirtualDom_node('ul');
+var $author$project$Main$summary = F4(
+	function (referenceNumber, client, paymentToRepresentative, sumOfAmount) {
+		var clientName = function () {
+			if (!client.$) {
+				var n = client.b;
+				return n;
+			} else {
+				var n = client.b;
+				return n;
+			}
+		}();
+		return paymentToRepresentative ? _List_fromArray(
+			[
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Zusammenfassung:')
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Bitte überweisen Sie aus den nachfolgenden Gründen binnen 10 Tagen nach Erhalt dieses Schreibens folgenden Betrag:')
+					])),
+				A2(
+				$elm$html$Html$ul,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('list-without-marker')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Forderung und Rechtsanwaltskosten: EUR ... ← Hier Summe ausrechnen')
+							])),
+						A2(
+						$elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('IBAN: DE...')
+							])),
+						A2(
+						$elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Verwendungszweck: ' + (clientName + (', Az. ' + referenceNumber)))
+							])),
+						A2(
+						$elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Kontoinhaber: GOB Legal Rechtsanwaltsgesellschaft mbH')
+							]))
+					]))
+			]) : _List_fromArray(
+			[
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Zusammenfassung:')
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Bitte überweisen Sie aus den nachfolgenden Gründen binnen 10 Tagen nach Erhalt dieses Schreibens folgende Beträge:')
+					])),
+				A2(
+				$elm$html$Html$ul,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('list-without-marker')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Forderung: EUR ' + sumOfAmount)
+							])),
+						A2(
+						$elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('IBAN: ...')
+							])),
+						A2(
+						$elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Verwendungszweck: Forderung gemäß Schreiben der GOB Legal Rechtsanwaltsgesellschaft vom ...')
+							])),
+						A2(
+						$elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Kontoinhaber: ' + clientName)
+							]))
+					])),
+				A2(
+				$elm$html$Html$ul,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('list-without-marker')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Rechtsanwaltskosten: EUR ...')
+							])),
+						A2(
+						$elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('IBAN: DE...')
+							])),
+						A2(
+						$elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Verwendungszweck: ' + (clientName + (', Az. ' + referenceNumber)))
+							])),
+						A2(
+						$elm$html$Html$li,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Kontoinhaber: GOB Legal Rechtsanwaltsgesellschaft mbH')
+							]))
+					]))
+			]);
+	});
 var $author$project$Main$result = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -7019,12 +7223,12 @@ var $author$project$Main$result = function (model) {
 		_List_fromArray(
 			[
 				A2(
-				$elm$html$Html$p,
+				$elm$html$Html$div,
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$class('pt-5')
 					]),
-				$author$project$Main$rubrum(model.c)),
+				A2($author$project$Main$rubrum, model.F, model.a)),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
@@ -7039,7 +7243,18 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$representation(model.c))
+						$author$project$Main$representation(model.a))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_Nil,
+				A4($author$project$Main$summary, model.F, model.a, model.D, model.G)),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text('Im Einzelnen:')
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7047,7 +7262,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A3($author$project$Main$claim, model.c, model.I, model.K))
+						A3($author$project$Main$claim, model.a, model.M, model.E))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7055,7 +7270,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A3($author$project$Main$default, model.c, model.H, model.N))
+						A3($author$project$Main$default, model.a, model.L, model.O))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7071,16 +7286,24 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A3($author$project$Main$requestForPayment, model.c, model.M, model.J))
+						$author$project$Main$sumOfAmoutText(model.G))
 					])),
-				A2($author$project$Main$lawyersFees, model.c, model.L),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$judicialEnforcement(model.c))
+						A2($author$project$Main$requestForPayment, model.a, model.D))
+					])),
+				A3($author$project$Main$lawyersFees, model.a, model.E, model.N),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$Main$judicialEnforcement(model.a))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7167,7 +7390,7 @@ var $author$project$Main$view = function (model) {
 										_List_Nil,
 										_List_fromArray(
 											[
-												$elm$html$Html$text('Nachdem man oben alles eingegeben hat, kann man den Text markieren, kopieren und in den Briefkopf einfügen. ' + 'Danach sind nur noch die Betreffzeile, die RVG-Berechnung und ggf. die IBAN des Mandanten zu ergänzen.')
+												$elm$html$Html$text('Nachdem man oben alles eingegeben hat, kann man den Text markieren, kopieren und in den Briefkopf einfügen. ' + 'Danach sind noch Adresse, Aktenzeichen und die Betreffzeile sowie die Zahlungsdaten und die RVG-Berechnung anzupassen.')
 											]))
 									])),
 								$author$project$Main$result(model)
@@ -7176,6 +7399,6 @@ var $author$project$Main$view = function (model) {
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$sandbox(
-	{aD: $author$project$Main$init, aL: $author$project$Main$update, aM: $author$project$Main$view});
+	{aE: $author$project$Main$init, aM: $author$project$Main$update, aN: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));

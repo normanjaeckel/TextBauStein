@@ -1,3 +1,7 @@
+.list-without-marker {
+    list-style-type: none;
+}
+
 .rvg-table-sum {
     border-top-width: 1px;
 }
