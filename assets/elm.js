@@ -9749,77 +9749,95 @@ var $author$project$Risikorechner$result = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
-		_Utils_ap(
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$h3,
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('mb-5')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$h3,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('mb-3')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Gesamtkosten')
+							])),
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Die Kosten des Rechtsstreits betragen '),
+								A2(
+								$elm$html$Html$strong,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text(
+										'EUR ' + $author$project$Risikorechner$stringFromFloatGermanWithDecimals(sumOfAllCosts))
+									])),
+								$elm$html$Html$text('.')
+							])),
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Enthalten sind die Verfahrens- und Termingebühren der Instanz(en), die Pauschale nach Nr. 7002 VV RVG und ggf. die Umsatzsteuer für zwei Rechtsanwälte sowie die Gerichtskosten.')
+							])),
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text('Nicht enthalten sind Mehrkosten bei mehreren Mandanten/Gegnern, Einigungsgebühren und streitwertunabhängige Kosten wie Reisekosten und sonstige Auslagen.')
+							])),
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								'Der Erwartungswert beträgt EUR ' + ($author$project$Risikorechner$stringFromFloatGermanWithDecimals(expectation) + '. ')),
+								A2(
+								$elm$html$Html$strong,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text(expectationText)
+									]))
+							]))
+					])),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('mb-5')
+					]),
+				_Utils_ap(
 					_List_fromArray(
 						[
-							$elm$html$Html$Attributes$class('mb-3')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Gesamtkosten')
-						])),
-					A2(
-					$elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Die Kosten des Rechtsstreits betragen '),
 							A2(
-							$elm$html$Html$strong,
-							_List_Nil,
+							$elm$html$Html$h3,
 							_List_fromArray(
 								[
-									$elm$html$Html$text(
-									'EUR ' + $author$project$Risikorechner$stringFromFloatGermanWithDecimals(sumOfAllCosts))
+									$elm$html$Html$Attributes$class('mb-3')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Einzelaufstellung')
 								])),
-							$elm$html$Html$text('.')
-						])),
-					A2(
-					$elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Enthalten sind die Verfahrens- und Termingebühren der Instanz(en), die Pauschale nach Nr. 7002 VV RVG und ggf. die Umsatzsteuer für zwei Rechtsanwälte sowie die Gerichtskosten.')
-						])),
-					A2(
-					$elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Nicht enthalten sind Mehrkosten bei mehreren Mandanten/Gegnern, Einigungsgebühren und streitwertunabhängige Kosten wie Reisekosten und sonstige Auslagen.')
-						])),
-					A2(
-					$elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$elm$html$Html$text(
-							'Der Erwartungswert beträgt EUR ' + ($author$project$Risikorechner$stringFromFloatGermanWithDecimals(expectation) + '. ')),
-							A2(
-							$elm$html$Html$strong,
-							_List_Nil,
-							_List_fromArray(
-								[
-									$elm$html$Html$text(expectationText)
-								]))
-						])),
-					A2(
-					$elm$html$Html$h3,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('mb-3')
+							firstInstanceHtml
 						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Einzelaufstellung')
-						])),
-					firstInstanceHtml
-				]),
-			secondInstanceHtmlList));
+					secondInstanceHtmlList))
+			]));
 };
 var $author$project$Risikorechner$view = function (model) {
 	return A2(
@@ -9867,7 +9885,10 @@ var $author$project$Risikorechner$view = function (model) {
 							])),
 						A2(
 						$elm$html$Html$div,
-						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('mb-5')
+							]),
 						_List_fromArray(
 							[
 								A2(

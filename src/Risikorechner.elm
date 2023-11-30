@@ -101,7 +101,7 @@ view model =
                 [ h2 [ class "mb-3" ] [ text "Eingaben" ]
                 , modelInput model
                 ]
-            , div []
+            , div [ class "mb-5" ]
                 [ h2 [ class "mb-3" ] [ text "Ergebnis" ]
                 , result model
                 ]
@@ -263,16 +263,20 @@ result model =
                 "Die Sache lohnt sich nicht, weil der Erwartungswert nicht positiv ist."
     in
     div []
-        ([ h3 [ class "mb-3" ] [ text "Gesamtkosten" ]
-         , p [] [ text <| "Die Kosten des Rechtsstreits betragen ", strong [] [ text <| "EUR " ++ stringFromFloatGermanWithDecimals sumOfAllCosts ], text "." ]
-         , p [] [ text "Enthalten sind die Verfahrens- und Termingebühren der Instanz(en), die Pauschale nach Nr. 7002 VV RVG und ggf. die Umsatzsteuer für zwei Rechtsanwälte sowie die Gerichtskosten." ]
-         , p [] [ text "Nicht enthalten sind Mehrkosten bei mehreren Mandanten/Gegnern, Einigungsgebühren und streitwertunabhängige Kosten wie Reisekosten und sonstige Auslagen." ]
-         , p [] [ text <| "Der Erwartungswert beträgt EUR " ++ stringFromFloatGermanWithDecimals expectation ++ ". ", strong [] [ text expectationText ] ]
-         , h3 [ class "mb-3" ] [ text "Einzelaufstellung" ]
-         , firstInstanceHtml
-         ]
-            ++ secondInstanceHtmlList
-        )
+        [ div [ class "mb-5" ]
+            [ h3 [ class "mb-3" ] [ text "Gesamtkosten" ]
+            , p [] [ text <| "Die Kosten des Rechtsstreits betragen ", strong [] [ text <| "EUR " ++ stringFromFloatGermanWithDecimals sumOfAllCosts ], text "." ]
+            , p [] [ text "Enthalten sind die Verfahrens- und Termingebühren der Instanz(en), die Pauschale nach Nr. 7002 VV RVG und ggf. die Umsatzsteuer für zwei Rechtsanwälte sowie die Gerichtskosten." ]
+            , p [] [ text "Nicht enthalten sind Mehrkosten bei mehreren Mandanten/Gegnern, Einigungsgebühren und streitwertunabhängige Kosten wie Reisekosten und sonstige Auslagen." ]
+            , p [] [ text <| "Der Erwartungswert beträgt EUR " ++ stringFromFloatGermanWithDecimals expectation ++ ". ", strong [] [ text expectationText ] ]
+            ]
+        , div [ class "mb-5" ]
+            ([ h3 [ class "mb-3" ] [ text "Einzelaufstellung" ]
+             , firstInstanceHtml
+             ]
+                ++ secondInstanceHtmlList
+            )
+        ]
 
 
 resultFirstInstance : Model -> ( Html Msg, Float )
