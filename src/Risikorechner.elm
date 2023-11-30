@@ -536,7 +536,7 @@ gebuehrGkg itemValue =
             i =
                 toFloat (itemValue - 500000) / 50000
         in
-        3901 + (ceiling i * 0)
+        3901 + (ceiling i * 198)
 
     else
         gebuehrentabelleGkg |> Dict.foldr fn 0

@@ -8116,7 +8116,7 @@ var $author$project$Risikorechner$gebuehrGkg = function (itemValue) {
 		});
 	if (itemValue > 500000) {
 		var i = (itemValue - 500000) / 50000;
-		return 3901 + ($elm$core$Basics$ceiling(i) * 0);
+		return 3901 + ($elm$core$Basics$ceiling(i) * 198);
 	} else {
 		return A3($elm$core$Dict$foldr, fn, 0, $author$project$Risikorechner$gebuehrentabelleGkg);
 	}
