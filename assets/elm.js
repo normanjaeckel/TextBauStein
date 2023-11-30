@@ -4370,11 +4370,11 @@ function _Browser_load(url)
 		}
 	}));
 }
+var $author$project$Main$Home = 0;
 var $author$project$Main$Model = F3(
 	function (page, mahnschreibenModel, risikorechnerModel) {
 		return {T: mahnschreibenModel, Z: page, V: risikorechnerModel};
 	});
-var $author$project$Main$RisikorechnerPage = 2;
 var $elm$core$Basics$False = 1;
 var $author$project$Mahnschreiben$GreetingCommon = {$: 2};
 var $author$project$Mahnschreiben$LegalDefaultInterest = {$: 0};
@@ -4424,7 +4424,7 @@ var $author$project$Mahnschreiben$init = $author$project$Mahnschreiben$Model('')
 var $author$project$Risikorechner$OneInstance = 0;
 var $elm$core$Basics$True = 0;
 var $author$project$Risikorechner$init = {p: 0, R: 0, k: 5000, A: 50, C: true, D: true};
-var $author$project$Main$init = A3($author$project$Main$Model, 2, $author$project$Mahnschreiben$init, $author$project$Risikorechner$init);
+var $author$project$Main$init = A3($author$project$Main$Model, 0, $author$project$Mahnschreiben$init, $author$project$Risikorechner$init);
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
 var $elm$core$Basics$LT = 0;
@@ -5463,6 +5463,7 @@ var $author$project$Main$ChangePage = function (a) {
 	return {$: 2, a: a};
 };
 var $author$project$Main$MahnschreibenPage = 1;
+var $author$project$Main$RisikorechnerPage = 2;
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(

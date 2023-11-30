@@ -33,7 +33,7 @@ type Page
 init : Model
 init =
     Model
-        RisikorechnerPage
+        Home
         Mahnschreiben.init
         Risikorechner.init
 
