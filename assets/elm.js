@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.T.C === region.Y.C)
+	if (region.ab.H === region.ag.H)
 	{
-		return 'on line ' + region.T.C;
+		return 'on line ' + region.ab.H;
 	}
-	return 'on lines ' + region.T.C + ' through ' + region.Y.C;
+	return 'on lines ' + region.ab.H + ' through ' + region.ag.H;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aE,
-		impl.aM,
-		impl.aK,
+		impl.aN,
+		impl.aV,
+		impl.aT,
 		function() { return function() {} }
 	);
 });
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		p: func(record.p),
-		U: record.U,
-		R: record.R
+		r: func(record.r),
+		ac: record.ac,
+		_: record._
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.p;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.U;
+		var message = !tag ? value : tag < 3 ? value.a : value.r;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ac;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.R) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value._) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aE,
-		impl.aM,
-		impl.aK,
+		impl.aN,
+		impl.aV,
+		impl.aT,
 		function(sendToApp, initialModel) {
-			var view = impl.aN;
+			var view = impl.aW;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aE,
-		impl.aM,
-		impl.aK,
+		impl.aN,
+		impl.aV,
+		impl.aT,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.S && impl.S(sendToApp)
-			var view = impl.aN;
+			var divertHrefToApp = impl.aa && impl.aa(sendToApp)
+			var view = impl.aW;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.ax);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aG);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aL) && (_VirtualDom_doc.title = title = doc.aL);
+				(title !== doc.aU) && (_VirtualDom_doc.title = title = doc.aU);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aG;
-	var onUrlRequest = impl.aH;
+	var onUrlChange = impl.aP;
+	var onUrlRequest = impl.aQ;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		S: function(sendToApp)
+		aa: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
+							&& curr.at === next.at
 							&& curr.ak === next.ak
-							&& curr.ab === next.ab
-							&& curr.ah.a === next.ah.a
+							&& curr.aq.a === next.aq.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aE: function(flags)
+		aN: function(flags)
 		{
-			return A3(impl.aE, flags, _Browser_getUrl(), key);
+			return A3(impl.aN, flags, _Browser_getUrl(), key);
 		},
-		aN: impl.aN,
-		aM: impl.aM,
-		aK: impl.aK
+		aW: impl.aW,
+		aV: impl.aV,
+		aT: impl.aT
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aC: 'hidden', ay: 'visibilitychange' }
+		? { aL: 'hidden', aH: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aC: 'mozHidden', ay: 'mozvisibilitychange' }
+		? { aL: 'mozHidden', aH: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aC: 'msHidden', ay: 'msvisibilitychange' }
+		? { aL: 'msHidden', aH: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aC: 'webkitHidden', ay: 'webkitvisibilitychange' }
-		: { aC: 'hidden', ay: 'visibilitychange' };
+		? { aL: 'webkitHidden', aH: 'webkitvisibilitychange' }
+		: { aL: 'hidden', aH: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ao: _Browser_getScene(),
-		ar: {
-			at: _Browser_window.pageXOffset,
-			au: _Browser_window.pageYOffset,
-			as: _Browser_doc.documentElement.clientWidth,
-			aa: _Browser_doc.documentElement.clientHeight
+		ax: _Browser_getScene(),
+		aA: {
+			aC: _Browser_window.pageXOffset,
+			aD: _Browser_window.pageYOffset,
+			aB: _Browser_doc.documentElement.clientWidth,
+			aj: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		as: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		aa: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aB: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		aj: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ao: {
-				as: node.scrollWidth,
-				aa: node.scrollHeight
+			ax: {
+				aB: node.scrollWidth,
+				aj: node.scrollHeight
 			},
-			ar: {
-				at: node.scrollLeft,
-				au: node.scrollTop,
-				as: node.clientWidth,
-				aa: node.clientHeight
+			aA: {
+				aC: node.scrollLeft,
+				aD: node.scrollTop,
+				aB: node.clientWidth,
+				aj: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ao: _Browser_getScene(),
-			ar: {
-				at: x,
-				au: y,
-				as: _Browser_doc.documentElement.clientWidth,
-				aa: _Browser_doc.documentElement.clientHeight
-			},
+			ax: _Browser_getScene(),
 			aA: {
-				at: x + rect.left,
-				au: y + rect.top,
-				as: rect.width,
-				aa: rect.height
+				aC: x,
+				aD: y,
+				aB: _Browser_doc.documentElement.clientWidth,
+				aj: _Browser_doc.documentElement.clientHeight
+			},
+			aJ: {
+				aC: x + rect.left,
+				aD: y + rect.top,
+				aB: rect.width,
+				aj: rect.height
 			}
 		};
 	});
@@ -4370,10 +4370,15 @@ function _Browser_load(url)
 		}
 	}));
 }
+var $author$project$Main$Model = F3(
+	function (page, mahnschreibenModel, risikorechnerModel) {
+		return {T: mahnschreibenModel, Z: page, V: risikorechnerModel};
+	});
+var $author$project$Main$RisikorechnerPage = 2;
 var $elm$core$Basics$False = 1;
-var $author$project$Main$GreetingCommon = {$: 2};
-var $author$project$Main$LegalDefaultInterest = {$: 0};
-var $author$project$Main$Model = function (referenceNumber) {
+var $author$project$Mahnschreiben$GreetingCommon = {$: 2};
+var $author$project$Mahnschreiben$LegalDefaultInterest = {$: 0};
+var $author$project$Mahnschreiben$Model = function (referenceNumber) {
 	return function (client) {
 		return function (opponentGreeting) {
 			return function (legalReason) {
@@ -4384,7 +4389,7 @@ var $author$project$Main$Model = function (referenceNumber) {
 								return function (timeOfDelay) {
 									return function (defaultInterest) {
 										return function (rightToDeductInputTax) {
-											return {L: agreementOfBeginningOfDelay, a: client, B: defaultInterest, M: legalReason, x: opponentGreeting, D: paymentToRepresentative, E: principalAmount, F: referenceNumber, N: rightToDeductInputTax, G: sumOfAmount, O: timeOfDelay};
+											return {Q: agreementOfBeginningOfDelay, a: client, G: defaultInterest, S: legalReason, z: opponentGreeting, I: paymentToRepresentative, J: principalAmount, K: referenceNumber, U: rightToDeductInputTax, L: sumOfAmount, W: timeOfDelay};
 										};
 									};
 								};
@@ -4396,26 +4401,30 @@ var $author$project$Main$Model = function (referenceNumber) {
 		};
 	};
 };
-var $author$project$Main$SwitchClientFormNaturalPerson = 0;
-var $author$project$Main$Die = 1;
-var $author$project$Main$LegalEntity = F3(
+var $author$project$Mahnschreiben$SwitchClientFormNaturalPerson = 0;
+var $author$project$Mahnschreiben$Die = 1;
+var $author$project$Mahnschreiben$LegalEntity = F3(
 	function (a, b, c) {
 		return {$: 1, a: a, b: b, c: c};
 	});
-var $author$project$Main$Male = 0;
-var $author$project$Main$NaturalPerson = F3(
+var $author$project$Mahnschreiben$Male = 0;
+var $author$project$Mahnschreiben$NaturalPerson = F3(
 	function (a, b, c) {
 		return {$: 0, a: a, b: b, c: c};
 	});
-var $author$project$Main$initClient = function (scf) {
+var $author$project$Mahnschreiben$initClient = function (scf) {
 	if (!scf) {
-		return A3($author$project$Main$NaturalPerson, 0, 'Max Mustermann', 'Musterstraße 1, 12345 Musterstadt');
+		return A3($author$project$Mahnschreiben$NaturalPerson, 0, 'Max Mustermann', 'Musterstraße 1, 12345 Musterstadt');
 	} else {
-		return A3($author$project$Main$LegalEntity, 1, 'Muster GmbH', 'Musterstraße 1, 12345 Musterstadt');
+		return A3($author$project$Mahnschreiben$LegalEntity, 1, 'Muster GmbH', 'Musterstraße 1, 12345 Musterstadt');
 	}
 };
-var $author$project$Main$init = $author$project$Main$Model('')(
-	$author$project$Main$initClient(0))($author$project$Main$GreetingCommon)('aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ...')('0,00')('0,00')(false)('10')('...')($author$project$Main$LegalDefaultInterest)(false);
+var $author$project$Mahnschreiben$init = $author$project$Mahnschreiben$Model('')(
+	$author$project$Mahnschreiben$initClient(0))($author$project$Mahnschreiben$GreetingCommon)('aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ...')('0,00')('0,00')(false)('10')('...')($author$project$Mahnschreiben$LegalDefaultInterest)(false);
+var $author$project$Risikorechner$OneInstance = 0;
+var $elm$core$Basics$True = 0;
+var $author$project$Risikorechner$init = {p: 0, R: 0, k: 5000, A: 50, C: true, D: true};
+var $author$project$Main$init = A3($author$project$Main$Model, 2, $author$project$Mahnschreiben$init, $author$project$Risikorechner$init);
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
 var $elm$core$Basics$LT = 0;
@@ -4882,7 +4891,6 @@ var $elm$core$Array$initialize = F2(
 			return A5($elm$core$Array$initializeHelp, fn, initialFromIndex, len, _List_Nil, tail);
 		}
 	});
-var $elm$core$Basics$True = 0;
 var $elm$core$Result$isOk = function (result) {
 	if (!result.$) {
 		return true;
@@ -4919,7 +4927,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {_: fragment, ab: host, af: path, ah: port_, ak: protocol, al: query};
+		return {ai: fragment, ak: host, ao: path, aq: port_, at: protocol, au: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5204,38 +5212,38 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $elm$browser$Browser$sandbox = function (impl) {
 	return _Browser_element(
 		{
-			aE: function (_v0) {
-				return _Utils_Tuple2(impl.aE, $elm$core$Platform$Cmd$none);
+			aN: function (_v0) {
+				return _Utils_Tuple2(impl.aN, $elm$core$Platform$Cmd$none);
 			},
-			aK: function (_v1) {
+			aT: function (_v1) {
 				return $elm$core$Platform$Sub$none;
 			},
-			aM: F2(
+			aV: F2(
 				function (msg, model) {
 					return _Utils_Tuple2(
-						A2(impl.aM, msg, model),
+						A2(impl.aV, msg, model),
 						$elm$core$Platform$Cmd$none);
 				}),
-			aN: impl.aN
+			aW: impl.aW
 		});
 };
-var $author$project$Main$GreetingMadame = function (a) {
+var $author$project$Mahnschreiben$GreetingMadame = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Main$GreetingSir = function (a) {
+var $author$project$Mahnschreiben$GreetingSir = function (a) {
 	return {$: 0, a: a};
 };
-var $author$project$Main$HigherDefaultInterest = function (a) {
+var $author$project$Mahnschreiben$HigherDefaultInterest = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Main$update = F2(
+var $author$project$Mahnschreiben$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 0:
 				var rnf = msg.a;
 				return _Utils_update(
 					model,
-					{F: rnf});
+					{K: rnf});
 			case 1:
 				var cf = msg.a;
 				switch (cf.$) {
@@ -5252,21 +5260,21 @@ var $author$project$Main$update = F2(
 									return _Utils_update(
 										model,
 										{
-											a: A3($author$project$Main$NaturalPerson, newGender, n, a)
+											a: A3($author$project$Mahnschreiben$NaturalPerson, newGender, n, a)
 										});
 								case 1:
 									var newName = npf.a;
 									return _Utils_update(
 										model,
 										{
-											a: A3($author$project$Main$NaturalPerson, g, newName, a)
+											a: A3($author$project$Mahnschreiben$NaturalPerson, g, newName, a)
 										});
 								default:
 									var newAddress = npf.a;
 									return _Utils_update(
 										model,
 										{
-											a: A3($author$project$Main$NaturalPerson, g, n, newAddress)
+											a: A3($author$project$Mahnschreiben$NaturalPerson, g, n, newAddress)
 										});
 							}
 						} else {
@@ -5287,21 +5295,21 @@ var $author$project$Main$update = F2(
 									return _Utils_update(
 										model,
 										{
-											a: A3($author$project$Main$LegalEntity, newGrammar, n, a)
+											a: A3($author$project$Mahnschreiben$LegalEntity, newGrammar, n, a)
 										});
 								case 1:
 									var newName = lef.a;
 									return _Utils_update(
 										model,
 										{
-											a: A3($author$project$Main$LegalEntity, g, newName, a)
+											a: A3($author$project$Mahnschreiben$LegalEntity, g, newName, a)
 										});
 								default:
 									var newAddress = lef.a;
 									return _Utils_update(
 										model,
 										{
-											a: A3($author$project$Main$LegalEntity, g, n, newAddress)
+											a: A3($author$project$Mahnschreiben$LegalEntity, g, n, newAddress)
 										});
 							}
 						}
@@ -5310,7 +5318,7 @@ var $author$project$Main$update = F2(
 						return _Utils_update(
 							model,
 							{
-								a: $author$project$Main$initClient(scf)
+								a: $author$project$Mahnschreiben$initClient(scf)
 							});
 				}
 			case 2:
@@ -5321,71 +5329,141 @@ var $author$project$Main$update = F2(
 						return _Utils_update(
 							model,
 							{
-								x: $author$project$Main$GreetingSir(txt)
+								z: $author$project$Mahnschreiben$GreetingSir(txt)
 							});
 					case 1:
 						var txt = ogf.a;
 						return _Utils_update(
 							model,
 							{
-								x: $author$project$Main$GreetingMadame(txt)
+								z: $author$project$Mahnschreiben$GreetingMadame(txt)
 							});
 					default:
 						return _Utils_update(
 							model,
-							{x: $author$project$Main$GreetingCommon});
+							{z: $author$project$Mahnschreiben$GreetingCommon});
 				}
 			case 7:
 				var aobdf = msg.a;
 				return _Utils_update(
 					model,
-					{L: aobdf});
+					{Q: aobdf});
 			case 8:
 				var tod = msg.a;
 				return _Utils_update(
 					model,
-					{O: tod});
+					{W: tod});
 			case 3:
 				var lr = msg.a;
 				return _Utils_update(
 					model,
-					{M: lr});
+					{S: lr});
 			case 4:
 				var pa = msg.a;
 				return _Utils_update(
 					model,
-					{E: pa});
+					{J: pa});
 			case 5:
 				var sa = msg.a;
 				return _Utils_update(
 					model,
-					{G: sa});
+					{L: sa});
 			case 6:
 				var ptr = msg.a;
 				return _Utils_update(
 					model,
-					{D: ptr});
+					{I: ptr});
 			case 9:
 				var dif = msg.a;
 				if (!dif.$) {
 					return _Utils_update(
 						model,
-						{B: $author$project$Main$LegalDefaultInterest});
+						{G: $author$project$Mahnschreiben$LegalDefaultInterest});
 				} else {
 					var s = dif.a;
 					return _Utils_update(
 						model,
 						{
-							B: $author$project$Main$HigherDefaultInterest(s)
+							G: $author$project$Mahnschreiben$HigherDefaultInterest(s)
 						});
 				}
 			default:
 				var rdit = msg.a;
 				return _Utils_update(
 					model,
-					{N: rdit});
+					{U: rdit});
 		}
 	});
+var $author$project$Risikorechner$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 0:
+				var newItemValue = msg.a;
+				return _Utils_update(
+					model,
+					{k: newItemValue});
+			case 1:
+				var newAdditionalCosts = msg.a;
+				return _Utils_update(
+					model,
+					{p: newAdditionalCosts});
+			case 2:
+				var newInstances = msg.a;
+				return _Utils_update(
+					model,
+					{R: newInstances});
+			case 3:
+				var newVatCustomer = msg.a;
+				return _Utils_update(
+					model,
+					{C: newVatCustomer});
+			case 4:
+				var newVatOpponent = msg.a;
+				return _Utils_update(
+					model,
+					{D: newVatOpponent});
+			default:
+				var newProbability = msg.a;
+				return _Utils_update(
+					model,
+					{A: newProbability});
+		}
+	});
+var $author$project$Main$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 0:
+				var innerMsg = msg.a;
+				return _Utils_update(
+					model,
+					{
+						T: A2($author$project$Mahnschreiben$update, innerMsg, model.T)
+					});
+			case 1:
+				var innerMsg = msg.a;
+				return _Utils_update(
+					model,
+					{
+						V: A2($author$project$Risikorechner$update, innerMsg, model.V)
+					});
+			default:
+				var p = msg.a;
+				return _Utils_update(
+					model,
+					{Z: p});
+		}
+	});
+var $author$project$Main$MahnschreibenMsg = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Main$RisikorechnerMsg = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Main$ChangePage = function (a) {
+	return {$: 2, a: a};
+};
+var $author$project$Main$MahnschreibenPage = 1;
+var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5395,6 +5473,96 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$html$Html$main_ = _VirtualDom_node('main');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
+var $author$project$Main$homeView = A2(
+	$elm$html$Html$div,
+	_List_fromArray(
+		[
+			$elm$html$Html$Attributes$class('container'),
+			$elm$html$Html$Attributes$class('p-3'),
+			$elm$html$Html$Attributes$class('pb-5')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$elm$html$Html$main_,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$h1,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('mb-3')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('TextBauStein')
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('mb-5')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$type_('button'),
+									$elm$html$Html$Attributes$class('btn'),
+									$elm$html$Html$Attributes$class('btn-primary'),
+									$elm$html$Html$Events$onClick(
+									$author$project$Main$ChangePage(1))
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Mahnschreiben')
+								])),
+							A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$type_('button'),
+									$elm$html$Html$Attributes$class('btn'),
+									$elm$html$Html$Attributes$class('btn-primary'),
+									$elm$html$Html$Attributes$class('ms-2'),
+									$elm$html$Html$Events$onClick(
+									$author$project$Main$ChangePage(2))
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Risikorechner')
+								]))
+						]))
+				]))
+		]));
+var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
+var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
 		return A3(
@@ -5420,7 +5588,7 @@ var $elm$html$Html$Attributes$classList = function (classes) {
 				$elm$core$Tuple$first,
 				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
 };
-var $author$project$Main$classes = function (s) {
+var $author$project$Mahnschreiben$classes = function (s) {
 	var cl = A2(
 		$elm$core$List$map,
 		function (c) {
@@ -5429,24 +5597,21 @@ var $author$project$Main$classes = function (s) {
 		A2($elm$core$String$split, ' ', s));
 	return $elm$html$Html$Attributes$classList(cl);
 };
-var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$em = _VirtualDom_node('em');
-var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
-var $elm$html$Html$main_ = _VirtualDom_node('main');
-var $author$project$Main$ClientForm = function (a) {
+var $author$project$Mahnschreiben$ClientForm = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Main$OpponentGreetingForm = function (a) {
+var $author$project$Mahnschreiben$OpponentGreetingForm = function (a) {
 	return {$: 2, a: a};
 };
-var $author$project$Main$PaymentToRepresentativeForm = function (a) {
+var $author$project$Mahnschreiben$PaymentToRepresentativeForm = function (a) {
 	return {$: 6, a: a};
 };
-var $author$project$Main$PrincipalAmountForm = function (a) {
+var $author$project$Mahnschreiben$PrincipalAmountForm = function (a) {
 	return {$: 4, a: a};
 };
-var $author$project$Main$SumOfAmountForm = function (a) {
+var $author$project$Mahnschreiben$SumOfAmountForm = function (a) {
 	return {$: 5, a: a};
 };
 var $elm$virtual_dom$VirtualDom$attribute = F2(
@@ -5471,17 +5636,6 @@ var $elm$html$Html$form = _VirtualDom_node('form');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$label = _VirtualDom_node('label');
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$at = F2(
 	function (fields, decoder) {
@@ -5528,11 +5682,8 @@ var $elm$html$Html$Events$onInput = function (tagger) {
 			A2($elm$json$Json$Decode$map, tagger, $elm$html$Html$Events$targetValue)));
 };
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $author$project$Main$amountForm = F3(
+var $author$project$Mahnschreiben$amountForm = F3(
 	function (principalAmount, sumOfAmount, paymentToRepresentative) {
 		var labelText3 = 'Zahlung an Kanzlei';
 		var labelText2 = 'Gesamtforderung in EUR';
@@ -5541,7 +5692,7 @@ var $author$project$Main$amountForm = F3(
 			$elm$html$Html$form,
 			_List_fromArray(
 				[
-					$author$project$Main$classes('mb-3 row g-3')
+					$author$project$Mahnschreiben$classes('mb-3 row g-3')
 				]),
 			_List_fromArray(
 				[
@@ -5573,7 +5724,7 @@ var $author$project$Main$amountForm = F3(
 									$elm$html$Html$Attributes$type_('text'),
 									$elm$html$Html$Attributes$placeholder(labelText1),
 									A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText1),
-									$elm$html$Html$Events$onInput($author$project$Main$PrincipalAmountForm),
+									$elm$html$Html$Events$onInput($author$project$Mahnschreiben$PrincipalAmountForm),
 									$elm$html$Html$Attributes$value(principalAmount)
 								]),
 							_List_Nil)
@@ -5606,7 +5757,7 @@ var $author$project$Main$amountForm = F3(
 									$elm$html$Html$Attributes$type_('text'),
 									$elm$html$Html$Attributes$placeholder(labelText2),
 									A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText2),
-									$elm$html$Html$Events$onInput($author$project$Main$SumOfAmountForm),
+									$elm$html$Html$Events$onInput($author$project$Mahnschreiben$SumOfAmountForm),
 									$elm$html$Html$Attributes$value(sumOfAmount)
 								]),
 							_List_Nil)
@@ -5636,7 +5787,7 @@ var $author$project$Main$amountForm = F3(
 											$elm$html$Html$Attributes$type_('checkbox'),
 											$elm$html$Html$Attributes$value(''),
 											$elm$html$Html$Attributes$checked(paymentToRepresentative),
-											$elm$html$Html$Events$onCheck($author$project$Main$PaymentToRepresentativeForm)
+											$elm$html$Html$Events$onCheck($author$project$Mahnschreiben$PaymentToRepresentativeForm)
 										]),
 									_List_Nil),
 									A2(
@@ -5654,57 +5805,55 @@ var $author$project$Main$amountForm = F3(
 						]))
 				]));
 	});
-var $author$project$Main$Der = 0;
-var $author$project$Main$Female = 1;
-var $author$project$Main$LegalEntityForm = function (a) {
+var $author$project$Mahnschreiben$Der = 0;
+var $author$project$Mahnschreiben$Female = 1;
+var $author$project$Mahnschreiben$LegalEntityForm = function (a) {
 	return {$: 2, a: a};
 };
-var $author$project$Main$LegalEntityFormAddress = function (a) {
+var $author$project$Mahnschreiben$LegalEntityFormAddress = function (a) {
 	return {$: 2, a: a};
 };
-var $author$project$Main$LegalEntityFormGrammar = function (a) {
+var $author$project$Mahnschreiben$LegalEntityFormGrammar = function (a) {
 	return {$: 0, a: a};
 };
-var $author$project$Main$LegalEntityFormName = function (a) {
+var $author$project$Mahnschreiben$LegalEntityFormName = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Main$NaturalPersonForm = function (a) {
+var $author$project$Mahnschreiben$NaturalPersonForm = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Main$NaturalPersonFormAddress = function (a) {
+var $author$project$Mahnschreiben$NaturalPersonFormAddress = function (a) {
 	return {$: 2, a: a};
 };
-var $author$project$Main$NaturalPersonFormGender = function (a) {
+var $author$project$Mahnschreiben$NaturalPersonFormGender = function (a) {
 	return {$: 0, a: a};
 };
-var $author$project$Main$NaturalPersonFormName = function (a) {
+var $author$project$Mahnschreiben$NaturalPersonFormName = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Main$SwitchClientForm = function (a) {
+var $author$project$Mahnschreiben$SwitchClientForm = function (a) {
 	return {$: 0, a: a};
 };
-var $author$project$Main$Undefined = 2;
+var $author$project$Mahnschreiben$Undefined = 2;
 var $elm$core$Basics$composeR = F3(
 	function (f, g, x) {
 		return g(
 			f(x));
 	});
-var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
-var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
 var $elm$html$Html$option = _VirtualDom_node('option');
 var $elm$html$Html$select = _VirtualDom_node('select');
 var $elm$html$Html$Attributes$selected = $elm$html$Html$Attributes$boolProperty('selected');
-var $author$project$Main$strToGender = function (s) {
+var $author$project$Mahnschreiben$strToGender = function (s) {
 	return (s === 'Male') ? 0 : ((s === 'Female') ? 1 : 2);
 };
-var $author$project$Main$strToGrammar = function (s) {
+var $author$project$Mahnschreiben$strToGrammar = function (s) {
 	return (s === 'Der') ? 0 : 1;
 };
-var $author$project$Main$SwitchClientFormLegalEntity = 1;
-var $author$project$Main$strToSwitchClientForm = function (s) {
+var $author$project$Mahnschreiben$SwitchClientFormLegalEntity = 1;
+var $author$project$Mahnschreiben$strToSwitchClientForm = function (s) {
 	return (s === 'NaturalPerson') ? 0 : 1;
 };
-var $author$project$Main$clientForm = function (client) {
+var $author$project$Mahnschreiben$clientForm = function (client) {
 	var labelTextGeneral = 'Rechtsform unserer Mandantschaft';
 	var innerForm = function () {
 		if (!client.$) {
@@ -5713,7 +5862,7 @@ var $author$project$Main$clientForm = function (client) {
 			var a = client.c;
 			return A2(
 				$elm$html$Html$map,
-				$author$project$Main$NaturalPersonForm,
+				$author$project$Mahnschreiben$NaturalPersonForm,
 				A2(
 					$elm$html$Html$form,
 					_List_fromArray(
@@ -5749,7 +5898,7 @@ var $author$project$Main$clientForm = function (client) {
 											$elm$html$Html$Attributes$id('clientFormNaturalPersonGender'),
 											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Anrede'),
 											$elm$html$Html$Events$onInput(
-											A2($elm$core$Basics$composeR, $author$project$Main$strToGender, $author$project$Main$NaturalPersonFormGender))
+											A2($elm$core$Basics$composeR, $author$project$Mahnschreiben$strToGender, $author$project$Mahnschreiben$NaturalPersonFormGender))
 										]),
 									_List_fromArray(
 										[
@@ -5816,7 +5965,7 @@ var $author$project$Main$clientForm = function (client) {
 											$elm$html$Html$Attributes$type_('text'),
 											$elm$html$Html$Attributes$placeholder('Name'),
 											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Name'),
-											$elm$html$Html$Events$onInput($author$project$Main$NaturalPersonFormName),
+											$elm$html$Html$Events$onInput($author$project$Mahnschreiben$NaturalPersonFormName),
 											$elm$html$Html$Attributes$value(n)
 										]),
 									_List_Nil)
@@ -5849,7 +5998,7 @@ var $author$project$Main$clientForm = function (client) {
 											$elm$html$Html$Attributes$type_('text'),
 											$elm$html$Html$Attributes$placeholder('Adresse'),
 											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Adresse'),
-											$elm$html$Html$Events$onInput($author$project$Main$NaturalPersonFormAddress),
+											$elm$html$Html$Events$onInput($author$project$Mahnschreiben$NaturalPersonFormAddress),
 											$elm$html$Html$Attributes$value(a)
 										]),
 									_List_Nil)
@@ -5861,12 +6010,12 @@ var $author$project$Main$clientForm = function (client) {
 			var a = client.c;
 			return A2(
 				$elm$html$Html$map,
-				$author$project$Main$LegalEntityForm,
+				$author$project$Mahnschreiben$LegalEntityForm,
 				A2(
 					$elm$html$Html$form,
 					_List_fromArray(
 						[
-							$author$project$Main$classes('mb-3 row g-3')
+							$author$project$Mahnschreiben$classes('mb-3 row g-3')
 						]),
 					_List_fromArray(
 						[
@@ -5897,7 +6046,7 @@ var $author$project$Main$clientForm = function (client) {
 											$elm$html$Html$Attributes$id('clientFormLegalEntityGrammar'),
 											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Grammatisches Geschlecht'),
 											$elm$html$Html$Events$onInput(
-											A2($elm$core$Basics$composeR, $author$project$Main$strToGrammar, $author$project$Main$LegalEntityFormGrammar))
+											A2($elm$core$Basics$composeR, $author$project$Mahnschreiben$strToGrammar, $author$project$Mahnschreiben$LegalEntityFormGrammar))
 										]),
 									_List_fromArray(
 										[
@@ -5953,7 +6102,7 @@ var $author$project$Main$clientForm = function (client) {
 											$elm$html$Html$Attributes$type_('text'),
 											$elm$html$Html$Attributes$placeholder('Name'),
 											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Name'),
-											$elm$html$Html$Events$onInput($author$project$Main$LegalEntityFormName),
+											$elm$html$Html$Events$onInput($author$project$Mahnschreiben$LegalEntityFormName),
 											$elm$html$Html$Attributes$value(n)
 										]),
 									_List_Nil)
@@ -5986,7 +6135,7 @@ var $author$project$Main$clientForm = function (client) {
 											$elm$html$Html$Attributes$type_('text'),
 											$elm$html$Html$Attributes$placeholder('Adresse'),
 											A2($elm$html$Html$Attributes$attribute, 'aria-label', 'Adresse'),
-											$elm$html$Html$Events$onInput($author$project$Main$LegalEntityFormAddress),
+											$elm$html$Html$Events$onInput($author$project$Mahnschreiben$LegalEntityFormAddress),
 											$elm$html$Html$Attributes$value(a)
 										]),
 									_List_Nil)
@@ -6003,7 +6152,7 @@ var $author$project$Main$clientForm = function (client) {
 				$elm$html$Html$form,
 				_List_fromArray(
 					[
-						$author$project$Main$classes('mb-3 row g-3')
+						$author$project$Mahnschreiben$classes('mb-3 row g-3')
 					]),
 				_List_fromArray(
 					[
@@ -6034,7 +6183,7 @@ var $author$project$Main$clientForm = function (client) {
 										$elm$html$Html$Attributes$id('clientFormSwitchClientForm'),
 										A2($elm$html$Html$Attributes$attribute, 'aria-label', labelTextGeneral),
 										$elm$html$Html$Events$onInput(
-										A2($elm$core$Basics$composeR, $author$project$Main$strToSwitchClientForm, $author$project$Main$SwitchClientForm))
+										A2($elm$core$Basics$composeR, $author$project$Mahnschreiben$strToSwitchClientForm, $author$project$Mahnschreiben$SwitchClientForm))
 									]),
 								_List_fromArray(
 									[
@@ -6064,13 +6213,13 @@ var $author$project$Main$clientForm = function (client) {
 				innerForm
 			]));
 };
-var $author$project$Main$DefaultInterestForm = function (a) {
+var $author$project$Mahnschreiben$DefaultInterestForm = function (a) {
 	return {$: 9, a: a};
 };
-var $author$project$Main$AgreementOfBeginningOfDelayForm = function (a) {
+var $author$project$Mahnschreiben$AgreementOfBeginningOfDelayForm = function (a) {
 	return {$: 7, a: a};
 };
-var $author$project$Main$agreementOfBeginningOfDelayForm = function (agreementOfBeginningOfDelay) {
+var $author$project$Mahnschreiben$agreementOfBeginningOfDelayForm = function (agreementOfBeginningOfDelay) {
 	var labelText = 'Fälligkeit nach Rechnung in Tagen';
 	return A2(
 		$elm$html$Html$div,
@@ -6100,21 +6249,21 @@ var $author$project$Main$agreementOfBeginningOfDelayForm = function (agreementOf
 						$elm$html$Html$Attributes$type_('text'),
 						$elm$html$Html$Attributes$placeholder(labelText),
 						A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
-						$elm$html$Html$Events$onInput($author$project$Main$AgreementOfBeginningOfDelayForm),
+						$elm$html$Html$Events$onInput($author$project$Mahnschreiben$AgreementOfBeginningOfDelayForm),
 						$elm$html$Html$Attributes$value(agreementOfBeginningOfDelay)
 					]),
 				_List_Nil)
 			]));
 };
-var $author$project$Main$DefaultInterestFormHigherDefaultInterest = function (a) {
+var $author$project$Mahnschreiben$DefaultInterestFormHigherDefaultInterest = function (a) {
 	return {$: 1, a: a};
 };
 var $elm$core$Basics$neq = _Utils_notEqual;
-var $author$project$Main$DefaultInterestFormLegalDefaultInterest = {$: 0};
-var $author$project$Main$switchDefaultInterestForm = function (s) {
-	return (s === 'LegalDefaultInterest') ? $author$project$Main$DefaultInterestFormLegalDefaultInterest : $author$project$Main$DefaultInterestFormHigherDefaultInterest('...');
+var $author$project$Mahnschreiben$DefaultInterestFormLegalDefaultInterest = {$: 0};
+var $author$project$Mahnschreiben$switchDefaultInterestForm = function (s) {
+	return (s === 'LegalDefaultInterest') ? $author$project$Mahnschreiben$DefaultInterestFormLegalDefaultInterest : $author$project$Mahnschreiben$DefaultInterestFormHigherDefaultInterest('...');
 };
-var $author$project$Main$defaultInterestForm = function (defaultInterest) {
+var $author$project$Mahnschreiben$defaultInterestForm = function (defaultInterest) {
 	var labelText2 = 'Begründung für den höheren Verzugszins';
 	var labelText1 = 'Verzugszinsen';
 	return A2(
@@ -6159,7 +6308,7 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 										$elm$html$Html$Attributes$class('form-select'),
 										$elm$html$Html$Attributes$id('defaultInterestFormSwitchDefaultInterest'),
 										A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText1),
-										$elm$html$Html$Events$onInput($author$project$Main$switchDefaultInterestForm)
+										$elm$html$Html$Events$onInput($author$project$Mahnschreiben$switchDefaultInterestForm)
 									]),
 								_List_fromArray(
 									[
@@ -6169,7 +6318,7 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 											[
 												$elm$html$Html$Attributes$value('LegalDefaultInterest'),
 												$elm$html$Html$Attributes$selected(
-												_Utils_eq(defaultInterest, $author$project$Main$LegalDefaultInterest))
+												_Utils_eq(defaultInterest, $author$project$Mahnschreiben$LegalDefaultInterest))
 											]),
 										_List_fromArray(
 											[
@@ -6181,7 +6330,7 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 											[
 												$elm$html$Html$Attributes$value('HigherDefaultInterest'),
 												$elm$html$Html$Attributes$selected(
-												!_Utils_eq(defaultInterest, $author$project$Main$LegalDefaultInterest))
+												!_Utils_eq(defaultInterest, $author$project$Mahnschreiben$LegalDefaultInterest))
 											]),
 										_List_fromArray(
 											[
@@ -6222,7 +6371,7 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 												$elm$html$Html$Attributes$type_('text'),
 												$elm$html$Html$Attributes$placeholder(labelText2),
 												A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText2),
-												$elm$html$Html$Events$onInput($author$project$Main$DefaultInterestFormHigherDefaultInterest),
+												$elm$html$Html$Events$onInput($author$project$Mahnschreiben$DefaultInterestFormHigherDefaultInterest),
 												$elm$html$Html$Attributes$value(txt)
 											]),
 										_List_Nil)
@@ -6232,10 +6381,10 @@ var $author$project$Main$defaultInterestForm = function (defaultInterest) {
 					]))
 			]));
 };
-var $author$project$Main$TimeOfDelayForm = function (a) {
+var $author$project$Mahnschreiben$TimeOfDelayForm = function (a) {
 	return {$: 8, a: a};
 };
-var $author$project$Main$timeOfDelayForm = function (timeOfDelay) {
+var $author$project$Mahnschreiben$timeOfDelayForm = function (timeOfDelay) {
 	var labelText = 'Beginn des Verzugs';
 	return A2(
 		$elm$html$Html$div,
@@ -6265,31 +6414,31 @@ var $author$project$Main$timeOfDelayForm = function (timeOfDelay) {
 						$elm$html$Html$Attributes$type_('text'),
 						$elm$html$Html$Attributes$placeholder(labelText),
 						A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
-						$elm$html$Html$Events$onInput($author$project$Main$TimeOfDelayForm),
+						$elm$html$Html$Events$onInput($author$project$Mahnschreiben$TimeOfDelayForm),
 						$elm$html$Html$Attributes$value(timeOfDelay)
 					]),
 				_List_Nil)
 			]));
 };
-var $author$project$Main$delayForm = F3(
+var $author$project$Mahnschreiben$delayForm = F3(
 	function (agreementOfBeginningOfDelay, timeOfDelay, defaultInterest) {
 		return A2(
 			$elm$html$Html$form,
 			_List_fromArray(
 				[
-					$author$project$Main$classes('mb-3 row g-3')
+					$author$project$Mahnschreiben$classes('mb-3 row g-3')
 				]),
 			_List_fromArray(
 				[
-					$author$project$Main$agreementOfBeginningOfDelayForm(agreementOfBeginningOfDelay),
-					$author$project$Main$timeOfDelayForm(timeOfDelay),
+					$author$project$Mahnschreiben$agreementOfBeginningOfDelayForm(agreementOfBeginningOfDelay),
+					$author$project$Mahnschreiben$timeOfDelayForm(timeOfDelay),
 					A2(
 					$elm$html$Html$map,
-					$author$project$Main$DefaultInterestForm,
-					$author$project$Main$defaultInterestForm(defaultInterest))
+					$author$project$Mahnschreiben$DefaultInterestForm,
+					$author$project$Mahnschreiben$defaultInterestForm(defaultInterest))
 				]));
 	});
-var $author$project$Main$LegalReasonForm = function (a) {
+var $author$project$Mahnschreiben$LegalReasonForm = function (a) {
 	return {$: 3, a: a};
 };
 var $elm$html$Html$Attributes$rows = function (n) {
@@ -6299,7 +6448,7 @@ var $elm$html$Html$Attributes$rows = function (n) {
 		$elm$core$String$fromInt(n));
 };
 var $elm$html$Html$textarea = _VirtualDom_node('textarea');
-var $author$project$Main$legalReasonForm = function (legalReason) {
+var $author$project$Mahnschreiben$legalReasonForm = function (legalReason) {
 	var labelText = 'Rechtsgrund der Forderung';
 	return A2(
 		$elm$html$Html$form,
@@ -6337,37 +6486,37 @@ var $author$project$Main$legalReasonForm = function (legalReason) {
 								$elm$html$Html$Attributes$rows(2),
 								$elm$html$Html$Attributes$placeholder(labelText),
 								A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
-								$elm$html$Html$Events$onInput($author$project$Main$LegalReasonForm),
+								$elm$html$Html$Events$onInput($author$project$Mahnschreiben$LegalReasonForm),
 								$elm$html$Html$Attributes$value(legalReason)
 							]),
 						_List_Nil)
 					]))
 			]));
 };
-var $author$project$Main$OpponentGreetingFormGreetingMadame = function (a) {
+var $author$project$Mahnschreiben$OpponentGreetingFormGreetingMadame = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Main$OpponentGreetingFormGreetingSir = function (a) {
+var $author$project$Mahnschreiben$OpponentGreetingFormGreetingSir = function (a) {
 	return {$: 0, a: a};
 };
-var $author$project$Main$OpponentGreetingFormGreetingCommon = {$: 2};
-var $author$project$Main$switchOpponentGreetingForm = function (s) {
-	return (s === 'GreetingSir') ? $author$project$Main$OpponentGreetingFormGreetingSir('') : ((s === 'GreetingMadame') ? $author$project$Main$OpponentGreetingFormGreetingMadame('') : $author$project$Main$OpponentGreetingFormGreetingCommon);
+var $author$project$Mahnschreiben$OpponentGreetingFormGreetingCommon = {$: 2};
+var $author$project$Mahnschreiben$switchOpponentGreetingForm = function (s) {
+	return (s === 'GreetingSir') ? $author$project$Mahnschreiben$OpponentGreetingFormGreetingSir('') : ((s === 'GreetingMadame') ? $author$project$Mahnschreiben$OpponentGreetingFormGreetingMadame('') : $author$project$Mahnschreiben$OpponentGreetingFormGreetingCommon);
 };
-var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
+var $author$project$Mahnschreiben$opponenGreetingForm = function (opponentGreeting) {
 	var opponentGreetingCase = F2(
 		function (m, case_) {
 			switch (m.$) {
 				case 0:
 					return _Utils_eq(
 						case_,
-						$author$project$Main$GreetingSir(''));
+						$author$project$Mahnschreiben$GreetingSir(''));
 				case 1:
 					return _Utils_eq(
 						case_,
-						$author$project$Main$GreetingMadame(''));
+						$author$project$Mahnschreiben$GreetingMadame(''));
 				default:
-					return _Utils_eq(case_, $author$project$Main$GreetingCommon);
+					return _Utils_eq(case_, $author$project$Mahnschreiben$GreetingCommon);
 			}
 		});
 	var labelTextGeneral = 'Anrede im Brief';
@@ -6375,7 +6524,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 		$elm$html$Html$form,
 		_List_fromArray(
 			[
-				$author$project$Main$classes('mb-3 row g-3')
+				$author$project$Mahnschreiben$classes('mb-3 row g-3')
 			]),
 		_List_fromArray(
 			[
@@ -6421,7 +6570,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 												$elm$html$Html$Attributes$class('form-select'),
 												$elm$html$Html$Attributes$id('opponenGreetingFormSwitchOpponentGreetingForm'),
 												A2($elm$html$Html$Attributes$attribute, 'aria-label', labelTextGeneral),
-												$elm$html$Html$Events$onInput($author$project$Main$switchOpponentGreetingForm)
+												$elm$html$Html$Events$onInput($author$project$Mahnschreiben$switchOpponentGreetingForm)
 											]),
 										_List_fromArray(
 											[
@@ -6434,7 +6583,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 														A2(
 															opponentGreetingCase,
 															opponentGreeting,
-															$author$project$Main$GreetingSir('')))
+															$author$project$Mahnschreiben$GreetingSir('')))
 													]),
 												_List_fromArray(
 													[
@@ -6449,7 +6598,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 														A2(
 															opponentGreetingCase,
 															opponentGreeting,
-															$author$project$Main$GreetingMadame('')))
+															$author$project$Mahnschreiben$GreetingMadame('')))
 													]),
 												_List_fromArray(
 													[
@@ -6461,7 +6610,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 													[
 														$elm$html$Html$Attributes$value('GreetingCommon'),
 														$elm$html$Html$Attributes$selected(
-														A2(opponentGreetingCase, opponentGreeting, $author$project$Main$GreetingCommon))
+														A2(opponentGreetingCase, opponentGreeting, $author$project$Mahnschreiben$GreetingCommon))
 													]),
 												_List_fromArray(
 													[
@@ -6502,7 +6651,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 															$elm$html$Html$Attributes$type_('text'),
 															$elm$html$Html$Attributes$placeholder(labelText),
 															A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
-															$elm$html$Html$Events$onInput($author$project$Main$OpponentGreetingFormGreetingSir),
+															$elm$html$Html$Events$onInput($author$project$Mahnschreiben$OpponentGreetingFormGreetingSir),
 															$elm$html$Html$Attributes$value(txt)
 														]),
 													_List_Nil)
@@ -6538,7 +6687,7 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 															$elm$html$Html$Attributes$type_('text'),
 															$elm$html$Html$Attributes$placeholder(labelText),
 															A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
-															$elm$html$Html$Events$onInput($author$project$Main$OpponentGreetingFormGreetingMadame),
+															$elm$html$Html$Events$onInput($author$project$Mahnschreiben$OpponentGreetingFormGreetingMadame),
 															$elm$html$Html$Attributes$value(txt)
 														]),
 													_List_Nil)
@@ -6557,16 +6706,16 @@ var $author$project$Main$opponenGreetingForm = function (opponentGreeting) {
 					]))
 			]));
 };
-var $author$project$Main$ReferenceNumberForm = function (a) {
+var $author$project$Mahnschreiben$ReferenceNumberForm = function (a) {
 	return {$: 0, a: a};
 };
-var $author$project$Main$referenceNumberForm = function (referenceNumber) {
+var $author$project$Mahnschreiben$referenceNumberForm = function (referenceNumber) {
 	var labelText = 'Unser Aktenzeichen';
 	return A2(
 		$elm$html$Html$form,
 		_List_fromArray(
 			[
-				$author$project$Main$classes('mb-3 row g-3')
+				$author$project$Mahnschreiben$classes('mb-3 row g-3')
 			]),
 		_List_fromArray(
 			[
@@ -6598,17 +6747,17 @@ var $author$project$Main$referenceNumberForm = function (referenceNumber) {
 								$elm$html$Html$Attributes$type_('text'),
 								$elm$html$Html$Attributes$placeholder(labelText),
 								A2($elm$html$Html$Attributes$attribute, 'aria-label', labelText),
-								$elm$html$Html$Events$onInput($author$project$Main$ReferenceNumberForm),
+								$elm$html$Html$Events$onInput($author$project$Mahnschreiben$ReferenceNumberForm),
 								$elm$html$Html$Attributes$value(referenceNumber)
 							]),
 						_List_Nil)
 					]))
 			]));
 };
-var $author$project$Main$RightToDeductInputTaxForm = function (a) {
+var $author$project$Mahnschreiben$RightToDeductInputTaxForm = function (a) {
 	return {$: 10, a: a};
 };
-var $author$project$Main$rightToDeductInputTaxForm = function (rightToDeductInputTax) {
+var $author$project$Mahnschreiben$rightToDeductInputTaxForm = function (rightToDeductInputTax) {
 	return A2(
 		$elm$html$Html$form,
 		_List_fromArray(
@@ -6634,7 +6783,7 @@ var $author$project$Main$rightToDeductInputTaxForm = function (rightToDeductInpu
 								$elm$html$Html$Attributes$type_('checkbox'),
 								$elm$html$Html$Attributes$value(''),
 								$elm$html$Html$Attributes$checked(rightToDeductInputTax),
-								$elm$html$Html$Events$onCheck($author$project$Main$RightToDeductInputTaxForm)
+								$elm$html$Html$Events$onCheck($author$project$Mahnschreiben$RightToDeductInputTaxForm)
 							]),
 						_List_Nil),
 						A2(
@@ -6651,29 +6800,29 @@ var $author$project$Main$rightToDeductInputTaxForm = function (rightToDeductInpu
 					]))
 			]));
 };
-var $author$project$Main$modelInput = function (model) {
+var $author$project$Mahnschreiben$modelInput = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
 		_List_fromArray(
 			[
-				$author$project$Main$referenceNumberForm(model.F),
+				$author$project$Mahnschreiben$referenceNumberForm(model.K),
 				A2(
 				$elm$html$Html$map,
-				$author$project$Main$ClientForm,
-				$author$project$Main$clientForm(model.a)),
-				$author$project$Main$rightToDeductInputTaxForm(model.N),
+				$author$project$Mahnschreiben$ClientForm,
+				$author$project$Mahnschreiben$clientForm(model.a)),
+				$author$project$Mahnschreiben$rightToDeductInputTaxForm(model.U),
 				A2(
 				$elm$html$Html$map,
-				$author$project$Main$OpponentGreetingForm,
-				$author$project$Main$opponenGreetingForm(model.x)),
-				$author$project$Main$legalReasonForm(model.M),
-				A3($author$project$Main$amountForm, model.E, model.G, model.D),
-				A3($author$project$Main$delayForm, model.L, model.O, model.B)
+				$author$project$Mahnschreiben$OpponentGreetingForm,
+				$author$project$Mahnschreiben$opponenGreetingForm(model.z)),
+				$author$project$Mahnschreiben$legalReasonForm(model.S),
+				A3($author$project$Mahnschreiben$amountForm, model.J, model.L, model.I),
+				A3($author$project$Mahnschreiben$delayForm, model.Q, model.W, model.G)
 			]));
 };
 var $elm$html$Html$p = _VirtualDom_node('p');
-var $author$project$Main$clientDative = function (client) {
+var $author$project$Mahnschreiben$clientDative = function (client) {
 	if (!client.$) {
 		var g = client.a;
 		switch (g) {
@@ -6693,11 +6842,11 @@ var $author$project$Main$clientDative = function (client) {
 		}
 	}
 };
-var $author$project$Main$claim = F3(
+var $author$project$Mahnschreiben$claim = F3(
 	function (client, legalReason, principalAmount) {
-		return 'Sie schulden ' + ($author$project$Main$clientDative(client) + (' ' + (legalReason + (' noch einen Betrag in Höhe von EUR ' + (principalAmount + '.')))));
+		return 'Sie schulden ' + ($author$project$Mahnschreiben$clientDative(client) + (' ' + (legalReason + (' noch einen Betrag in Höhe von EUR ' + (principalAmount + '.')))));
 	});
-var $author$project$Main$clientGenitive = function (client) {
+var $author$project$Mahnschreiben$clientGenitive = function (client) {
 	if (!client.$) {
 		var g = client.a;
 		switch (g) {
@@ -6717,11 +6866,11 @@ var $author$project$Main$clientGenitive = function (client) {
 		}
 	}
 };
-var $author$project$Main$default = F3(
+var $author$project$Mahnschreiben$default = F3(
 	function (client, agreementOfBeginningOfDelay, timeOfDelay) {
-		return 'Vertraglich war vereinbart, dass Sie die Forderung ' + ($author$project$Main$clientGenitive(client) + (' binnen ' + (agreementOfBeginningOfDelay + (' Tagen nach Rechnungslegung begleichen. Sie sind deshalb seit dem ' + (timeOfDelay + ' im Verzug.')))));
+		return 'Vertraglich war vereinbart, dass Sie die Forderung ' + ($author$project$Mahnschreiben$clientGenitive(client) + (' binnen ' + (agreementOfBeginningOfDelay + (' Tagen nach Rechnungslegung begleichen. Sie sind deshalb seit dem ' + (timeOfDelay + ' im Verzug.')))));
 	});
-var $author$project$Main$defaultInterestText = function (defaultInterestValue) {
+var $author$project$Mahnschreiben$defaultInterestText = function (defaultInterestValue) {
 	return 'Weil Sie im Verzug sind, schulden Sie zusätzlich Verzugszinsen' + (function () {
 		if (!defaultInterestValue.$) {
 			return ' in gesetzlicher Höhe.';
@@ -6731,7 +6880,7 @@ var $author$project$Main$defaultInterestText = function (defaultInterestValue) {
 		}
 	}() + ' Die Zinsberechnung entnehmen Sie bitte der beiliegenden Forderungsaufstellung.');
 };
-var $author$project$Main$greeting = function (opponentGreeting) {
+var $author$project$Mahnschreiben$greeting = function (opponentGreeting) {
 	switch (opponentGreeting.$) {
 		case 0:
 			var n = opponentGreeting.a;
@@ -6743,10 +6892,10 @@ var $author$project$Main$greeting = function (opponentGreeting) {
 			return 'Sehr geehrte Damen und Herren,';
 	}
 };
-var $author$project$Main$judicialEnforcement = function (client) {
-	return 'Sollte die vorgenannten Fristen fruchtlos verstreichen, werde ich ' + ($author$project$Main$clientDative(client) + ' empfehlen, die Forderung gegen Sie gerichtlich durchzusetzen.');
+var $author$project$Mahnschreiben$judicialEnforcement = function (client) {
+	return 'Sollte die vorgenannten Fristen fruchtlos verstreichen, werde ich ' + ($author$project$Mahnschreiben$clientDative(client) + ' empfehlen, die Forderung gegen Sie gerichtlich durchzusetzen.');
 };
-var $author$project$Main$clientNominative = function (client) {
+var $author$project$Mahnschreiben$clientNominative = function (client) {
 	if (!client.$) {
 		var g = client.a;
 		switch (g) {
@@ -6768,7 +6917,7 @@ var $author$project$Main$clientNominative = function (client) {
 };
 var $elm$core$Basics$not = _Basics_not;
 var $elm$core$String$toUpper = _String_toUpper;
-var $author$project$Main$rightToDeductInputTaxText = F2(
+var $author$project$Mahnschreiben$rightToDeductInputTaxText = F2(
 	function (client, rightToDeductInputTax) {
 		return (!rightToDeductInputTax) ? A2(
 			$elm$html$Html$p,
@@ -6780,10 +6929,10 @@ var $author$project$Main$rightToDeductInputTaxText = F2(
 						A2(
 							$elm$core$String$left,
 							1,
-							$author$project$Main$clientNominative(client))) + (A2(
+							$author$project$Mahnschreiben$clientNominative(client))) + (A2(
 						$elm$core$String$dropLeft,
 						1,
-						$author$project$Main$clientNominative(client)) + ' ist zum Vorsteuerabzug nicht berechtigt.'))
+						$author$project$Mahnschreiben$clientNominative(client)) + ' ist zum Vorsteuerabzug nicht berechtigt.'))
 				])) : A2($elm$html$Html$div, _List_Nil, _List_Nil);
 	});
 var $elm$html$Html$strong = _VirtualDom_node('strong');
@@ -6792,7 +6941,7 @@ var $elm$html$Html$tbody = _VirtualDom_node('tbody');
 var $elm$html$Html$td = _VirtualDom_node('td');
 var $elm$html$Html$tfoot = _VirtualDom_node('tfoot');
 var $elm$html$Html$tr = _VirtualDom_node('tr');
-var $author$project$Main$lawyersFees = F3(
+var $author$project$Mahnschreiben$lawyersFees = F3(
 	function (client, principalAmount, rightToDeductInputTax) {
 		return A2(
 			$elm$html$Html$div,
@@ -6805,7 +6954,7 @@ var $author$project$Main$lawyersFees = F3(
 					_List_fromArray(
 						[
 							$elm$html$Html$text(
-							'Da Sie sich im Verzug befinden, schulden Sie auch die Freistellung ' + ($author$project$Main$clientGenitive(client) + ' von den Kosten unserer Beauftragung. Diese Kosten berechnen sich nach dem Rechtsanwaltsvergütungsgesetz wie folgt:'))
+							'Da Sie sich im Verzug befinden, schulden Sie auch die Freistellung ' + ($author$project$Mahnschreiben$clientGenitive(client) + ' von den Kosten unserer Beauftragung. Diese Kosten berechnen sich nach dem Rechtsanwaltsvergütungsgesetz wie folgt:'))
 						])),
 					A2(
 					$elm$html$Html$p,
@@ -6826,7 +6975,7 @@ var $author$project$Main$lawyersFees = F3(
 							$elm$html$Html$div,
 							_List_fromArray(
 								[
-									$author$project$Main$classes('col-9 offset-1')
+									$author$project$Mahnschreiben$classes('col-9 offset-1')
 								]),
 							_List_fromArray(
 								[
@@ -6834,7 +6983,7 @@ var $author$project$Main$lawyersFees = F3(
 									$elm$html$Html$table,
 									_List_fromArray(
 										[
-											$author$project$Main$classes('table table-borderless table-sm align-top')
+											$author$project$Mahnschreiben$classes('table table-borderless table-sm align-top')
 										]),
 									_List_fromArray(
 										[
@@ -6955,14 +7104,14 @@ var $author$project$Main$lawyersFees = F3(
 										]))
 								]))
 						])),
-					A2($author$project$Main$rightToDeductInputTaxText, client, rightToDeductInputTax),
+					A2($author$project$Mahnschreiben$rightToDeductInputTaxText, client, rightToDeductInputTax),
 					A2(
 					$elm$html$Html$p,
 					_List_Nil,
 					_List_fromArray(
 						[
 							$elm$html$Html$text(
-							'Sie können die Freistellung u. a. dadurch bewirken, dass Sie die Rechtsanwaltskosten an uns wie oben angegeben überweisen. ' + ('Für die Freistellung setze ich Ihnen ebenfalls eine Frist von 10 Tagen nach Zugang dieses Schreibens. Sollte die Frist fruchtlos verstreichen, wird ' + ($author$project$Main$clientNominative(client) + ' die Freistellung ablehnen und Ersatz in Geld verlangen.')))
+							'Sie können die Freistellung u. a. dadurch bewirken, dass Sie die Rechtsanwaltskosten an uns wie oben angegeben überweisen. ' + ('Für die Freistellung setze ich Ihnen ebenfalls eine Frist von 10 Tagen nach Zugang dieses Schreibens. Sollte die Frist fruchtlos verstreichen, wird ' + ($author$project$Mahnschreiben$clientNominative(client) + ' die Freistellung ablehnen und Ersatz in Geld verlangen.')))
 						])),
 					A2(
 					$elm$html$Html$p,
@@ -6973,7 +7122,7 @@ var $author$project$Main$lawyersFees = F3(
 						]))
 				]));
 	});
-var $author$project$Main$representation = function (client) {
+var $author$project$Mahnschreiben$representation = function (client) {
 	var mdt = function () {
 		if (!client.$) {
 			var g = client.a;
@@ -7004,12 +7153,12 @@ var $author$project$Main$representation = function (client) {
 	}();
 	return 'in der oben genannten Angelegenheit hat uns ' + (mdt + ' beauftragt und bevollmächtigt.');
 };
-var $author$project$Main$requestForPayment = F2(
+var $author$project$Mahnschreiben$requestForPayment = F2(
 	function (client, paymentToRepresentative) {
-		return 'Namens ' + ($author$project$Main$clientGenitive(client) + (' fordere ich Sie auf, den Betrag wie oben bezeichnet zu überweisen.' + (paymentToRepresentative ? ' Wir sind zum Empfang der Zahlung befugt.' : '')));
+		return 'Namens ' + ($author$project$Mahnschreiben$clientGenitive(client) + (' fordere ich Sie auf, den Betrag wie oben bezeichnet zu überweisen.' + (paymentToRepresentative ? ' Wir sind zum Empfang der Zahlung befugt.' : '')));
 	});
 var $elm$html$Html$br = _VirtualDom_node('br');
-var $author$project$Main$rubrum = F2(
+var $author$project$Mahnschreiben$rubrum = F2(
 	function (referenceNumber, client) {
 		var name = function () {
 			if (!client.$) {
@@ -7052,12 +7201,12 @@ var $author$project$Main$rubrum = F2(
 					]))
 			]);
 	});
-var $author$project$Main$sumOfAmoutText = function (sumOfAmount) {
+var $author$project$Mahnschreiben$sumOfAmoutText = function (sumOfAmount) {
 	return 'Die Gesamtforderung (ohne Rechtsanwaltskosten) beträgt EUR ' + (sumOfAmount + '.');
 };
 var $elm$html$Html$li = _VirtualDom_node('li');
 var $elm$html$Html$ul = _VirtualDom_node('ul');
-var $author$project$Main$summary = F4(
+var $author$project$Mahnschreiben$summary = F4(
 	function (referenceNumber, client, paymentToRepresentative, sumOfAmount) {
 		var clientName = function () {
 			if (!client.$) {
@@ -7213,7 +7362,7 @@ var $author$project$Main$summary = F4(
 					]))
 			]);
 	});
-var $author$project$Main$result = function (model) {
+var $author$project$Mahnschreiben$result = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -7228,14 +7377,14 @@ var $author$project$Main$result = function (model) {
 					[
 						$elm$html$Html$Attributes$class('pt-5')
 					]),
-				A2($author$project$Main$rubrum, model.F, model.a)),
+				A2($author$project$Mahnschreiben$rubrum, model.K, model.a)),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$greeting(model.x))
+						$author$project$Mahnschreiben$greeting(model.z))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7243,12 +7392,12 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$representation(model.a))
+						$author$project$Mahnschreiben$representation(model.a))
 					])),
 				A2(
 				$elm$html$Html$div,
 				_List_Nil,
-				A4($author$project$Main$summary, model.F, model.a, model.D, model.G)),
+				A4($author$project$Mahnschreiben$summary, model.K, model.a, model.I, model.L)),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
@@ -7262,7 +7411,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A3($author$project$Main$claim, model.a, model.M, model.E))
+						A3($author$project$Mahnschreiben$claim, model.a, model.S, model.J))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7270,7 +7419,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A3($author$project$Main$default, model.a, model.L, model.O))
+						A3($author$project$Mahnschreiben$default, model.a, model.Q, model.W))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7278,7 +7427,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$defaultInterestText(model.B))
+						$author$project$Mahnschreiben$defaultInterestText(model.G))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7286,7 +7435,7 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$sumOfAmoutText(model.G))
+						$author$project$Mahnschreiben$sumOfAmoutText(model.L))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7294,16 +7443,16 @@ var $author$project$Main$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($author$project$Main$requestForPayment, model.a, model.D))
+						A2($author$project$Mahnschreiben$requestForPayment, model.a, model.I))
 					])),
-				A3($author$project$Main$lawyersFees, model.a, model.E, model.N),
+				A3($author$project$Mahnschreiben$lawyersFees, model.a, model.J, model.U),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$judicialEnforcement(model.a))
+						$author$project$Mahnschreiben$judicialEnforcement(model.a))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7321,12 +7470,12 @@ var $author$project$Main$result = function (model) {
 					]))
 			]));
 };
-var $author$project$Main$view = function (model) {
+var $author$project$Mahnschreiben$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$author$project$Main$classes('container p-3 pb-5')
+				$author$project$Mahnschreiben$classes('container p-3 pb-5')
 			]),
 		_List_fromArray(
 			[
@@ -7363,7 +7512,7 @@ var $author$project$Main$view = function (model) {
 									[
 										$elm$html$Html$text('Eingaben')
 									])),
-								$author$project$Main$modelInput(model)
+								$author$project$Mahnschreiben$modelInput(model)
 							])),
 						A2(
 						$elm$html$Html$div,
@@ -7393,12 +7542,2366 @@ var $author$project$Main$view = function (model) {
 												$elm$html$Html$text('Nachdem man oben alles eingegeben hat, kann man den Text markieren, kopieren und in den Briefkopf einfügen. ' + 'Danach sind noch Adresse, Aktenzeichen und die Betreffzeile sowie die Zahlungsdaten und die RVG-Berechnung anzupassen.')
 											]))
 									])),
-								$author$project$Main$result(model)
+								$author$project$Mahnschreiben$result(model)
 							]))
 					]))
 			]));
 };
+var $author$project$Risikorechner$classes = function (s) {
+	var cl = A2(
+		$elm$core$List$map,
+		function (c) {
+			return _Utils_Tuple2(c, true);
+		},
+		A2($elm$core$String$split, ' ', s));
+	return $elm$html$Html$Attributes$classList(cl);
+};
+var $author$project$Risikorechner$AdditionalCostsForm = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Risikorechner$InstancesForm = function (a) {
+	return {$: 2, a: a};
+};
+var $author$project$Risikorechner$ItemValueForm = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Risikorechner$ProbabilityForm = function (a) {
+	return {$: 5, a: a};
+};
+var $author$project$Risikorechner$VatCustomerForm = function (a) {
+	return {$: 3, a: a};
+};
+var $author$project$Risikorechner$VatOpponentForm = function (a) {
+	return {$: 4, a: a};
+};
+var $elm$html$Html$Attributes$max = $elm$html$Html$Attributes$stringProperty('max');
+var $elm$html$Html$Attributes$min = $elm$html$Html$Attributes$stringProperty('min');
+var $elm$html$Html$span = _VirtualDom_node('span');
+var $author$project$Risikorechner$TwoInstances = 1;
+var $author$project$Risikorechner$strToInstances = function (s) {
+	switch (s) {
+		case 'OneInstance':
+			return 0;
+		case 'TwoInstances':
+			return 1;
+		default:
+			return 0;
+	}
+};
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var $author$project$Risikorechner$modelInput = function (model) {
+	var vatOpponentLabel = 'Umsatzsteuer (19 %) Gegner';
+	var vatCustomerLabel = 'Umsatzsteuer (19 %) Mandant';
+	var probabilityLabel = 'Erfolgswahrscheinlichkeit';
+	var itemValueLabel = 'Streitwert';
+	var instancesLabel = 'Instanzen';
+	var additionalCostsLabel = 'Sonstige Gerichtskosten, z. B. für Gutachten';
+	return A2(
+		$elm$html$Html$div,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$form,
+				_List_fromArray(
+					[
+						$author$project$Risikorechner$classes('mb-3 row g-3')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('col-md-3')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$label,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-label'),
+										$elm$html$Html$Attributes$for('itemValueForm')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(itemValueLabel)
+									])),
+								A2(
+								$elm$html$Html$input,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-control'),
+										$elm$html$Html$Attributes$id('itemValueForm'),
+										$elm$html$Html$Attributes$type_('number'),
+										$elm$html$Html$Attributes$min('1'),
+										$elm$html$Html$Attributes$max('30000000'),
+										$elm$html$Html$Attributes$placeholder(itemValueLabel),
+										A2($elm$html$Html$Attributes$attribute, 'aria-label', itemValueLabel),
+										$elm$html$Html$Events$onInput(
+										A2(
+											$elm$core$Basics$composeR,
+											$elm$core$String$toInt,
+											A2(
+												$elm$core$Basics$composeR,
+												$elm$core$Maybe$withDefault(0),
+												$author$project$Risikorechner$ItemValueForm))),
+										$elm$html$Html$Attributes$value(
+										$elm$core$String$fromInt(model.k))
+									]),
+								_List_Nil)
+							]))
+					])),
+				A2(
+				$elm$html$Html$form,
+				_List_fromArray(
+					[
+						$author$project$Risikorechner$classes('mb-3 row g-3')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('col-md-3')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$label,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-label'),
+										$elm$html$Html$Attributes$for('additionalCostsForm')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(additionalCostsLabel)
+									])),
+								A2(
+								$elm$html$Html$input,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-control'),
+										$elm$html$Html$Attributes$id('additionalCostsForm'),
+										$elm$html$Html$Attributes$type_('number'),
+										$elm$html$Html$Attributes$min('0'),
+										$elm$html$Html$Attributes$placeholder(additionalCostsLabel),
+										A2($elm$html$Html$Attributes$attribute, 'aria-label', additionalCostsLabel),
+										$elm$html$Html$Events$onInput(
+										A2(
+											$elm$core$Basics$composeR,
+											$elm$core$String$toInt,
+											A2(
+												$elm$core$Basics$composeR,
+												$elm$core$Maybe$withDefault(0),
+												$author$project$Risikorechner$AdditionalCostsForm))),
+										$elm$html$Html$Attributes$value(
+										$elm$core$String$fromInt(model.p))
+									]),
+								_List_Nil)
+							]))
+					])),
+				A2(
+				$elm$html$Html$form,
+				_List_fromArray(
+					[
+						$author$project$Risikorechner$classes('mb-3 row g-3')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('col-md-3')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$label,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-label'),
+										$elm$html$Html$Attributes$for('instancesForm')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(instancesLabel)
+									])),
+								A2(
+								$elm$html$Html$select,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-select'),
+										$elm$html$Html$Attributes$id('instancesForm'),
+										A2($elm$html$Html$Attributes$attribute, 'aria-label', instancesLabel),
+										$elm$html$Html$Events$onInput(
+										A2($elm$core$Basics$composeR, $author$project$Risikorechner$strToInstances, $author$project$Risikorechner$InstancesForm))
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$option,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$value('OneInstance')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Eine Instanz')
+											])),
+										A2(
+										$elm$html$Html$option,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$value('TwoInstances')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Zwei Instanzen')
+											]))
+									]))
+							]))
+					])),
+				A2(
+				$elm$html$Html$form,
+				_List_fromArray(
+					[
+						$author$project$Risikorechner$classes('mb-3 row g-3')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('col-md-3')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-check')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$input,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('form-check-input'),
+												$elm$html$Html$Attributes$id('vatCustomerCheckbox'),
+												$elm$html$Html$Attributes$type_('checkbox'),
+												$elm$html$Html$Attributes$value(''),
+												$elm$html$Html$Attributes$checked(model.C),
+												$elm$html$Html$Events$onCheck($author$project$Risikorechner$VatCustomerForm)
+											]),
+										_List_Nil),
+										A2(
+										$elm$html$Html$label,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('form-check-label'),
+												$elm$html$Html$Attributes$for('vatCustomerCheckbox')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(vatCustomerLabel)
+											]))
+									]))
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('col-md-3')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-check')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$input,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('form-check-input'),
+												$elm$html$Html$Attributes$id('vatOpponentCheckbox'),
+												$elm$html$Html$Attributes$type_('checkbox'),
+												$elm$html$Html$Attributes$value(''),
+												$elm$html$Html$Attributes$checked(model.D),
+												$elm$html$Html$Events$onCheck($author$project$Risikorechner$VatOpponentForm)
+											]),
+										_List_Nil),
+										A2(
+										$elm$html$Html$label,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('form-check-label'),
+												$elm$html$Html$Attributes$for('vatOpponentCheckbox')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(vatOpponentLabel)
+											]))
+									]))
+							]))
+					])),
+				A2(
+				$elm$html$Html$form,
+				_List_fromArray(
+					[
+						$author$project$Risikorechner$classes('mb-3 row g-3')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('col-md-3')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$label,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-label'),
+										$elm$html$Html$Attributes$for('probabilityForm')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(probabilityLabel)
+									])),
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('input-group')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$input,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('form-control'),
+												$elm$html$Html$Attributes$id('probabilityForm'),
+												$elm$html$Html$Attributes$type_('number'),
+												$elm$html$Html$Attributes$min('0'),
+												$elm$html$Html$Attributes$max('100'),
+												$elm$html$Html$Attributes$placeholder(probabilityLabel),
+												A2($elm$html$Html$Attributes$attribute, 'aria-label', probabilityLabel),
+												$elm$html$Html$Events$onInput(
+												A2(
+													$elm$core$Basics$composeR,
+													$elm$core$String$toInt,
+													A2(
+														$elm$core$Basics$composeR,
+														$elm$core$Maybe$withDefault(0),
+														$author$project$Risikorechner$ProbabilityForm))),
+												$elm$html$Html$Attributes$value(
+												$elm$core$String$fromInt(model.A))
+											]),
+										_List_Nil),
+										A2(
+										$elm$html$Html$span,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('input-group-text')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('%')
+											]))
+									]))
+							]))
+					]))
+			]));
+};
+var $elm$html$Html$h3 = _VirtualDom_node('h3');
+var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
+var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
+var $elm$core$Dict$Black = 1;
+var $elm$core$Dict$RBNode_elm_builtin = F5(
+	function (a, b, c, d, e) {
+		return {$: -1, a: a, b: b, c: c, d: d, e: e};
+	});
+var $elm$core$Dict$Red = 0;
+var $elm$core$Dict$balance = F5(
+	function (color, key, value, left, right) {
+		if ((right.$ === -1) && (!right.a)) {
+			var _v1 = right.a;
+			var rK = right.b;
+			var rV = right.c;
+			var rLeft = right.d;
+			var rRight = right.e;
+			if ((left.$ === -1) && (!left.a)) {
+				var _v3 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var lLeft = left.d;
+				var lRight = left.e;
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					0,
+					key,
+					value,
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					color,
+					rK,
+					rV,
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, left, rLeft),
+					rRight);
+			}
+		} else {
+			if ((((left.$ === -1) && (!left.a)) && (left.d.$ === -1)) && (!left.d.a)) {
+				var _v5 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var _v6 = left.d;
+				var _v7 = _v6.a;
+				var llK = _v6.b;
+				var llV = _v6.c;
+				var llLeft = _v6.d;
+				var llRight = _v6.e;
+				var lRight = left.e;
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					0,
+					lK,
+					lV,
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, key, value, lRight, right));
+			} else {
+				return A5($elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
+			}
+		}
+	});
+var $elm$core$Basics$compare = _Utils_compare;
+var $elm$core$Dict$insertHelp = F3(
+	function (key, value, dict) {
+		if (dict.$ === -2) {
+			return A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
+		} else {
+			var nColor = dict.a;
+			var nKey = dict.b;
+			var nValue = dict.c;
+			var nLeft = dict.d;
+			var nRight = dict.e;
+			var _v1 = A2($elm$core$Basics$compare, key, nKey);
+			switch (_v1) {
+				case 0:
+					return A5(
+						$elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						A3($elm$core$Dict$insertHelp, key, value, nLeft),
+						nRight);
+				case 1:
+					return A5($elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
+				default:
+					return A5(
+						$elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						nLeft,
+						A3($elm$core$Dict$insertHelp, key, value, nRight));
+			}
+		}
+	});
+var $elm$core$Dict$insert = F3(
+	function (key, value, dict) {
+		var _v0 = A3($elm$core$Dict$insertHelp, key, value, dict);
+		if ((_v0.$ === -1) && (!_v0.a)) {
+			var _v1 = _v0.a;
+			var k = _v0.b;
+			var v = _v0.c;
+			var l = _v0.d;
+			var r = _v0.e;
+			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+		} else {
+			var x = _v0;
+			return x;
+		}
+	});
+var $elm$core$Dict$fromList = function (assocs) {
+	return A3(
+		$elm$core$List$foldl,
+		F2(
+			function (_v0, dict) {
+				var key = _v0.a;
+				var value = _v0.b;
+				return A3($elm$core$Dict$insert, key, value, dict);
+			}),
+		$elm$core$Dict$empty,
+		assocs);
+};
+var $author$project$Risikorechner$gebuehrentabelleGkg = $elm$core$Dict$fromList(
+	_List_fromArray(
+		[
+			_Utils_Tuple2(500, 38),
+			_Utils_Tuple2(1000, 58),
+			_Utils_Tuple2(1500, 78),
+			_Utils_Tuple2(2000, 98),
+			_Utils_Tuple2(3000, 119),
+			_Utils_Tuple2(4000, 140),
+			_Utils_Tuple2(5000, 161),
+			_Utils_Tuple2(6000, 182),
+			_Utils_Tuple2(7000, 203),
+			_Utils_Tuple2(8000, 224),
+			_Utils_Tuple2(9000, 245),
+			_Utils_Tuple2(10000, 266),
+			_Utils_Tuple2(13000, 295),
+			_Utils_Tuple2(16000, 324),
+			_Utils_Tuple2(19000, 353),
+			_Utils_Tuple2(22000, 382),
+			_Utils_Tuple2(25000, 411),
+			_Utils_Tuple2(30000, 449),
+			_Utils_Tuple2(35000, 487),
+			_Utils_Tuple2(40000, 525),
+			_Utils_Tuple2(45000, 563),
+			_Utils_Tuple2(50000, 601),
+			_Utils_Tuple2(65000, 733),
+			_Utils_Tuple2(80000, 865),
+			_Utils_Tuple2(95000, 997),
+			_Utils_Tuple2(110000, 1129),
+			_Utils_Tuple2(125000, 1261),
+			_Utils_Tuple2(140000, 1393),
+			_Utils_Tuple2(155000, 1525),
+			_Utils_Tuple2(170000, 1657),
+			_Utils_Tuple2(185000, 1789),
+			_Utils_Tuple2(200000, 1921),
+			_Utils_Tuple2(230000, 2119),
+			_Utils_Tuple2(260000, 2317),
+			_Utils_Tuple2(290000, 2515),
+			_Utils_Tuple2(320000, 2713),
+			_Utils_Tuple2(350000, 2911),
+			_Utils_Tuple2(380000, 3109),
+			_Utils_Tuple2(410000, 3307),
+			_Utils_Tuple2(440000, 3505),
+			_Utils_Tuple2(470000, 3703),
+			_Utils_Tuple2(500000, 3901)
+		]));
+var $author$project$Risikorechner$gebuehrGkg = function (itemValue) {
+	var fn = F3(
+		function (k, v, b) {
+			return (_Utils_cmp(itemValue, k) < 1) ? v : b;
+		});
+	if (itemValue > 500000) {
+		var i = (itemValue - 500000) / 50000;
+		return 3901 + ($elm$core$Basics$ceiling(i) * 0);
+	} else {
+		return A3($elm$core$Dict$foldr, fn, 0, $author$project$Risikorechner$gebuehrentabelleGkg);
+	}
+};
+var $author$project$Risikorechner$gebuehrGkgCalc = F2(
+	function (itemValue, factor) {
+		return $author$project$Risikorechner$gebuehrGkg(itemValue) * factor;
+	});
+var $author$project$Risikorechner$gebuehrentabelleRvg = $elm$core$Dict$fromList(
+	_List_fromArray(
+		[
+			_Utils_Tuple2(500, 49),
+			_Utils_Tuple2(1000, 88),
+			_Utils_Tuple2(1500, 127),
+			_Utils_Tuple2(2000, 166),
+			_Utils_Tuple2(3000, 222),
+			_Utils_Tuple2(4000, 278),
+			_Utils_Tuple2(5000, 334),
+			_Utils_Tuple2(6000, 390),
+			_Utils_Tuple2(7000, 446),
+			_Utils_Tuple2(8000, 502),
+			_Utils_Tuple2(9000, 558),
+			_Utils_Tuple2(10000, 614),
+			_Utils_Tuple2(13000, 666),
+			_Utils_Tuple2(16000, 718),
+			_Utils_Tuple2(19000, 770),
+			_Utils_Tuple2(22000, 822),
+			_Utils_Tuple2(25000, 874),
+			_Utils_Tuple2(30000, 955),
+			_Utils_Tuple2(35000, 1036),
+			_Utils_Tuple2(40000, 1117),
+			_Utils_Tuple2(45000, 1198),
+			_Utils_Tuple2(50000, 1279),
+			_Utils_Tuple2(65000, 1373),
+			_Utils_Tuple2(80000, 1467),
+			_Utils_Tuple2(95000, 1561),
+			_Utils_Tuple2(110000, 1655),
+			_Utils_Tuple2(125000, 1749),
+			_Utils_Tuple2(140000, 1843),
+			_Utils_Tuple2(155000, 1937),
+			_Utils_Tuple2(170000, 2031),
+			_Utils_Tuple2(185000, 2125),
+			_Utils_Tuple2(200000, 2219),
+			_Utils_Tuple2(230000, 2351),
+			_Utils_Tuple2(260000, 2483),
+			_Utils_Tuple2(290000, 2615),
+			_Utils_Tuple2(320000, 2747),
+			_Utils_Tuple2(350000, 2879),
+			_Utils_Tuple2(380000, 3011),
+			_Utils_Tuple2(410000, 3143),
+			_Utils_Tuple2(440000, 3275),
+			_Utils_Tuple2(470000, 3407),
+			_Utils_Tuple2(500000, 3539)
+		]));
+var $author$project$Risikorechner$gebuehrRvg = function (itemValue) {
+	var fn = F3(
+		function (k, v, b) {
+			return (_Utils_cmp(itemValue, k) < 1) ? v : b;
+		});
+	if (itemValue > 500000) {
+		var i = (itemValue - 500000) / 50000;
+		return 3539 + ($elm$core$Basics$ceiling(i) * 165);
+	} else {
+		return A3($elm$core$Dict$foldr, fn, 0, $author$project$Risikorechner$gebuehrentabelleRvg);
+	}
+};
+var $author$project$Risikorechner$gebuehrRvgCalc = F2(
+	function (itemValue, factor) {
+		return $author$project$Risikorechner$gebuehrRvg(itemValue) * factor;
+	});
+var $author$project$Risikorechner$getVat19 = function (v) {
+	return v * 0.19;
+};
+var $elm$html$Html$h4 = _VirtualDom_node('h4');
+var $elm$core$String$fromFloat = _String_fromNumber;
+var $elm$core$String$replace = F3(
+	function (before, after, string) {
+		return A2(
+			$elm$core$String$join,
+			after,
+			A2($elm$core$String$split, before, string));
+	});
+var $elm$core$Basics$round = _Basics_round;
+var $author$project$Risikorechner$stringFromFloatGermanWithDecimals = function (f) {
+	var s = A3(
+		$elm$core$String$replace,
+		'.',
+		',',
+		$elm$core$String$fromFloat(
+			$elm$core$Basics$round(f * 100) / 100));
+	var l = $elm$core$String$length(s);
+	var _v0 = A2($elm$core$String$indexes, ',', s);
+	if (!_v0.b) {
+		return s + ',00';
+	} else {
+		if (!_v0.b.b) {
+			var x = _v0.a;
+			return _Utils_eq(x, l - 2) ? (s + '0') : s;
+		} else {
+			return s;
+		}
+	}
+};
+var $author$project$Risikorechner$resultFirstInstance = function (model) {
+	var ra13 = A2($author$project$Risikorechner$gebuehrRvgCalc, model.k, 1.3);
+	var ra12 = A2($author$project$Risikorechner$gebuehrRvgCalc, model.k, 1.2);
+	var vatCustomer = model.C ? $author$project$Risikorechner$getVat19((ra13 + ra12) + 20) : 0;
+	var totalRaCustomer = ((ra13 + ra12) + 20) + vatCustomer;
+	var vatOpponent = model.D ? $author$project$Risikorechner$getVat19((ra13 + ra12) + 20) : 0;
+	var totalRaOpponent = ((ra13 + ra12) + 20) + vatOpponent;
+	var gkg3 = A2($author$project$Risikorechner$gebuehrGkgCalc, model.k, 3.0);
+	var totalGkg = model.p + gkg3;
+	var superTotal = (totalRaCustomer + totalRaOpponent) + totalGkg;
+	return _Utils_Tuple2(
+		A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$author$project$Risikorechner$classes('mb-3 row g-3')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('col-md-5')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$h4,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Rechtsanwalt Mandant (I)')
+								])),
+							A2(
+							$elm$html$Html$table,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('table')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('1,3 Verfahrensgebühr Nr. 3100 VV RVG:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text(
+															$author$project$Risikorechner$stringFromFloatGermanWithDecimals(ra13))
+														]))
+												]))
+										])),
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('1,2 Terminsgebühr Nr. 3104 VV RVG:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text(
+															$author$project$Risikorechner$stringFromFloatGermanWithDecimals(ra12))
+														]))
+												]))
+										])),
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('Pauschale Nr. 7002 VV RVG:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('20,00')
+														]))
+												]))
+										])),
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('Umsatzsteuer 19 % Nr. 7008 VV RVG:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text(
+															$author$project$Risikorechner$stringFromFloatGermanWithDecimals(vatCustomer))
+														]))
+												]))
+										])),
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$strong,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('Summe:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$strong,
+													_List_Nil,
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$span,
+															_List_Nil,
+															_List_fromArray(
+																[
+																	$elm$html$Html$text(
+																	$author$project$Risikorechner$stringFromFloatGermanWithDecimals(totalRaCustomer))
+																]))
+														]))
+												]))
+										]))
+								]))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('col-md-5')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$h4,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Rechtsanwalt Gegenseite (I)')
+								])),
+							A2(
+							$elm$html$Html$table,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('table')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('1,3 Verfahrensgebühr Nr. 3100 VV RVG:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text(
+															$author$project$Risikorechner$stringFromFloatGermanWithDecimals(ra13))
+														]))
+												]))
+										])),
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('1,2 Terminsgebühr Nr. 3104 VV RVG:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text(
+															$author$project$Risikorechner$stringFromFloatGermanWithDecimals(ra12))
+														]))
+												]))
+										])),
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('Pauschale Nr. 7002 VV RVG:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('20,00')
+														]))
+												]))
+										])),
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('Umsatzsteuer 19 % Nr. 7008 VV RVG:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text(
+															$author$project$Risikorechner$stringFromFloatGermanWithDecimals(vatOpponent))
+														]))
+												]))
+										])),
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$strong,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('Summe:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$strong,
+													_List_Nil,
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$span,
+															_List_Nil,
+															_List_fromArray(
+																[
+																	$elm$html$Html$text(
+																	$author$project$Risikorechner$stringFromFloatGermanWithDecimals(totalRaOpponent))
+																]))
+														]))
+												]))
+										]))
+								]))
+						])),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('col-md-5')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$h4,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Gericht (I)')
+								])),
+							A2(
+							$elm$html$Html$table,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('table')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('3,0 Verfahrensgebühr Nr. 1210 KV GKG:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text(
+															$author$project$Risikorechner$stringFromFloatGermanWithDecimals(gkg3))
+														]))
+												]))
+										])),
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('Sonstige Gerichtskosten, z. B. für Gutachten:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text(
+															$author$project$Risikorechner$stringFromFloatGermanWithDecimals(model.p))
+														]))
+												]))
+										])),
+									A2(
+									$elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$strong,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('Summe:')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$span,
+													_List_Nil,
+													_List_fromArray(
+														[
+															$elm$html$Html$text('EUR')
+														]))
+												])),
+											A2(
+											$elm$html$Html$td,
+											_List_fromArray(
+												[
+													$elm$html$Html$Attributes$class('text-end')
+												]),
+											_List_fromArray(
+												[
+													A2(
+													$elm$html$Html$strong,
+													_List_Nil,
+													_List_fromArray(
+														[
+															A2(
+															$elm$html$Html$span,
+															_List_fromArray(
+																[
+																	$elm$html$Html$Attributes$class('text-end')
+																]),
+															_List_fromArray(
+																[
+																	$elm$html$Html$text(
+																	$author$project$Risikorechner$stringFromFloatGermanWithDecimals(totalGkg))
+																]))
+														]))
+												]))
+										]))
+								]))
+						]))
+				])),
+		superTotal);
+};
+var $author$project$Risikorechner$resultSecondInstance = function (model) {
+	var ra16 = A2($author$project$Risikorechner$gebuehrRvgCalc, model.k, 1.6);
+	var ra12 = A2($author$project$Risikorechner$gebuehrRvgCalc, model.k, 1.2);
+	var vatCustomer = model.C ? $author$project$Risikorechner$getVat19((ra16 + ra12) + 20) : 0;
+	var totalRaCustomer = ((ra16 + ra12) + 20) + vatCustomer;
+	var vatOpponent = model.D ? $author$project$Risikorechner$getVat19((ra16 + ra12) + 20) : 0;
+	var totalRaOpponent = ((ra16 + ra12) + 20) + vatOpponent;
+	var gkg4 = A2($author$project$Risikorechner$gebuehrGkgCalc, model.k, 4.0);
+	var totalGkg = model.p + gkg4;
+	var superTotal = (totalRaCustomer + totalRaOpponent) + totalGkg;
+	return _Utils_Tuple2(
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$author$project$Risikorechner$classes('mb-3 row g-3')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('col-md-5')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$h4,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Rechtsanwalt Mandant (II)')
+									])),
+								A2(
+								$elm$html$Html$table,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('table')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('1,6 Verfahrensgebühr Nr. 3200 VV RVG:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text(
+																$author$project$Risikorechner$stringFromFloatGermanWithDecimals(ra16))
+															]))
+													]))
+											])),
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('1,2 Terminsgebühr Nr. 3202 VV RVG:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text(
+																$author$project$Risikorechner$stringFromFloatGermanWithDecimals(ra12))
+															]))
+													]))
+											])),
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('Pauschale Nr. 7002 VV RVG:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('20,00')
+															]))
+													]))
+											])),
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('Umsatzsteuer 19 % Nr. 7008 VV RVG:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text(
+																$author$project$Risikorechner$stringFromFloatGermanWithDecimals(vatCustomer))
+															]))
+													]))
+											])),
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$strong,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('Summe:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$strong,
+														_List_Nil,
+														_List_fromArray(
+															[
+																A2(
+																$elm$html$Html$span,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text(
+																		$author$project$Risikorechner$stringFromFloatGermanWithDecimals(totalRaCustomer))
+																	]))
+															]))
+													]))
+											]))
+									]))
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('col-md-5')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$h4,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Rechtsanwalt Gegenseite (II)')
+									])),
+								A2(
+								$elm$html$Html$table,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('table')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('1,6 Verfahrensgebühr Nr. 3200 VV RVG:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text(
+																$author$project$Risikorechner$stringFromFloatGermanWithDecimals(ra16))
+															]))
+													]))
+											])),
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('1,2 Terminsgebühr Nr. 3202 VV RVG:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text(
+																$author$project$Risikorechner$stringFromFloatGermanWithDecimals(ra12))
+															]))
+													]))
+											])),
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('Pauschale Nr. 7002 VV RVG:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('20,00')
+															]))
+													]))
+											])),
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('Umsatzsteuer 19 % Nr. 7008 VV RVG:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text(
+																$author$project$Risikorechner$stringFromFloatGermanWithDecimals(vatOpponent))
+															]))
+													]))
+											])),
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$strong,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('Summe:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$strong,
+														_List_Nil,
+														_List_fromArray(
+															[
+																A2(
+																$elm$html$Html$span,
+																_List_Nil,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text(
+																		$author$project$Risikorechner$stringFromFloatGermanWithDecimals(totalRaOpponent))
+																	]))
+															]))
+													]))
+											]))
+									]))
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('col-md-5')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$h4,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Gericht (II)')
+									])),
+								A2(
+								$elm$html$Html$table,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('table')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('4,0 Verfahrensgebühr Nr. 1220 KV GKG:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text(
+																$author$project$Risikorechner$stringFromFloatGermanWithDecimals(gkg4))
+															]))
+													]))
+											])),
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('Sonstige Gerichtskosten, z. B. für Gutachten:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text(
+																$author$project$Risikorechner$stringFromFloatGermanWithDecimals(model.p))
+															]))
+													]))
+											])),
+										A2(
+										$elm$html$Html$tr,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$strong,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('Summe:')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$span,
+														_List_Nil,
+														_List_fromArray(
+															[
+																$elm$html$Html$text('EUR')
+															]))
+													])),
+												A2(
+												$elm$html$Html$td,
+												_List_fromArray(
+													[
+														$elm$html$Html$Attributes$class('text-end')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														$elm$html$Html$strong,
+														_List_Nil,
+														_List_fromArray(
+															[
+																A2(
+																$elm$html$Html$span,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$Attributes$class('text-end')
+																	]),
+																_List_fromArray(
+																	[
+																		$elm$html$Html$text(
+																		$author$project$Risikorechner$stringFromFloatGermanWithDecimals(totalGkg))
+																	]))
+															]))
+													]))
+											]))
+									]))
+							]))
+					]))
+			]),
+		superTotal);
+};
+var $author$project$Risikorechner$result = function (model) {
+	var _v0 = function () {
+		var _v1 = model.R;
+		if (_v1 === 1) {
+			return $author$project$Risikorechner$resultSecondInstance(model);
+		} else {
+			return _Utils_Tuple2(_List_Nil, 0.0);
+		}
+	}();
+	var secondInstanceHtmlList = _v0.a;
+	var totalSecond = _v0.b;
+	var _v2 = $author$project$Risikorechner$resultFirstInstance(model);
+	var firstInstanceHtml = _v2.a;
+	var totalFirst = _v2.b;
+	var sumOfAllCosts = totalFirst + totalSecond;
+	var expectation = ((model.k * model.A) / 100) - ((sumOfAllCosts * (100 - model.A)) / 100);
+	var expectationText = (expectation > 0) ? 'Die Sache lohnt sich, weil der Erwartungswert positiv ist.' : 'Die Sache lohnt sich nicht, weil der Erwartungswert nicht positiv ist.';
+	return A2(
+		$elm$html$Html$div,
+		_List_Nil,
+		_Utils_ap(
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$h3,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('mb-3')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Gesamtkosten')
+						])),
+					A2(
+					$elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Die Kosten des Rechtsstreits betragen '),
+							A2(
+							$elm$html$Html$strong,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(
+									'EUR ' + $author$project$Risikorechner$stringFromFloatGermanWithDecimals(sumOfAllCosts))
+								])),
+							$elm$html$Html$text('.')
+						])),
+					A2(
+					$elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Enthalten sind die Verfahrens- und Termingebühren der Instanz(en), die Pauschale nach Nr. 7002 VV RVG und ggf. die Umsatzsteuer für zwei Rechtsanwälte sowie die Gerichtskosten.')
+						])),
+					A2(
+					$elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Nicht enthalten sind Mehrkosten bei mehreren Mandanten/Gegnern, Einigungsgebühren und streitwertunabhängige Kosten wie Reisekosten und sonstige Auslagen.')
+						])),
+					A2(
+					$elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							$elm$html$Html$text(
+							'Der Erwartungswert beträgt EUR ' + ($author$project$Risikorechner$stringFromFloatGermanWithDecimals(expectation) + '. ')),
+							A2(
+							$elm$html$Html$strong,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text(expectationText)
+								]))
+						])),
+					A2(
+					$elm$html$Html$h3,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('mb-3')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Einzelaufstellung')
+						])),
+					firstInstanceHtml
+				]),
+			secondInstanceHtmlList));
+};
+var $author$project$Risikorechner$view = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$author$project$Risikorechner$classes('container p-3 pb-5')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$main_,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$h1,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('mb-3')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('TextBauStein Risikorechner')
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('mb-5')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$h2,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('mb-3')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Eingaben')
+									])),
+								$author$project$Risikorechner$modelInput(model)
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$h2,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('mb-3')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Ergebnis')
+									])),
+								$author$project$Risikorechner$result(model)
+							]))
+					]))
+			]));
+};
+var $author$project$Main$view = function (model) {
+	var _v0 = model.Z;
+	switch (_v0) {
+		case 0:
+			return $author$project$Main$homeView;
+		case 1:
+			return A2(
+				$elm$html$Html$map,
+				$author$project$Main$MahnschreibenMsg,
+				$author$project$Mahnschreiben$view(model.T));
+		default:
+			return A2(
+				$elm$html$Html$map,
+				$author$project$Main$RisikorechnerMsg,
+				$author$project$Risikorechner$view(model.V));
+	}
+};
 var $author$project$Main$main = $elm$browser$Browser$sandbox(
-	{aE: $author$project$Main$init, aM: $author$project$Main$update, aN: $author$project$Main$view});
+	{aN: $author$project$Main$init, aV: $author$project$Main$update, aW: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
