@@ -2,7 +2,7 @@ module Risikorechner exposing (Model, Msg, init, update, view)
 
 import Dict
 import Html exposing (..)
-import Html.Attributes exposing (attribute, checked, class, classList, for, id, placeholder, type_, value)
+import Html.Attributes exposing (attribute, checked, class, classList, for, id, placeholder, selected, type_, value)
 import Html.Events exposing (onCheck, onInput)
 
 
@@ -13,10 +13,11 @@ import Html.Events exposing (onCheck, onInput)
 init : Model
 init =
     { itemValue = 5000
-    , instances = OneInstance
+    , instances = TwoInstances
     , vatCustomer = True
     , vatOpponent = True
-    , additionalCosts = 0
+    , additionalCostsFirstInstance = 0
+    , additionalCostsSecondInstance = 0
     , probability = 50
     }
 
@@ -26,7 +27,8 @@ type alias Model =
     , instances : Instances
     , vatCustomer : VAT
     , vatOpponent : VAT
-    , additionalCosts : Int
+    , additionalCostsFirstInstance : Int
+    , additionalCostsSecondInstance : Int
     , probability : Int
     }
 
@@ -59,7 +61,8 @@ type alias VAT =
 
 type Msg
     = ItemValueForm Int
-    | AdditionalCostsForm Int
+    | AdditionalCostsFirstInstanceForm Int
+    | AdditionalCostsSecondInstanceForm Int
     | InstancesForm Instances
     | VatCustomerForm VAT
     | VatOpponentForm VAT
@@ -72,8 +75,11 @@ update msg model =
         ItemValueForm newItemValue ->
             { model | itemValue = newItemValue }
 
-        AdditionalCostsForm newAdditionalCosts ->
-            { model | additionalCosts = newAdditionalCosts }
+        AdditionalCostsFirstInstanceForm newAdditionalCosts ->
+            { model | additionalCostsFirstInstance = newAdditionalCosts }
+
+        AdditionalCostsSecondInstanceForm newAdditionalCosts ->
+            { model | additionalCostsSecondInstance = newAdditionalCosts }
 
         InstancesForm newInstances ->
             { model | instances = newInstances }
@@ -115,8 +121,11 @@ modelInput model =
         itemValueLabel =
             "Streitwert"
 
-        additionalCostsLabel =
-            "Sonstige Gerichtskosten, z. B. für Gutachten"
+        additionalCostsFirstInstanceLabel =
+            "Sonstige erstinstanzliche Gerichtskosten, z. B. für Gutachten"
+
+        additionalCostsSecondInstanceLabel =
+            "Sonstige Gerichtskosten in der zweiten Instanz, z. B. für zusätzliches Gutachten"
 
         instancesLabel =
             "Instanzen"
@@ -150,22 +159,6 @@ modelInput model =
             ]
         , form [ classes "mb-3 row g-3" ]
             [ div [ class "col-md-3" ]
-                [ label [ class "form-label", for "additionalCostsForm" ] [ text additionalCostsLabel ]
-                , input
-                    [ class "form-control"
-                    , id "additionalCostsForm"
-                    , type_ "number"
-                    , Html.Attributes.min "0"
-                    , placeholder additionalCostsLabel
-                    , attribute "aria-label" additionalCostsLabel
-                    , onInput <| String.toInt >> Maybe.withDefault 0 >> AdditionalCostsForm
-                    , value <| String.fromInt model.additionalCosts
-                    ]
-                    []
-                ]
-            ]
-        , form [ classes "mb-3 row g-3" ]
-            [ div [ class "col-md-3" ]
                 [ label [ class "form-label", for "instancesForm" ] [ text instancesLabel ]
                 , select
                     [ class "form-select"
@@ -173,9 +166,41 @@ modelInput model =
                     , attribute "aria-label" instancesLabel
                     , onInput (strToInstances >> InstancesForm)
                     ]
-                    [ option [ value "OneInstance" ] [ text "Eine Instanz" ]
-                    , option [ value "TwoInstances" ] [ text "Zwei Instanzen" ]
+                    [ option [ value "OneInstance", selected <| model.instances == OneInstance ] [ text "Eine Instanz" ]
+                    , option [ value "TwoInstances", selected <| model.instances == TwoInstances ] [ text "Zwei Instanzen" ]
                     ]
+                ]
+            ]
+        , form [ classes "mb-3 row g-3" ]
+            [ div [ class "col-md-3" ]
+                [ label [ class "form-label", for "additionalCostsFirstInstanceForm" ] [ text additionalCostsFirstInstanceLabel ]
+                , input
+                    [ class "form-control"
+                    , id "additionalCostsFirstInstanceForm"
+                    , type_ "number"
+                    , Html.Attributes.min "0"
+                    , placeholder additionalCostsFirstInstanceLabel
+                    , attribute "aria-label" additionalCostsFirstInstanceLabel
+                    , onInput <| String.toInt >> Maybe.withDefault 0 >> AdditionalCostsFirstInstanceForm
+                    , value <| String.fromInt model.additionalCostsFirstInstance
+                    ]
+                    []
+                ]
+            ]
+        , form [ classes "mb-3 row g-3" ]
+            [ div [ class "col-md-3" ]
+                [ label [ class "form-label", for "additionalCostsSecondInstanceForm" ] [ text additionalCostsSecondInstanceLabel ]
+                , input
+                    [ class "form-control"
+                    , id "additionalCostsSecondInstanceForm"
+                    , type_ "number"
+                    , Html.Attributes.min "0"
+                    , placeholder additionalCostsSecondInstanceLabel
+                    , attribute "aria-label" additionalCostsSecondInstanceLabel
+                    , onInput <| String.toInt >> Maybe.withDefault 0 >> AdditionalCostsSecondInstanceForm
+                    , value <| String.fromInt model.additionalCostsSecondInstance
+                    ]
+                    []
                 ]
             ]
         , form [ classes "mb-3 row g-3" ]
@@ -320,7 +345,7 @@ resultFirstInstance model =
 
         totalGkg : Float
         totalGkg =
-            toFloat model.additionalCosts + gkg3
+            toFloat model.additionalCostsFirstInstance + gkg3
 
         superTotal : Float
         superTotal =
@@ -351,7 +376,7 @@ resultFirstInstance model =
             [ h4 [] [ text "Gericht (I)" ]
             , table [ class "table" ]
                 [ tr [] [ td [] [ span [] [ text "3,0 Verfahrensgebühr Nr. 1210 KV GKG:" ] ], td [] [ span [] [ text "EUR" ] ], td [ class "text-end" ] [ span [] [ text <| stringFromFloatGermanWithDecimals gkg3 ] ] ]
-                , tr [] [ td [] [ span [] [ text "Sonstige Gerichtskosten, z. B. für Gutachten:" ] ], td [] [ span [] [ text "EUR" ] ], td [ class "text-end" ] [ span [] [ text <| stringFromFloatGermanWithDecimals (toFloat model.additionalCosts) ] ] ]
+                , tr [] [ td [] [ span [] [ text "Sonstige Gerichtskosten, z. B. für Gutachten:" ] ], td [] [ span [] [ text "EUR" ] ], td [ class "text-end" ] [ span [] [ text <| stringFromFloatGermanWithDecimals (toFloat model.additionalCostsFirstInstance) ] ] ]
                 , tr [] [ td [] [ strong [] [ text "Summe:" ] ], td [] [ span [] [ text "EUR" ] ], td [ class "text-end" ] [ strong [] [ span [ class "text-end" ] [ text <| stringFromFloatGermanWithDecimals totalGkg ] ] ] ]
                 ]
             ]
@@ -401,7 +426,7 @@ resultSecondInstance model =
 
         totalGkg : Float
         totalGkg =
-            toFloat model.additionalCosts + gkg4
+            toFloat model.additionalCostsSecondInstance + gkg4
 
         superTotal : Float
         superTotal =
@@ -432,7 +457,7 @@ resultSecondInstance model =
                 [ h4 [] [ text "Gericht (II)" ]
                 , table [ class "table" ]
                     [ tr [] [ td [] [ span [] [ text "4,0 Verfahrensgebühr Nr. 1220 KV GKG:" ] ], td [] [ span [] [ text "EUR" ] ], td [ class "text-end" ] [ span [] [ text <| stringFromFloatGermanWithDecimals gkg4 ] ] ]
-                    , tr [] [ td [] [ span [] [ text "Sonstige Gerichtskosten, z. B. für Gutachten:" ] ], td [] [ span [] [ text "EUR" ] ], td [ class "text-end" ] [ span [] [ text <| stringFromFloatGermanWithDecimals (toFloat model.additionalCosts) ] ] ]
+                    , tr [] [ td [] [ span [] [ text "Sonstige Gerichtskosten, z. B. für Gutachten:" ] ], td [] [ span [] [ text "EUR" ] ], td [ class "text-end" ] [ span [] [ text <| stringFromFloatGermanWithDecimals (toFloat model.additionalCostsSecondInstance) ] ] ]
                     , tr [] [ td [] [ strong [] [ text "Summe:" ] ], td [] [ span [] [ text "EUR" ] ], td [ class "text-end" ] [ strong [] [ span [ class "text-end" ] [ text <| stringFromFloatGermanWithDecimals totalGkg ] ] ] ]
                     ]
                 ]

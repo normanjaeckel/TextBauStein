@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.ab.H === region.ag.H)
+	if (region.ac.J === region.ah.J)
 	{
-		return 'on line ' + region.ab.H;
+		return 'on line ' + region.ac.J;
 	}
-	return 'on lines ' + region.ab.H + ' through ' + region.ag.H;
+	return 'on lines ' + region.ac.J + ' through ' + region.ah.J;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aN,
-		impl.aV,
-		impl.aT,
+		impl.aO,
+		impl.aW,
+		impl.aU,
 		function() { return function() {} }
 	);
 });
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		r: func(record.r),
-		ac: record.ac,
-		_: record._
+		q: func(record.q),
+		ad: record.ad,
+		aa: record.aa
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.r;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ac;
+		var message = !tag ? value : tag < 3 ? value.a : value.q;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.ad;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value._) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.aa) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aN,
-		impl.aV,
-		impl.aT,
+		impl.aO,
+		impl.aW,
+		impl.aU,
 		function(sendToApp, initialModel) {
-			var view = impl.aW;
+			var view = impl.aX;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.aN,
-		impl.aV,
-		impl.aT,
+		impl.aO,
+		impl.aW,
+		impl.aU,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.aa && impl.aa(sendToApp)
-			var view = impl.aW;
+			var divertHrefToApp = impl.ab && impl.ab(sendToApp)
+			var view = impl.aX;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aG);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aH);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aU) && (_VirtualDom_doc.title = title = doc.aU);
+				(title !== doc.aV) && (_VirtualDom_doc.title = title = doc.aV);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.aP;
-	var onUrlRequest = impl.aQ;
+	var onUrlChange = impl.aQ;
+	var onUrlRequest = impl.aR;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		aa: function(sendToApp)
+		ab: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.at === next.at
-							&& curr.ak === next.ak
-							&& curr.aq.a === next.aq.a
+							&& curr.au === next.au
+							&& curr.al === next.al
+							&& curr.ar.a === next.ar.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		aN: function(flags)
+		aO: function(flags)
 		{
-			return A3(impl.aN, flags, _Browser_getUrl(), key);
+			return A3(impl.aO, flags, _Browser_getUrl(), key);
 		},
+		aX: impl.aX,
 		aW: impl.aW,
-		aV: impl.aV,
-		aT: impl.aT
+		aU: impl.aU
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { aL: 'hidden', aH: 'visibilitychange' }
+		? { aM: 'hidden', aI: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { aL: 'mozHidden', aH: 'mozvisibilitychange' }
+		? { aM: 'mozHidden', aI: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { aL: 'msHidden', aH: 'msvisibilitychange' }
+		? { aM: 'msHidden', aI: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { aL: 'webkitHidden', aH: 'webkitvisibilitychange' }
-		: { aL: 'hidden', aH: 'visibilitychange' };
+		? { aM: 'webkitHidden', aI: 'webkitvisibilitychange' }
+		: { aM: 'hidden', aI: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ax: _Browser_getScene(),
-		aA: {
-			aC: _Browser_window.pageXOffset,
-			aD: _Browser_window.pageYOffset,
-			aB: _Browser_doc.documentElement.clientWidth,
-			aj: _Browser_doc.documentElement.clientHeight
+		ay: _Browser_getScene(),
+		aB: {
+			aD: _Browser_window.pageXOffset,
+			aE: _Browser_window.pageYOffset,
+			aC: _Browser_doc.documentElement.clientWidth,
+			ak: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		aB: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		aj: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		aC: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		ak: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ax: {
-				aB: node.scrollWidth,
-				aj: node.scrollHeight
+			ay: {
+				aC: node.scrollWidth,
+				ak: node.scrollHeight
 			},
-			aA: {
-				aC: node.scrollLeft,
-				aD: node.scrollTop,
-				aB: node.clientWidth,
-				aj: node.clientHeight
+			aB: {
+				aD: node.scrollLeft,
+				aE: node.scrollTop,
+				aC: node.clientWidth,
+				ak: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ax: _Browser_getScene(),
-			aA: {
-				aC: x,
-				aD: y,
-				aB: _Browser_doc.documentElement.clientWidth,
-				aj: _Browser_doc.documentElement.clientHeight
+			ay: _Browser_getScene(),
+			aB: {
+				aD: x,
+				aE: y,
+				aC: _Browser_doc.documentElement.clientWidth,
+				ak: _Browser_doc.documentElement.clientHeight
 			},
-			aJ: {
-				aC: x + rect.left,
-				aD: y + rect.top,
-				aB: rect.width,
-				aj: rect.height
+			aK: {
+				aD: x + rect.left,
+				aE: y + rect.top,
+				aC: rect.width,
+				ak: rect.height
 			}
 		};
 	});
@@ -4373,7 +4373,7 @@ function _Browser_load(url)
 var $author$project$Main$Home = 0;
 var $author$project$Main$Model = F3(
 	function (page, mahnschreibenModel, risikorechnerModel) {
-		return {T: mahnschreibenModel, Z: page, V: risikorechnerModel};
+		return {U: mahnschreibenModel, _: page, W: risikorechnerModel};
 	});
 var $elm$core$Basics$False = 1;
 var $author$project$Mahnschreiben$GreetingCommon = {$: 2};
@@ -4389,7 +4389,7 @@ var $author$project$Mahnschreiben$Model = function (referenceNumber) {
 								return function (timeOfDelay) {
 									return function (defaultInterest) {
 										return function (rightToDeductInputTax) {
-											return {Q: agreementOfBeginningOfDelay, a: client, G: defaultInterest, S: legalReason, z: opponentGreeting, I: paymentToRepresentative, J: principalAmount, K: referenceNumber, U: rightToDeductInputTax, L: sumOfAmount, W: timeOfDelay};
+											return {S: agreementOfBeginningOfDelay, a: client, I: defaultInterest, T: legalReason, B: opponentGreeting, K: paymentToRepresentative, L: principalAmount, M: referenceNumber, V: rightToDeductInputTax, N: sumOfAmount, X: timeOfDelay};
 										};
 									};
 								};
@@ -4421,9 +4421,9 @@ var $author$project$Mahnschreiben$initClient = function (scf) {
 };
 var $author$project$Mahnschreiben$init = $author$project$Mahnschreiben$Model('')(
 	$author$project$Mahnschreiben$initClient(0))($author$project$Mahnschreiben$GreetingCommon)('aus dem mit Ihnen geschlossenen Liefervertrag/Werkvertrag/...vertrag vom ... gemäß Rechnung Nr. ... vom ...')('0,00')('0,00')(false)('10')('...')($author$project$Mahnschreiben$LegalDefaultInterest)(false);
-var $author$project$Risikorechner$OneInstance = 0;
 var $elm$core$Basics$True = 0;
-var $author$project$Risikorechner$init = {p: 0, R: 0, k: 5000, A: 50, C: true, D: true};
+var $author$project$Risikorechner$TwoInstances = 1;
+var $author$project$Risikorechner$init = {x: 0, y: 0, A: 1, k: 5000, C: 50, E: true, F: true};
 var $author$project$Main$init = A3($author$project$Main$Model, 0, $author$project$Mahnschreiben$init, $author$project$Risikorechner$init);
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$GT = 2;
@@ -4927,7 +4927,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {ai: fragment, ak: host, ao: path, aq: port_, at: protocol, au: query};
+		return {aj: fragment, al: host, ap: path, ar: port_, au: protocol, av: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5212,19 +5212,19 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $elm$browser$Browser$sandbox = function (impl) {
 	return _Browser_element(
 		{
-			aN: function (_v0) {
-				return _Utils_Tuple2(impl.aN, $elm$core$Platform$Cmd$none);
+			aO: function (_v0) {
+				return _Utils_Tuple2(impl.aO, $elm$core$Platform$Cmd$none);
 			},
-			aT: function (_v1) {
+			aU: function (_v1) {
 				return $elm$core$Platform$Sub$none;
 			},
-			aV: F2(
+			aW: F2(
 				function (msg, model) {
 					return _Utils_Tuple2(
-						A2(impl.aV, msg, model),
+						A2(impl.aW, msg, model),
 						$elm$core$Platform$Cmd$none);
 				}),
-			aW: impl.aW
+			aX: impl.aX
 		});
 };
 var $author$project$Mahnschreiben$GreetingMadame = function (a) {
@@ -5243,7 +5243,7 @@ var $author$project$Mahnschreiben$update = F2(
 				var rnf = msg.a;
 				return _Utils_update(
 					model,
-					{K: rnf});
+					{M: rnf});
 			case 1:
 				var cf = msg.a;
 				switch (cf.$) {
@@ -5329,69 +5329,69 @@ var $author$project$Mahnschreiben$update = F2(
 						return _Utils_update(
 							model,
 							{
-								z: $author$project$Mahnschreiben$GreetingSir(txt)
+								B: $author$project$Mahnschreiben$GreetingSir(txt)
 							});
 					case 1:
 						var txt = ogf.a;
 						return _Utils_update(
 							model,
 							{
-								z: $author$project$Mahnschreiben$GreetingMadame(txt)
+								B: $author$project$Mahnschreiben$GreetingMadame(txt)
 							});
 					default:
 						return _Utils_update(
 							model,
-							{z: $author$project$Mahnschreiben$GreetingCommon});
+							{B: $author$project$Mahnschreiben$GreetingCommon});
 				}
 			case 7:
 				var aobdf = msg.a;
 				return _Utils_update(
 					model,
-					{Q: aobdf});
+					{S: aobdf});
 			case 8:
 				var tod = msg.a;
 				return _Utils_update(
 					model,
-					{W: tod});
+					{X: tod});
 			case 3:
 				var lr = msg.a;
 				return _Utils_update(
 					model,
-					{S: lr});
+					{T: lr});
 			case 4:
 				var pa = msg.a;
 				return _Utils_update(
 					model,
-					{J: pa});
+					{L: pa});
 			case 5:
 				var sa = msg.a;
 				return _Utils_update(
 					model,
-					{L: sa});
+					{N: sa});
 			case 6:
 				var ptr = msg.a;
 				return _Utils_update(
 					model,
-					{I: ptr});
+					{K: ptr});
 			case 9:
 				var dif = msg.a;
 				if (!dif.$) {
 					return _Utils_update(
 						model,
-						{G: $author$project$Mahnschreiben$LegalDefaultInterest});
+						{I: $author$project$Mahnschreiben$LegalDefaultInterest});
 				} else {
 					var s = dif.a;
 					return _Utils_update(
 						model,
 						{
-							G: $author$project$Mahnschreiben$HigherDefaultInterest(s)
+							I: $author$project$Mahnschreiben$HigherDefaultInterest(s)
 						});
 				}
 			default:
 				var rdit = msg.a;
 				return _Utils_update(
 					model,
-					{U: rdit});
+					{V: rdit});
 		}
 	});
 var $author$project$Risikorechner$update = F2(
@@ -5406,27 +5406,32 @@ var $author$project$Risikorechner$update = F2(
 				var newAdditionalCosts = msg.a;
 				return _Utils_update(
 					model,
-					{p: newAdditionalCosts});
+					{x: newAdditionalCosts});
 			case 2:
+				var newAdditionalCosts = msg.a;
+				return _Utils_update(
+					model,
+					{y: newAdditionalCosts});
+			case 3:
 				var newInstances = msg.a;
 				return _Utils_update(
 					model,
-					{R: newInstances});
-			case 3:
+					{A: newInstances});
+			case 4:
 				var newVatCustomer = msg.a;
 				return _Utils_update(
 					model,
-					{C: newVatCustomer});
-			case 4:
+					{E: newVatCustomer});
+			case 5:
 				var newVatOpponent = msg.a;
 				return _Utils_update(
 					model,
-					{D: newVatOpponent});
+					{F: newVatOpponent});
 			default:
 				var newProbability = msg.a;
 				return _Utils_update(
 					model,
-					{A: newProbability});
+					{C: newProbability});
 		}
 	});
 var $author$project$Main$update = F2(
@@ -5437,20 +5442,20 @@ var $author$project$Main$update = F2(
 				return _Utils_update(
 					model,
 					{
-						T: A2($author$project$Mahnschreiben$update, innerMsg, model.T)
+						U: A2($author$project$Mahnschreiben$update, innerMsg, model.U)
 					});
 			case 1:
 				var innerMsg = msg.a;
 				return _Utils_update(
 					model,
 					{
-						V: A2($author$project$Risikorechner$update, innerMsg, model.V)
+						W: A2($author$project$Risikorechner$update, innerMsg, model.W)
 					});
 			default:
 				var p = msg.a;
 				return _Utils_update(
 					model,
-					{Z: p});
+					{_: p});
 		}
 	});
 var $author$project$Main$MahnschreibenMsg = function (a) {
@@ -6807,19 +6812,19 @@ var $author$project$Mahnschreiben$modelInput = function (model) {
 		_List_Nil,
 		_List_fromArray(
 			[
-				$author$project$Mahnschreiben$referenceNumberForm(model.K),
+				$author$project$Mahnschreiben$referenceNumberForm(model.M),
 				A2(
 				$elm$html$Html$map,
 				$author$project$Mahnschreiben$ClientForm,
 				$author$project$Mahnschreiben$clientForm(model.a)),
-				$author$project$Mahnschreiben$rightToDeductInputTaxForm(model.U),
+				$author$project$Mahnschreiben$rightToDeductInputTaxForm(model.V),
 				A2(
 				$elm$html$Html$map,
 				$author$project$Mahnschreiben$OpponentGreetingForm,
-				$author$project$Mahnschreiben$opponenGreetingForm(model.z)),
-				$author$project$Mahnschreiben$legalReasonForm(model.S),
-				A3($author$project$Mahnschreiben$amountForm, model.J, model.L, model.I),
-				A3($author$project$Mahnschreiben$delayForm, model.Q, model.W, model.G)
+				$author$project$Mahnschreiben$opponenGreetingForm(model.B)),
+				$author$project$Mahnschreiben$legalReasonForm(model.T),
+				A3($author$project$Mahnschreiben$amountForm, model.L, model.N, model.K),
+				A3($author$project$Mahnschreiben$delayForm, model.S, model.X, model.I)
 			]));
 };
 var $elm$html$Html$p = _VirtualDom_node('p');
@@ -7378,14 +7383,14 @@ var $author$project$Mahnschreiben$result = function (model) {
 					[
 						$elm$html$Html$Attributes$class('pt-5')
 					]),
-				A2($author$project$Mahnschreiben$rubrum, model.K, model.a)),
+				A2($author$project$Mahnschreiben$rubrum, model.M, model.a)),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Mahnschreiben$greeting(model.z))
+						$author$project$Mahnschreiben$greeting(model.B))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7398,7 +7403,7 @@ var $author$project$Mahnschreiben$result = function (model) {
 				A2(
 				$elm$html$Html$div,
 				_List_Nil,
-				A4($author$project$Mahnschreiben$summary, model.K, model.a, model.I, model.L)),
+				A4($author$project$Mahnschreiben$summary, model.M, model.a, model.K, model.N)),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
@@ -7412,7 +7417,7 @@ var $author$project$Mahnschreiben$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A3($author$project$Mahnschreiben$claim, model.a, model.S, model.J))
+						A3($author$project$Mahnschreiben$claim, model.a, model.T, model.L))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7420,7 +7425,7 @@ var $author$project$Mahnschreiben$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A3($author$project$Mahnschreiben$default, model.a, model.Q, model.W))
+						A3($author$project$Mahnschreiben$default, model.a, model.S, model.X))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7428,7 +7433,7 @@ var $author$project$Mahnschreiben$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Mahnschreiben$defaultInterestText(model.G))
+						$author$project$Mahnschreiben$defaultInterestText(model.I))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7436,7 +7441,7 @@ var $author$project$Mahnschreiben$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Mahnschreiben$sumOfAmoutText(model.L))
+						$author$project$Mahnschreiben$sumOfAmoutText(model.N))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -7444,9 +7449,9 @@ var $author$project$Mahnschreiben$result = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						A2($author$project$Mahnschreiben$requestForPayment, model.a, model.I))
+						A2($author$project$Mahnschreiben$requestForPayment, model.a, model.K))
 					])),
-				A3($author$project$Mahnschreiben$lawyersFees, model.a, model.J, model.U),
+				A3($author$project$Mahnschreiben$lawyersFees, model.a, model.L, model.V),
 				A2(
 				$elm$html$Html$p,
 				_List_Nil,
@@ -7557,28 +7562,31 @@ var $author$project$Risikorechner$classes = function (s) {
 		A2($elm$core$String$split, ' ', s));
 	return $elm$html$Html$Attributes$classList(cl);
 };
-var $author$project$Risikorechner$AdditionalCostsForm = function (a) {
+var $author$project$Risikorechner$AdditionalCostsFirstInstanceForm = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Risikorechner$InstancesForm = function (a) {
+var $author$project$Risikorechner$AdditionalCostsSecondInstanceForm = function (a) {
 	return {$: 2, a: a};
+};
+var $author$project$Risikorechner$InstancesForm = function (a) {
+	return {$: 3, a: a};
 };
 var $author$project$Risikorechner$ItemValueForm = function (a) {
 	return {$: 0, a: a};
 };
+var $author$project$Risikorechner$OneInstance = 0;
 var $author$project$Risikorechner$ProbabilityForm = function (a) {
-	return {$: 5, a: a};
+	return {$: 6, a: a};
 };
 var $author$project$Risikorechner$VatCustomerForm = function (a) {
-	return {$: 3, a: a};
+	return {$: 4, a: a};
 };
 var $author$project$Risikorechner$VatOpponentForm = function (a) {
-	return {$: 4, a: a};
+	return {$: 5, a: a};
 };
 var $elm$html$Html$Attributes$max = $elm$html$Html$Attributes$stringProperty('max');
 var $elm$html$Html$Attributes$min = $elm$html$Html$Attributes$stringProperty('min');
 var $elm$html$Html$span = _VirtualDom_node('span');
-var $author$project$Risikorechner$TwoInstances = 1;
 var $author$project$Risikorechner$strToInstances = function (s) {
 	switch (s) {
 		case 'OneInstance':
@@ -7604,7 +7612,8 @@ var $author$project$Risikorechner$modelInput = function (model) {
 	var probabilityLabel = 'Erfolgswahrscheinlichkeit';
 	var itemValueLabel = 'Streitwert';
 	var instancesLabel = 'Instanzen';
-	var additionalCostsLabel = 'Sonstige Gerichtskosten, z. B. für Gutachten';
+	var additionalCostsSecondInstanceLabel = 'Sonstige Gerichtskosten in der zweiten Instanz, z. B. für zusätzliches Gutachten';
+	var additionalCostsFirstInstanceLabel = 'Sonstige erstinstanzliche Gerichtskosten, z. B. für Gutachten';
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
@@ -7683,22 +7692,86 @@ var $author$project$Risikorechner$modelInput = function (model) {
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$class('form-label'),
-										$elm$html$Html$Attributes$for('additionalCostsForm')
+										$elm$html$Html$Attributes$for('instancesForm')
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(additionalCostsLabel)
+										$elm$html$Html$text(instancesLabel)
+									])),
+								A2(
+								$elm$html$Html$select,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-select'),
+										$elm$html$Html$Attributes$id('instancesForm'),
+										A2($elm$html$Html$Attributes$attribute, 'aria-label', instancesLabel),
+										$elm$html$Html$Events$onInput(
+										A2($elm$core$Basics$composeR, $author$project$Risikorechner$strToInstances, $author$project$Risikorechner$InstancesForm))
+									]),
+								_List_fromArray(
+									[
+										A2(
+										$elm$html$Html$option,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$value('OneInstance'),
+												$elm$html$Html$Attributes$selected(!model.A)
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Eine Instanz')
+											])),
+										A2(
+										$elm$html$Html$option,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$value('TwoInstances'),
+												$elm$html$Html$Attributes$selected(model.A === 1)
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text('Zwei Instanzen')
+											]))
+									]))
+							]))
+					])),
+				A2(
+				$elm$html$Html$form,
+				_List_fromArray(
+					[
+						$author$project$Risikorechner$classes('mb-3 row g-3')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('col-md-3')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$label,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('form-label'),
+										$elm$html$Html$Attributes$for('additionalCostsFirstInstanceForm')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(additionalCostsFirstInstanceLabel)
 									])),
 								A2(
 								$elm$html$Html$input,
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$class('form-control'),
-										$elm$html$Html$Attributes$id('additionalCostsForm'),
+										$elm$html$Html$Attributes$id('additionalCostsFirstInstanceForm'),
 										$elm$html$Html$Attributes$type_('number'),
 										$elm$html$Html$Attributes$min('0'),
-										$elm$html$Html$Attributes$placeholder(additionalCostsLabel),
-										A2($elm$html$Html$Attributes$attribute, 'aria-label', additionalCostsLabel),
+										$elm$html$Html$Attributes$placeholder(additionalCostsFirstInstanceLabel),
+										A2($elm$html$Html$Attributes$attribute, 'aria-label', additionalCostsFirstInstanceLabel),
 										$elm$html$Html$Events$onInput(
 										A2(
 											$elm$core$Basics$composeR,
@@ -7706,9 +7779,9 @@ var $author$project$Risikorechner$modelInput = function (model) {
 											A2(
 												$elm$core$Basics$composeR,
 												$elm$core$Maybe$withDefault(0),
-												$author$project$Risikorechner$AdditionalCostsForm))),
+												$author$project$Risikorechner$AdditionalCostsFirstInstanceForm))),
 										$elm$html$Html$Attributes$value(
-										$elm$core$String$fromInt(model.p))
+										$elm$core$String$fromInt(model.x))
 									]),
 								_List_Nil)
 							]))
@@ -7734,45 +7807,34 @@ var $author$project$Risikorechner$modelInput = function (model) {
 								_List_fromArray(
 									[
 										$elm$html$Html$Attributes$class('form-label'),
-										$elm$html$Html$Attributes$for('instancesForm')
+										$elm$html$Html$Attributes$for('additionalCostsSecondInstanceForm')
 									]),
 								_List_fromArray(
 									[
-										$elm$html$Html$text(instancesLabel)
+										$elm$html$Html$text(additionalCostsSecondInstanceLabel)
 									])),
 								A2(
-								$elm$html$Html$select,
+								$elm$html$Html$input,
 								_List_fromArray(
 									[
-										$elm$html$Html$Attributes$class('form-select'),
-										$elm$html$Html$Attributes$id('instancesForm'),
-										A2($elm$html$Html$Attributes$attribute, 'aria-label', instancesLabel),
+										$elm$html$Html$Attributes$class('form-control'),
+										$elm$html$Html$Attributes$id('additionalCostsSecondInstanceForm'),
+										$elm$html$Html$Attributes$type_('number'),
+										$elm$html$Html$Attributes$min('0'),
+										$elm$html$Html$Attributes$placeholder(additionalCostsSecondInstanceLabel),
+										A2($elm$html$Html$Attributes$attribute, 'aria-label', additionalCostsSecondInstanceLabel),
 										$elm$html$Html$Events$onInput(
-										A2($elm$core$Basics$composeR, $author$project$Risikorechner$strToInstances, $author$project$Risikorechner$InstancesForm))
+										A2(
+											$elm$core$Basics$composeR,
+											$elm$core$String$toInt,
+											A2(
+												$elm$core$Basics$composeR,
+												$elm$core$Maybe$withDefault(0),
+												$author$project$Risikorechner$AdditionalCostsSecondInstanceForm))),
+										$elm$html$Html$Attributes$value(
+										$elm$core$String$fromInt(model.y))
 									]),
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$option,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$value('OneInstance')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text('Eine Instanz')
-											])),
-										A2(
-										$elm$html$Html$option,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$value('TwoInstances')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text('Zwei Instanzen')
-											]))
-									]))
+								_List_Nil)
 							]))
 					])),
 				A2(
@@ -7807,7 +7869,7 @@ var $author$project$Risikorechner$modelInput = function (model) {
 												$elm$html$Html$Attributes$id('vatCustomerCheckbox'),
 												$elm$html$Html$Attributes$type_('checkbox'),
 												$elm$html$Html$Attributes$value(''),
-												$elm$html$Html$Attributes$checked(model.C),
+												$elm$html$Html$Attributes$checked(model.E),
 												$elm$html$Html$Events$onCheck($author$project$Risikorechner$VatCustomerForm)
 											]),
 										_List_Nil),
@@ -7848,7 +7910,7 @@ var $author$project$Risikorechner$modelInput = function (model) {
 												$elm$html$Html$Attributes$id('vatOpponentCheckbox'),
 												$elm$html$Html$Attributes$type_('checkbox'),
 												$elm$html$Html$Attributes$value(''),
-												$elm$html$Html$Attributes$checked(model.D),
+												$elm$html$Html$Attributes$checked(model.F),
 												$elm$html$Html$Events$onCheck($author$project$Risikorechner$VatOpponentForm)
 											]),
 										_List_Nil),
@@ -7921,7 +7983,7 @@ var $author$project$Risikorechner$modelInput = function (model) {
 														$elm$core$Maybe$withDefault(0),
 														$author$project$Risikorechner$ProbabilityForm))),
 												$elm$html$Html$Attributes$value(
-												$elm$core$String$fromInt(model.A))
+												$elm$core$String$fromInt(model.C))
 											]),
 										_List_Nil),
 										A2(
@@ -8223,12 +8285,12 @@ var $author$project$Risikorechner$stringFromFloatGermanWithDecimals = function (
 var $author$project$Risikorechner$resultFirstInstance = function (model) {
 	var ra13 = A2($author$project$Risikorechner$gebuehrRvgCalc, model.k, 1.3);
 	var ra12 = A2($author$project$Risikorechner$gebuehrRvgCalc, model.k, 1.2);
-	var vatCustomer = model.C ? $author$project$Risikorechner$getVat19((ra13 + ra12) + 20) : 0;
+	var vatCustomer = model.E ? $author$project$Risikorechner$getVat19((ra13 + ra12) + 20) : 0;
 	var totalRaCustomer = ((ra13 + ra12) + 20) + vatCustomer;
-	var vatOpponent = model.D ? $author$project$Risikorechner$getVat19((ra13 + ra12) + 20) : 0;
+	var vatOpponent = model.F ? $author$project$Risikorechner$getVat19((ra13 + ra12) + 20) : 0;
 	var totalRaOpponent = ((ra13 + ra12) + 20) + vatOpponent;
 	var gkg3 = A2($author$project$Risikorechner$gebuehrGkgCalc, model.k, 3.0);
-	var totalGkg = model.p + gkg3;
+	var totalGkg = model.x + gkg3;
 	var superTotal = (totalRaCustomer + totalRaOpponent) + totalGkg;
 	return _Utils_Tuple2(
 		A2(
@@ -8906,7 +8968,7 @@ var $author$project$Risikorechner$resultFirstInstance = function (model) {
 													_List_fromArray(
 														[
 															$elm$html$Html$text(
-															$author$project$Risikorechner$stringFromFloatGermanWithDecimals(model.p))
+															$author$project$Risikorechner$stringFromFloatGermanWithDecimals(model.x))
 														]))
 												]))
 										])),
@@ -8976,12 +9038,12 @@ var $author$project$Risikorechner$resultFirstInstance = function (model) {
 var $author$project$Risikorechner$resultSecondInstance = function (model) {
 	var ra16 = A2($author$project$Risikorechner$gebuehrRvgCalc, model.k, 1.6);
 	var ra12 = A2($author$project$Risikorechner$gebuehrRvgCalc, model.k, 1.2);
-	var vatCustomer = model.C ? $author$project$Risikorechner$getVat19((ra16 + ra12) + 20) : 0;
+	var vatCustomer = model.E ? $author$project$Risikorechner$getVat19((ra16 + ra12) + 20) : 0;
 	var totalRaCustomer = ((ra16 + ra12) + 20) + vatCustomer;
-	var vatOpponent = model.D ? $author$project$Risikorechner$getVat19((ra16 + ra12) + 20) : 0;
+	var vatOpponent = model.F ? $author$project$Risikorechner$getVat19((ra16 + ra12) + 20) : 0;
 	var totalRaOpponent = ((ra16 + ra12) + 20) + vatOpponent;
 	var gkg4 = A2($author$project$Risikorechner$gebuehrGkgCalc, model.k, 4.0);
-	var totalGkg = model.p + gkg4;
+	var totalGkg = model.y + gkg4;
 	var superTotal = (totalRaCustomer + totalRaOpponent) + totalGkg;
 	return _Utils_Tuple2(
 		_List_fromArray(
@@ -9661,7 +9723,7 @@ var $author$project$Risikorechner$resultSecondInstance = function (model) {
 														_List_fromArray(
 															[
 																$elm$html$Html$text(
-																$author$project$Risikorechner$stringFromFloatGermanWithDecimals(model.p))
+																$author$project$Risikorechner$stringFromFloatGermanWithDecimals(model.y))
 															]))
 													]))
 											])),
@@ -9731,7 +9793,7 @@ var $author$project$Risikorechner$resultSecondInstance = function (model) {
 };
 var $author$project$Risikorechner$result = function (model) {
 	var _v0 = function () {
-		var _v1 = model.R;
+		var _v1 = model.A;
 		if (_v1 === 1) {
 			return $author$project$Risikorechner$resultSecondInstance(model);
 		} else {
@@ -9744,7 +9806,7 @@ var $author$project$Risikorechner$result = function (model) {
 	var firstInstanceHtml = _v2.a;
 	var totalFirst = _v2.b;
 	var sumOfAllCosts = totalFirst + totalSecond;
-	var expectation = ((model.k * model.A) / 100) - ((sumOfAllCosts * (100 - model.A)) / 100);
+	var expectation = ((model.k * model.C) / 100) - ((sumOfAllCosts * (100 - model.C)) / 100);
 	var expectationText = (expectation > 0) ? 'Die Sache lohnt sich, weil der Erwartungswert positiv ist.' : 'Die Sache lohnt sich nicht, weil der Erwartungswert nicht positiv ist.';
 	return A2(
 		$elm$html$Html$div,
@@ -9907,7 +9969,7 @@ var $author$project$Risikorechner$view = function (model) {
 			]));
 };
 var $author$project$Main$view = function (model) {
-	var _v0 = model.Z;
+	var _v0 = model._;
 	switch (_v0) {
 		case 0:
 			return $author$project$Main$homeView;
@@ -9915,15 +9977,15 @@ var $author$project$Main$view = function (model) {
 			return A2(
 				$elm$html$Html$map,
 				$author$project$Main$MahnschreibenMsg,
-				$author$project$Mahnschreiben$view(model.T));
+				$author$project$Mahnschreiben$view(model.U));
 		default:
 			return A2(
 				$elm$html$Html$map,
 				$author$project$Main$RisikorechnerMsg,
-				$author$project$Risikorechner$view(model.V));
+				$author$project$Risikorechner$view(model.W));
 	}
 };
 var $author$project$Main$main = $elm$browser$Browser$sandbox(
-	{aN: $author$project$Main$init, aV: $author$project$Main$update, aW: $author$project$Main$view});
+	{aO: $author$project$Main$init, aW: $author$project$Main$update, aX: $author$project$Main$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
